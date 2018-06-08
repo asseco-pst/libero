@@ -11,7 +11,7 @@ A container agnostic deployment management tool for application servers
 
 1. Clone the project
 ```sh
-git clone git@gitlab.dcs.exictos.com:devops/WildflyManager.git
+git clone git@gitlab.dcs.exictos.com:devops/libero.git
 ```
 
 2. Run the following command on the root of the project:
