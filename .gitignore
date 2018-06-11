@@ -1,0 +1,14 @@
+.project
+.settings
+.classpath
+bin/*
+Main.groovy
+/bin/
+/build/
+#Avoid ignoring Gradle Wrapper .jar
+!gradle-wrapper.jar
+#Cache of Project
+.gradle
+
+.idea/**/*
+*.iml
