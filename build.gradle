@@ -12,5 +12,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.10'
+    compile 'org.codehaus.groovy:groovy-all:2.4.15'
+    // https://mvnrepository.com/artifact/org.wildfly.core/wildfly-cli
+    compile group: 'org.wildfly.core', name: 'wildfly-cli', version: '4.0.0.Final'
 }
