@@ -77,7 +77,8 @@ abstract class Container {
      * Start the most recent instances of all applications installed in this profile
      * Most recent => oldness level = 0
      */
-    void startMostRecentApps(){
+    void startMostRecentApps()
+    {
 
         List<String> applications = profile.listInstalledApplications()
 
@@ -101,7 +102,8 @@ abstract class Container {
      *  Stops all instances installed in this profile
      *
      */
-    void stopAllApps(){
+    void stopAllApps()
+    {
 
         List<Instance> instances = profile.listAllInstances()
 
@@ -118,7 +120,8 @@ abstract class Container {
      * @param applicationName
      * @param oldnessThreshold
      */
-    void uninstallAppOldInstances(String applicationName, int oldnessThreshold = 0){
+    void uninstallAppOldInstances(String applicationName, int oldnessThreshold = 0)
+    {
 
         List<Instance> instances = profile.listInstances(applicationName)
 
@@ -129,7 +132,12 @@ abstract class Container {
 
     }
 
-    void uninstallOldInstances(){
+    /**
+     * Uninstalls all old instances of all installed applications
+     *
+     */
+    void uninstallOldInstances()
+    {
 
         List<String> applications = profile.listInstalledApplications()
 

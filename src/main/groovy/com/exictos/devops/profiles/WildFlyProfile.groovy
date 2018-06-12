@@ -13,7 +13,9 @@ class WildFlyProfile extends Profile{
     }
 
     /**
-     * {@inheritDoc}
+     * Lists all instances of all applications installed in this profile
+     *
+     * @return List of instances
      */
     @Override
     List<Instance> listAllInstances(){
@@ -50,7 +52,10 @@ class WildFlyProfile extends Profile{
     }
 
     /**
-     * {@inheritDoc}
+     * Lists all instances of an application installed in this profile
+     *
+     * @param applicationName
+     * @return List of instances
      */
     @Override
     List<Instance> listInstances(String applicationName){
@@ -69,7 +74,9 @@ class WildFlyProfile extends Profile{
     }
 
     /**
-     * {@inheritDoc}
+     * Lists all installed applications in this profile
+     *
+     * @return List of application names
      */
     @Override
     List<String> listInstalledApplications() {
@@ -86,6 +93,12 @@ class WildFlyProfile extends Profile{
         return applications
     }
 
+    /**
+     * Loops through instances and sets the oldness level for each instance according to its timestamp
+     *
+     * @param instances
+     * @return list of instances
+     */
     private List<Instance> oldnessLevel(List<Instance> instances){
 
         instances.sort{it.timestamp}

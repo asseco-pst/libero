@@ -45,6 +45,12 @@ class LiberoHelper {
 
     }
 
+    /**
+     * Converts a String to a java.sql.Timestamp object in the standard date format
+     *
+     * @param timestamp
+     * @return Timestamp object
+     */
     static Timestamp toTimestamp(String timestamp)
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT)

@@ -21,15 +21,28 @@ class WildFly extends Container{
 
     }
 
+    /**
+     * Connects the CLI to the provided WildFly server instance
+     */
     void connect(){
         cli.connect(profile.host, profile.port, profile.username, profile.password)
         snapshot = takeSnapshot()
     }
 
+    /**
+     * Disconnects the CLI from the provided WildFly server instance
+     */
     void disconnect(){
         cli.disconnect()
     }
 
+    /**
+     * Installs application with the package provided at pathToPackage and with the name applicationName standardized
+     *
+     * @param aPathToPackage
+     * @param aApplicationName
+     * @return
+     */
     @Override
     String installApp(String aPathToPackage, String aApplicationName) {
 
@@ -38,6 +51,11 @@ class WildFly extends Container{
         return name
     }
 
+    /**
+     * Starts the newest instance of applicationName after stopping all old instances
+     *
+     * @param applicationName
+     */
     @Override
     void startApp(String applicationName) {
 
@@ -56,6 +74,12 @@ class WildFly extends Container{
         }
     }
 
+    /**
+     * Stops deploymentName deployed in this profile
+     * If the deployment is already stopped, nothing happens
+     *
+     * @param deploymentName
+     */
     @Override
     void stopApp(String deploymentName) {
 
@@ -68,6 +92,11 @@ class WildFly extends Container{
         }
     }
 
+    /**
+     * Uninstall deploymentName installed in this profile
+     *
+     * @param deploymentName
+     */
     @Override
     void uninstallApp(String deploymentName) {
 
