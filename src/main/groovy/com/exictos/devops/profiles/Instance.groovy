@@ -1,24 +1,24 @@
 package com.exictos.devops.profiles
 
+import java.sql.Timestamp
+
 class Instance implements Serializable{
 
     String disabledTime
-    String enabledTime
+    Timestamp enabledTime
     String name
-    String status
-    String timestamp
+    Timestamp timestamp
     boolean enabled
     int oldness
 
     String toString()
     {
         "class Instance{" +
-                "disabledTime: ${disabledTime}" +
-                "enabledTime: ${enabledTime}" +
-                "name: ${name}" +
-                "status: ${status}" +
-                "timestamp: ${timestamp}" +
-                "enabled: ${enabled}" +
+                "disabledTime: ${disabledTime}, " +
+                "enabledTime: ${enabledTime}, " +
+                "name: ${name}, " +
+                "timestamp: ${timestamp}, " +
+                "enabled: ${enabled}, " +
                 "oldness: ${oldness}" +
         "}"
     }

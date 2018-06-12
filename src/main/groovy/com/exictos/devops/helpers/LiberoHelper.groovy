@@ -8,10 +8,11 @@ class LiberoHelper {
     private static String DATE_FORMAT = "yyyyMMdd_HHmmss"
 
     /**
-     * Returns the application standard name for installation. In the format appName___20180611_172035.ear
+     * Returns the application standard name for installation. In the format appName___20180611_172035.pkg
+     *
      * @param aPathToPackage
      * @param aApplicationName
-     * @return
+     * @return applicationName in the standard form for installation
      */
     static String standardizeName(String aPathToPackage, String aApplicationName){
 
@@ -21,16 +22,18 @@ class LiberoHelper {
     }
 
     /**
-     * The reverse process of LiberoHelper::standardizeName().
+     * The reverse process of LiberoHelper::standardizeName()
+     *
      * @param standardizedName
      * @return The application name without the timestamp
      */
     static String extractName(String standardizedName){
-
+        standardizedName.substring(0, standardizedName.indexOf("___"))
     }
 
     /**
      * Extracts the timestamp from an application standardized name
+     *
      * @param applicationStandardizedName
      * @return the application name timestamp
      */
@@ -38,14 +41,20 @@ class LiberoHelper {
 
         String timestamp = applicationStandardizedName.split("___")[1]
         timestamp = timestamp.substring(0, timestamp.lastIndexOf("."))
+        toTimestamp(timestamp)
+
+    }
+
+    static Timestamp toTimestamp(String timestamp)
+    {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT)
         Date parsedDate = dateFormat.parse(timestamp)
         new Timestamp(parsedDate.getTime())
-
     }
 
     /**
      * Returns the file type of the file specified in filePath
+     *
      * @param filePath
      * @return file package type (ie. EAR, WAR, etc.)
      */
