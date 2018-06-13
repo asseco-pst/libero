@@ -13,7 +13,7 @@ abstract class Container {
 
     /**
      * Connects to the container's profile specified by host:port
-     * 
+     *
      */
     abstract void connect()
 
