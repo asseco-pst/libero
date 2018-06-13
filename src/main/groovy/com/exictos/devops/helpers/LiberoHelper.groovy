@@ -3,6 +3,10 @@ package com.exictos.devops.helpers
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
+/**
+ * Utils class containing several different helpers methods
+ * Should be refactored into different classes if it gets too big
+ */
 class LiberoHelper {
 
     private static String DATE_FORMAT = "yyyyMMdd_HHmmss"
@@ -14,7 +18,8 @@ class LiberoHelper {
      * @param aApplicationName
      * @return applicationName in the standard form for installation
      */
-    static String standardizeName(String aPathToPackage, String aApplicationName){
+    static String standardizeName(String aPathToPackage, String aApplicationName) throws IllegalArgumentException
+    {
 
         def now = new Date().format(DATE_FORMAT)
         def _package = packageType(aPathToPackage)
@@ -27,7 +32,8 @@ class LiberoHelper {
      * @param standardizedName
      * @return The application name without the timestamp
      */
-    static String extractName(String standardizedName){
+    static String extractName(String standardizedName)
+    {
         standardizedName.substring(0, standardizedName.indexOf("___"))
     }
 
@@ -37,7 +43,8 @@ class LiberoHelper {
      * @param applicationStandardizedName
      * @return the application name timestamp
      */
-    static Timestamp extractTimestamp(String applicationStandardizedName){
+    static Timestamp extractTimestamp(String applicationStandardizedName)
+    {
 
         String timestamp = applicationStandardizedName.split("___")[1]
         timestamp = timestamp.substring(0, timestamp.lastIndexOf("."))
@@ -64,10 +71,17 @@ class LiberoHelper {
      * @param filePath
      * @return file package type (ie. EAR, WAR, etc.)
      */
-    static String packageType(String filePath){
+    static String packageType(String filePath) throws IllegalArgumentException
+    {
+        try{
+            filePath.substring(filePath.lastIndexOf(".")+1).toLowerCase().trim()
+        }catch(Exception e){
+            throw new IllegalArgumentException("Could not extract package type from file: ${filePath}. Cause: ${e.getCause()}")
+        }
+    }
 
-        filePath.substring(filePath.lastIndexOf(".")+1).toLowerCase().trim()
-
+    static String getCurrentTimestamp(){
+        new Date().format(DATE_FORMAT).toString()
     }
 
 }

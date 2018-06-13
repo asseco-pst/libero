@@ -1,5 +1,9 @@
 package com.exictos.devops.profiles
 
+/**
+ * Profile abstract class that represents an application server profile
+ * Should be extended by classes such as WildFlyProfile, WebSphereProfile, etc.
+ */
 abstract class Profile {
 
     String host = "127.0.0.1"

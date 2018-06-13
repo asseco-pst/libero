@@ -3,17 +3,23 @@ package com.exictos.devops.containers
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.Profile
 
+/**
+ * Container abstract class
+ * Should be extended by WildFly, WebSphere and other concrete containers
+ */
 abstract class Container {
 
     Profile profile
 
     /**
      * Connects to the container's profile specified by host:port
+     * 
      */
     abstract void connect()
 
     /**
      * Disconnects from the container's profile specified by host:port
+     *
      */
     abstract void disconnect()
 
@@ -36,27 +42,26 @@ abstract class Container {
      */
     String installAppWithRollBack(String pathToPackage, String applicationName)
     {
-        uninstallAppOldInstances(applicationName)
+        String oldest = uninstallAppOldInstances(applicationName)
+        String newest = installApp(pathToPackage, applicationName)
 
-        List<Instance> instances = profile.listInstances(applicationName)
-
-        String deploymentName = installApp(pathToPackage,applicationName)
-
-        instances.each {instance ->
-            stopApp(instance.getName())
-        }
-
-        startApp(applicationName)
-
-        return deploymentName
+        stopApp(oldest)
+        startApp(newest)
     }
 
     /**
      * Starts the newest instance of applicationName after stopping all old instances
      *
+     * @param deploymentName
+     */
+    abstract void startApp(String deploymentName)
+
+    /**
+     *  Starts the most recent instance of an application
+     *
      * @param applicationName
      */
-    abstract void startApp(String applicationName)
+    abstract void startMostRecentInstance(String applicationName)
 
     /**
      * Stops deploymentName deployed in this profile
@@ -76,27 +81,21 @@ abstract class Container {
     /**
      * Start the most recent instances of all applications installed in this profile
      * Most recent => oldness level = 0
+     *
      */
     void startMostRecentApps()
     {
-
-        List<String> applications = profile.listInstalledApplications()
-
-        applications.each {app ->
-            List<Instance> instances = profile.listInstances(app)
-            instances.each {instance ->
-                if(instance.getOldness() > 0 && instance.isEnabled())
-                    stopApp(instance.getName())
-            }
-
-            instances = profile.listInstances(app)
-            instances.each{ instance ->
-                if(instance.getOldness() == 0 && !instance.isEnabled())
-                    startApp(app)
-            }
+        stopOldInstances()
+        profile.listInstalledApplications().each {app ->
+            startMostRecentInstance(app)
         }
-
     }
+
+    /**
+     *  Stops all old instances of all applications installed in the profile
+     *
+     */
+    abstract void stopOldInstances()
 
     /**
      *  Stops all instances installed in this profile
@@ -104,14 +103,10 @@ abstract class Container {
      */
     void stopAllApps()
     {
-
-        List<Instance> instances = profile.listAllInstances()
-
-        instances.each {instance ->
+        profile.listAllInstances().each {instance ->
             if(instance.isEnabled())
                 stopApp(instance.getName())
         }
-
     }
 
     /**
@@ -119,17 +114,20 @@ abstract class Container {
      *
      * @param applicationName
      * @param oldnessThreshold
+     * @returns the name of the most recent application deployment
      */
-    void uninstallAppOldInstances(String applicationName, int oldnessThreshold = 0)
+    String uninstallAppOldInstances(String applicationName, int oldnessThreshold = 0)
     {
+        String newest = null
 
-        List<Instance> instances = profile.listInstances(applicationName)
-
-        instances.each {instance ->
+        profile.listInstances(applicationName).each {instance ->
             if(instance.getOldness() > oldnessThreshold)
                 uninstallApp(instance.getName())
+            else
+                newest = instance.getName()
         }
 
+        return newest
     }
 
     /**

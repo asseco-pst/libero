@@ -5,10 +5,14 @@ import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.WildFlyProfile
 import org.jboss.as.cli.scriptsupport.CLI
 
+/**
+ * WildFly container concrete class. Implements all the necessary methods to manage and deploy applications
+ *
+ */
+@groovy.util.logging.Slf4j
 class WildFly extends Container{
 
     CLI cli
-    String snapshot
 
     WildFly(String aHost, int aPort = 9990, String aUsername = null, char[] aPassword = null){
 
@@ -24,15 +28,17 @@ class WildFly extends Container{
     /**
      * Connects the CLI to the provided WildFly server instance
      */
-    void connect(){
+    void connect()
+    {
         cli.connect(profile.host, profile.port, profile.username, profile.password)
-        snapshot = takeSnapshot()
+        takeSnapshot()
     }
 
     /**
      * Disconnects the CLI from the provided WildFly server instance
      */
-    void disconnect(){
+    void disconnect()
+    {
         cli.disconnect()
     }
 
@@ -44,33 +50,52 @@ class WildFly extends Container{
      * @return
      */
     @Override
-    String installApp(String aPathToPackage, String aApplicationName) {
+    String installApp(String aPathToPackage, String aApplicationName)
+    {
+        log.info("Installing application ${aApplicationName} from package at ${aPathToPackage}...")
+        String name = null
 
-        def name = LiberoHelper.standardizeName(aPathToPackage, aApplicationName)
-        cli.cmd("deploy --name=${name} --runtime-name=${name} ${aPathToPackage} --disabled")
+        try{
+
+            name = LiberoHelper.standardizeName(aPathToPackage, aApplicationName)
+            cli.cmd("deploy --name=${name} --runtime-name=${name} ${aPathToPackage} --disabled")
+            log.info("${aApplicationName} installed successfully as ${name}")
+
+        }catch(IllegalArgumentException iae) {
+            log.error "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${iae.getCause()}"
+        }catch(Exception e){
+            log.error "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${e.getCause()}"
+        }
+
         return name
     }
 
     /**
-     * Starts the newest instance of applicationName after stopping all old instances
+     * Starts the the instance named deploymentName
      *
+     * @param deploymentName
+     */
+    @Override
+    void startApp(String deploymentName)
+    {
+        log.info("Starting application: ${deploymentName}...")
+        try{
+            cli.cmd("deploy --name=${deploymentName}")
+            log.info("Deployment ${deploymentName} started.")
+        }catch(Exception e){
+            log.error "Unable to start deployment ${deploymentName}. Cause: ${e.getCause()}"
+        }
+    }
+
+    /**
+     * Starts the most recent instance of applicationName
      * @param applicationName
      */
     @Override
-    void startApp(String applicationName) {
-
-        List<Instance> instances = profile.listInstances(applicationName)
-
-        // Stop oldest instances
-        instances.each {instance ->
-            if(instance.getOldness() > 0 && instance.isEnabled())
-                stopApp(applicationName)
-        }
-
-        // Start newest instance
-        instances.each{instance ->
-            if(instance.getOldness() == 0 && !instance.isEnabled())
-                cli.cmd("deploy --name=${instance.getName()}")
+    void startMostRecentInstance(String applicationName) {
+        profile.listInstances(applicationName).each {instance ->
+            if(instance.getOldness() == 0)
+                startApp(instance.getName())
         }
     }
 
@@ -81,14 +106,14 @@ class WildFly extends Container{
      * @param deploymentName
      */
     @Override
-    void stopApp(String deploymentName) {
-
-        List<Instance> deployments = profile.listInstances(LiberoHelper.extractName(deploymentName))
-
-        deployments.each {deployment ->
-            if(deployment.getName() == deploymentName)
-                if(deployment.isEnabled())
-                    cli.cmd("undeploy ${deploymentName} --keep-content")
+    void stopApp(String deploymentName)
+    {
+        log.info("Stopping deployment ${deploymentName}...")
+        try{
+            cli.cmd("undeploy ${deploymentName} --keep-content")
+            log.info("Deployment ${deploymentName} stopped")
+        }catch(Exception e){
+            log.error("Could not stop deployment: ${deploymentName}. Cause: ${e.getCause()}")
         }
     }
 
@@ -98,14 +123,32 @@ class WildFly extends Container{
      * @param deploymentName
      */
     @Override
-    void uninstallApp(String deploymentName) {
-
-        List<Instance> deployments = profile.listInstances(LiberoHelper.extractName(deploymentName))
-
-        deployments.each {deployment ->
-            if(deployment.getName() == deploymentName)
-                cli.cmd("/deployment=${deploymentName}:remove()")
+    void uninstallApp(String deploymentName)
+    {
+        log.info("Uninstalling deployment ${deploymentName}...")
+        try{
+            cli.cmd("/deployment=${deploymentName}:remove()")
+            log.info("Deployment ${deploymentName} uninstalled.")
+        }catch(Exception e){
+            log.error "Could not uninstall ${deploymentName}. Cause: ${e.getCause()}"
         }
+    }
+
+    /**
+     * Stops all old instances of all applications installed in the profile
+     */
+    @Override
+    void stopOldInstances() {
+
+        List<String> applications = profile.listInstalledApplications()
+        applications.each {app ->
+            List<Instance> instances = profile.listInstances(app)
+            instances.each {instance ->
+                if(instance.getOldness() > 0 && instance.isEnabled())
+                    stopApp(instance.getName())
+            }
+        }
+
     }
 
     /**
@@ -115,7 +158,15 @@ class WildFly extends Container{
      */
     String takeSnapshot()
     {
-        def result = cli.cmd(":take-snapshot")
-        result.getResponse().get("result").asString()
+        log.info("Taking current WildFly configuration snapshot...")
+        String path = null
+        try{
+            def result = cli.cmd(":take-snapshot")
+            path = result.getResponse().get("result").asString()
+            log.info("Snapshot saved at ${path}")
+        }catch(Exception e){
+            log.error("Could not take snapshot. Cause ${e.getCause()}")
+        }
     }
+
 }

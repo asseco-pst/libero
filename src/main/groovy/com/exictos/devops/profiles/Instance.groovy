@@ -2,6 +2,9 @@ package com.exictos.devops.profiles
 
 import java.sql.Timestamp
 
+/**
+ * This class represents an instance of an application installed on a profile
+ */
 class Instance implements Serializable{
 
     String disabledTime
