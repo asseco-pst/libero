@@ -19,6 +19,10 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
     testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-
     compile group: 'com.bloidonia', name: 'groovy-common-extensions', version:'0.7.0'
+}
+
+groovydoc{
+    docTitle = "Libero API"
+    includePrivate = true
 }

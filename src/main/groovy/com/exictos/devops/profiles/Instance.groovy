@@ -16,13 +16,13 @@ class Instance implements Serializable{
 
     String toString()
     {
-        "class Instance{" +
-                "disabledTime: ${disabledTime}, " +
-                "enabledTime: ${enabledTime}, " +
-                "name: ${name}, " +
-                "timestamp: ${timestamp}, " +
-                "enabled: ${enabled}, " +
-                "oldness: ${oldness}" +
+        "Instance{\n" +
+                "\tdisabledTime: ${disabledTime},\n" +
+                "\tenabledTime: ${enabledTime},\n" +
+                "\tname: ${name},\n" +
+                "\ttimestamp: ${timestamp},\n" +
+                "\tenabled: ${enabled},\n" +
+                "\toldness: ${oldness}\n" +
         "}"
     }
 

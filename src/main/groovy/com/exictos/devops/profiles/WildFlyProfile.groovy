@@ -7,6 +7,7 @@ import java.sql.Timestamp
 /**
  * This class represents a concrete WildFly profile, and implements methods to get information about the profile
  * and the applications installed
+ *
  */
 class WildFlyProfile extends Profile{
 
