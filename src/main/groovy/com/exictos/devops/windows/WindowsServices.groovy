@@ -9,6 +9,12 @@ import groovy.util.logging.Slf4j
 @Slf4j
 class WindowsServices {
 
+    NssmWrapper nssm
+
+    WindowsServices(){
+        nssm = new NssmWrapper()
+    }
+
     /**
      * Installs a windows service. If the service already exists, it will stop the service, uninstall it and reinstall
      * it with the new parameters.
@@ -21,7 +27,7 @@ class WindowsServices {
      */
     void installApp(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument = null)
     {
-        if(status(serviceName) != NssmWrapper.Status.SERVICE_NOT_FOUND.toString()){
+        if(status(serviceName) != NssmWrapper.Status.SERVICE_NOT_FOUND){
             stopApp(serviceName)
             uninstallApp(serviceName)
             install(pathToPackage, installDirectory, serviceName, binPath, argument)
@@ -41,7 +47,7 @@ class WindowsServices {
      * @param binPath
      * @param argument
      */
-    private static void install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
+    private void install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
     {
         log.info("Installing service ${serviceName}...")
         def timestamp = LiberoHelper.getCurrentTimestamp()
@@ -50,9 +56,8 @@ class WindowsServices {
         def folder = FileUtils.unzip(newFile)
         def newName = new File(folder).getName()
         newName = FileUtils.renameFile(folder,"${newName}___${timestamp}")
-        NssmWrapper nw = new NssmWrapper()
 
-        if(nw.run(NssmWrapper.Command.install, serviceName, binPath,["${newName}${File.separator}${argument}"]))
+        if(nssm.run(NssmWrapper.Command.install, serviceName, binPath,["${newName}${File.separator}${argument}"]))
             log.error("Failed to install ${serviceName}")
         log.info("Service ${serviceName} installed")
     }
@@ -105,11 +110,17 @@ class WindowsServices {
      * @return exit code from running the bash command
      */
     private int runAction(NssmWrapper.Command command, String serviceName, String parameter = null, List<String> arguments = Collections.emptyList()){
-        new NssmWrapper().run(command, serviceName,parameter,arguments)
+        nssm.run(command, serviceName,parameter,arguments)
     }
 
-    private String status(String serviceName){
-        new NssmWrapper().status(serviceName)
+    /**
+     * Gets the status of Windows service
+     *
+     * @param serviceName
+     * @return Status of a windows service
+     */
+    private NssmWrapper.Status status(String serviceName){
+        nssm.status(serviceName)
     }
 
 }
