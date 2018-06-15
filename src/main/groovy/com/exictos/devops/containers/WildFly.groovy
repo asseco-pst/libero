@@ -30,6 +30,7 @@ class WildFly extends Container{
      */
     void connect()
     {
+        log.info("Connecting ${profile.username}@${profile.host}:${profile.port}")
         cli.connect(profile.host, profile.port, profile.username, profile.password)
         takeSnapshot()
     }
@@ -39,6 +40,7 @@ class WildFly extends Container{
      */
     void disconnect()
     {
+        log.info("Disconnecting CLI")
         cli.disconnect()
     }
 
@@ -93,6 +95,7 @@ class WildFly extends Container{
      */
     @Override
     void startMostRecentInstance(String applicationName) {
+        log.info("Starting most recent instances of ${applicationName}...")
         profile.listInstances(applicationName).each {instance ->
             if(instance.getOldness() == 0)
                 startApp(instance.getName())
@@ -140,6 +143,7 @@ class WildFly extends Container{
     @Override
     void stopOldInstances() {
 
+        log.info("Stopping all old instances...")
         List<String> applications = profile.listInstalledApplications()
         applications.each {app ->
             List<Instance> instances = profile.listInstances(app)
@@ -156,13 +160,12 @@ class WildFly extends Container{
      *
      * @return path to the snapshot file
      */
-    String takeSnapshot()
+    void takeSnapshot()
     {
         log.info("Taking current WildFly configuration snapshot...")
-        String path = null
         try{
             def result = cli.cmd(":take-snapshot")
-            path = result.getResponse().get("result").asString()
+            String path = result.getResponse().get("result").asString()
             log.info("Snapshot saved at ${path}")
         }catch(Exception e){
             log.error("Could not take snapshot. Cause ${e.getCause()}")

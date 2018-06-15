@@ -71,6 +71,11 @@ class WebSphere extends Container{
     }
 
     @Override
+    void startMostRecentInstance(String applicationName) {
+
+    }
+
+    @Override
     void stopApp(String deploymentName)
     {}
 
@@ -109,6 +114,11 @@ class WebSphere extends Container{
                 .build()
 
         CmdRunner.run(command)
+    }
+
+    @Override
+    void stopOldInstances() {
+
     }
 
     @Override

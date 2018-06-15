@@ -3,6 +3,7 @@
 .classpath
 bin/*
 Main.groovy
+out/
 /bin/
 /build/
 #Avoid ignoring Gradle Wrapper .jar

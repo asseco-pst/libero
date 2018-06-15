@@ -20,4 +20,5 @@ dependencies {
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
     testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
+    compile group: 'com.bloidonia', name: 'groovy-common-extensions', version:'0.7.0'
 }
