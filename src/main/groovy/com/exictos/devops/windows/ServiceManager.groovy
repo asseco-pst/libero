@@ -7,11 +7,11 @@ import com.exictos.devops.profiles.Instance
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class WindowsServices {
+class ServiceManager {
 
     NssmWrapper nssm
 
-    WindowsServices(){
+    ServiceManager(){
         nssm = new NssmWrapper()
     }
 
