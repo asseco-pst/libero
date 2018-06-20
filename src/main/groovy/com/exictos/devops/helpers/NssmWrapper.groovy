@@ -18,7 +18,7 @@ class NssmWrapper {
      *
      * The structure of an NSSM command is as follows:
      *
-     * nssm.exe <command> [<serviceName>] <parameter> [<argument>]
+     * nssm.exe <command> [<name>] <parameter> [<argument>]
      *
      * Check NSSM documentation for more info
      *

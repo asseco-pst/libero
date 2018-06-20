@@ -112,7 +112,10 @@ class LiberoHelper {
         }
 
         return instances
-
     }
 
+    static String extractFolderNameFromPackageFile(File _package)
+    {
+        _package.getName().replace(".zip","")
+    }
 }
