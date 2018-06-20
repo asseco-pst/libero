@@ -48,8 +48,7 @@ class WildFlyProfile extends Profile{
                 instance.setTimestamp(timestamp)
                 instances.add(instance)
             }catch(Exception e) {
-                log.error("Instance [${instance.getName()}] does not follow naming convention: appName___yyyyMMdd_HHmmss" +
-                        ". Cause: ${e.getCause()}")
+                log.error("Could not get list of all deployments. Cause: ${e.getCause()}")
             }
         }
 
@@ -65,18 +64,19 @@ class WildFlyProfile extends Profile{
     @Override
     List<Instance> listInstances(String applicationName){
         log.info("Getting instances of ${applicationName}...")
-
         List<Instance> instances = new ArrayList<Instance>()
-        List<Instance> deployments = listAllInstances()
-
-        deployments.each {instance ->
-            if(LiberoHelper.extractName(instance.getName()) == applicationName) {
-                log.debug("\t${instance.getName()}")
-                instances.add(instance)
+        try {
+            List<Instance> deployments = listAllInstances()
+            deployments.each { instance ->
+                if (LiberoHelper.extractName(instance.getName()) == applicationName) {
+                    log.debug("\t${instance.getName()}")
+                    instances.add(instance)
+                }
             }
+            instances = LiberoHelper.oldnessLevel(instances)
+        }catch(Exception e){
+            log.error("Could not get list of instances of ${applicationName}. Cause: ${e.getCause()}")
         }
-
-        instances = LiberoHelper.oldnessLevel(instances)
 
         return instances
     }
@@ -89,16 +89,18 @@ class WildFlyProfile extends Profile{
     @Override
     List<String> listInstalledApplications() {
         log.info("Getting all installed applications...")
-
         List<String> applications = new ArrayList<String>()
-        List<Instance> deployments = listAllInstances()
-
-        deployments.each {deployment ->
-            String name = LiberoHelper.extractName(deployment.getName())
-            if(!applications.contains(name)){
-                log.debug("\t${name}")
-                applications.add(name)
+        try {
+            List<Instance> deployments = listAllInstances()
+            deployments.each { deployment ->
+                String name = LiberoHelper.extractName(deployment.getName())
+                if (!applications.contains(name)) {
+                    log.debug("\t${name}")
+                    applications.add(name)
+                }
             }
+        }catch(Exception e){
+            log.error("Could not get list of installed applications. Cause: ${e.getCause()}")
         }
 
         return applications

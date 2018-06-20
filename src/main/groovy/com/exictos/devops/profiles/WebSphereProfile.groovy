@@ -3,12 +3,14 @@ package com.exictos.devops.profiles
 import com.exictos.devops.helpers.CmdRunner
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.WSAdminWrapper
+import groovy.util.logging.Slf4j
 
 /**
  * This class represents a concrete WebSphere profile, and implements methods to get information about the profile
  * and the applications installed
  *
  */
+@Slf4j
 class WebSphereProfile extends Profile{
 
     WSAdminWrapper wsadmin
@@ -25,15 +27,19 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<Instance> listAllInstances() {
-        List<String> deployments = wsadmin.list()
-
+        log.info("Getting all deployments in profile...")
         List<Instance> instances = new ArrayList<Instance>()
 
-        deployments.each {deployment ->
-            Instance instance = new Instance()
-            instance.setName(deployment)
-            instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
-            instances.add(instance)
+        try{
+            List<String> deployments = wsadmin.list()
+            deployments.each {deployment ->
+                Instance instance = new Instance()
+                instance.setName(deployment)
+                instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
+                instances.add(instance)
+            }
+        }catch(Exception e){
+            log.error("Could not get list of all deployments. Cause: ${e.getCause()}")
         }
 
         return instances
@@ -47,20 +53,21 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<Instance> listInstances(String applicationName) {
-
+        log.info("Getting instances of ${applicationName}...")
         List<Instance> instances = new ArrayList<Instance>()
-        List<Instance> deployments = listAllInstances()
-
-        deployments.each {instance ->
-            if(LiberoHelper.extractName(instance.getName()) == applicationName) {
-                instances.add(instance)
+        try{
+            List<Instance> deployments = listAllInstances()
+            deployments.each {instance ->
+                if(LiberoHelper.extractName(instance.getName()) == applicationName) {
+                    instances.add(instance)
+                }
             }
+            instances = LiberoHelper.oldnessLevel(instances)
+        }catch(Exception e){
+            log.error("Could not get list of instances of ${applicationName}. Cause: ${e.getCause()}")
         }
 
-        instances = LiberoHelper.oldnessLevel(instances)
-
         return instances
-
     }
 
     /**
@@ -70,20 +77,21 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<String> listInstalledApplications() {
-
+        log.info("Getting all installed applications...")
         List<String> applications = new ArrayList<String>()
-        List<Instance> deployments = listAllInstances()
-
-        deployments.each{deployment ->
-            String name = LiberoHelper.extractName(deployment.getName())
-            if(!applications.contains(name) && name != null){
-                applications.add(name)
+        try {
+            List<Instance> deployments = listAllInstances()
+            deployments.each { deployment ->
+                String name = LiberoHelper.extractName(deployment.getName())
+                if (!applications.contains(name) && name != null) {
+                    applications.add(name)
+                }
             }
+        }catch(Exception e){
+            log.error("Could not get list of installed applications. Cause: ${e.getCause()}")
         }
 
-
         return applications
-
     }
 
 }

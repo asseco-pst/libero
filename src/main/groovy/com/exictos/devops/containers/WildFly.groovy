@@ -95,7 +95,7 @@ class WildFly extends Container{
             cli.cmd("deploy --name=${deploymentName}")
             log.info("Deployment ${deploymentName} started.")
         }catch(Exception e){
-            log.error "Unable to start deployment ${deploymentName}. Cause: ${e.getCause()}"
+            log.error("Could not start application ${deploymentName}. Cause: ${e.getCause()}")
         }
     }
 

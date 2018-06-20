@@ -68,9 +68,11 @@ class WebSphere extends Container{
     @Override
     void startApp(String deploymentName)
     {
+        log.info("Starting application: ${deploymentName}...")
         try{
             if(wsadmin.isAppReady(deploymentName))
                 wsadmin.startApplication(deploymentName)
+            log.info("Deployment ${deploymentName} started.")
         }catch(Exception e){
             log.error("Could not start application ${deploymentName}. Cause: ${e.getCause()}")
         }
@@ -85,10 +87,12 @@ class WebSphere extends Container{
     @Override
     void stopApp(String deploymentName)
     {
+        log.info("Stopping deployment ${deploymentName}...")
         try{
             wsadmin.stopApplication(deploymentName)
+            log.info("Deployment ${deploymentName} stopped")
         }catch(Exception e){
-            log.error("Could not stop application ${deploymentName}. Cause: ${e.getCause()}")
+            log.error("Could not stop deployment: ${deploymentName}. Cause: ${e.getCause()}")
         }
     }
 
@@ -100,10 +104,12 @@ class WebSphere extends Container{
     @Override
     void uninstallApp(String deploymentName)
     {
+        log.info("Uninstalling deployment ${deploymentName}...")
         try{
             wsadmin.uninstallApp(deploymentName)
+            log.info("Deployment ${deploymentName} uninstalled.")
         }catch(Exception e){
-            log.error("Could not uninstall application ${deploymentName}. Cause: ${e.getCause()}")
+            log.error "Could not uninstall ${deploymentName}. Cause: ${e.getCause()}"
         }
     }
 
