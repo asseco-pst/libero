@@ -2,11 +2,13 @@ package com.exictos.devops.containers
 
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.Profile
+import groovy.util.logging.Slf4j
 
 /**
  * Container abstract class
  * Should be extended by WildFly, WebSphere and other concrete containers
  */
+@Slf4j
 abstract class Container {
 
     Profile profile
@@ -15,7 +17,7 @@ abstract class Container {
      * Connects to the container's profile specified by host:port
      *
      */
-    abstract void connect()
+    abstract boolean connect()
 
     /**
      * Disconnects from the container's profile specified by host:port
@@ -42,6 +44,9 @@ abstract class Container {
      */
     String installAppWithRollBack(String pathToPackage, String applicationName)
     {
+        log.info("--------------------------------------------------------")
+        log.info("           INSTALL APPLICATION WITH ROLLBACK            ")
+        log.info("--------------------------------------------------------")
         String oldest = uninstallAppOldInstances(applicationName)
         String newest = installApp(pathToPackage, applicationName)
 
@@ -61,7 +66,13 @@ abstract class Container {
      *
      * @param applicationName
      */
-    abstract void startMostRecentInstance(String applicationName)
+    void startMostRecentInstance(String applicationName){
+        log.info("Starting most recent instances of ${applicationName}...")
+        profile.listInstances(applicationName).each {instance ->
+            if(instance.getOldness() == 0)
+                startApp(instance.getName())
+        }
+    }
 
     /**
      * Stops deploymentName deployed in this profile
@@ -85,6 +96,9 @@ abstract class Container {
      */
     void startMostRecentApps()
     {
+        log.info("--------------------------------------------------------")
+        log.info("               STARTING MOST RECENT APPS                ")
+        log.info("--------------------------------------------------------")
         stopOldInstances()
         profile.listInstalledApplications().each {app ->
             startMostRecentInstance(app)
@@ -95,7 +109,17 @@ abstract class Container {
      *  Stops all old instances of all applications installed in the profile
      *
      */
-    abstract void stopOldInstances()
+    void stopOldInstances(){
+        log.info("Stopping all old instances...")
+        List<String> applications = profile.listInstalledApplications()
+        applications.each {app ->
+            List<Instance> instances = profile.listInstances(app)
+            instances.each {instance ->
+                if(instance.getOldness() > 0 && instance.isEnabled())
+                    stopApp(instance.getName())
+            }
+        }
+    }
 
     /**
      *  Stops all instances installed in this profile
@@ -103,6 +127,9 @@ abstract class Container {
      */
     void stopAllApps()
     {
+        log.info("--------------------------------------------------------")
+        log.info("                     STOP ALL APPS                      ")
+        log.info("--------------------------------------------------------")
         profile.listAllInstances().each {instance ->
             if(instance.isEnabled())
                 stopApp(instance.getName())
@@ -118,8 +145,11 @@ abstract class Container {
      */
     String uninstallAppOldInstances(String applicationName, int oldnessThreshold = 0)
     {
-        String newest = null
+        log.info("--------------------------------------------------------")
+        log.info("       UNINSTALL ${applicationName} OLD INSTANCES       ")
+        log.info("--------------------------------------------------------")
 
+        String newest = null
         profile.listInstances(applicationName).each {instance ->
             if(instance.getOldness() > oldnessThreshold)
                 uninstallApp(instance.getName())
@@ -136,6 +166,9 @@ abstract class Container {
      */
     void uninstallOldInstances()
     {
+        log.info("--------------------------------------------------------")
+        log.info("                UNINSTALL OLD INSTANCES                 ")
+        log.info("--------------------------------------------------------")
 
         List<String> applications = profile.listInstalledApplications()
 

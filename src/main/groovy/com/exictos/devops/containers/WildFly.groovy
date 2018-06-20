@@ -3,13 +3,14 @@ package com.exictos.devops.containers
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.WildFlyProfile
+import groovy.util.logging.Slf4j
 import org.jboss.as.cli.scriptsupport.CLI
 
 /**
  * WildFly container concrete class. Implements all the necessary methods to manage and deploy applications
  *
  */
-@groovy.util.logging.Slf4j
+@Slf4j
 class WildFly extends Container{
 
     CLI cli
@@ -28,20 +29,29 @@ class WildFly extends Container{
     /**
      * Connects the CLI to the provided WildFly server instance
      */
-    void connect()
+    @Override
+    boolean connect()
     {
         log.info("Connecting ${profile.username}@${profile.host}:${profile.port}")
-        cli.connect(profile.host, profile.port, profile.username, profile.password)
-        takeSnapshot()
+        try{
+            cli.connect(profile.host, profile.port, profile.username, profile.password)
+            takeSnapshot()
+            return true
+        }catch(Exception e){
+            log.error("Unable to connect to controller ${profile.host}:${profile.port}. Cause: ${e.getCause()}")
+        }
+        return false
     }
 
     /**
      * Disconnects the CLI from the provided WildFly server instance
      */
+    @Override
     void disconnect()
     {
         log.info("Disconnecting CLI")
         cli.disconnect()
+        profile.connected = false
     }
 
     /**
@@ -90,19 +100,6 @@ class WildFly extends Container{
     }
 
     /**
-     * Starts the most recent instance of applicationName
-     * @param applicationName
-     */
-    @Override
-    void startMostRecentInstance(String applicationName) {
-        log.info("Starting most recent instances of ${applicationName}...")
-        profile.listInstances(applicationName).each {instance ->
-            if(instance.getOldness() == 0)
-                startApp(instance.getName())
-        }
-    }
-
-    /**
      * Stops deploymentName deployed in this profile
      * If the deployment is already stopped, nothing happens
      *
@@ -135,24 +132,6 @@ class WildFly extends Container{
         }catch(Exception e){
             log.error "Could not uninstall ${deploymentName}. Cause: ${e.getCause()}"
         }
-    }
-
-    /**
-     * Stops all old instances of all applications installed in the profile
-     */
-    @Override
-    void stopOldInstances() {
-
-        log.info("Stopping all old instances...")
-        List<String> applications = profile.listInstalledApplications()
-        applications.each {app ->
-            List<Instance> instances = profile.listInstances(app)
-            instances.each {instance ->
-                if(instance.getOldness() > 0 && instance.isEnabled())
-                    stopApp(instance.getName())
-            }
-        }
-
     }
 
     /**

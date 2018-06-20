@@ -1,5 +1,8 @@
 package com.exictos.devops.helpers
 
+import com.exictos.devops.profiles.Instance
+import groovy.util.logging.Slf4j
+
 import java.nio.file.Files
 import java.nio.file.Path
 import java.sql.Timestamp
@@ -9,6 +12,7 @@ import java.text.SimpleDateFormat
  * Utils class containing several different helpers methods
  * Should be refactored into different classes if it gets too big
  */
+@Slf4j
 class LiberoHelper {
 
     private static String DATE_FORMAT = "yyyyMMdd_HHmmss"
@@ -36,7 +40,13 @@ class LiberoHelper {
      */
     static String extractName(String standardizedName)
     {
-        standardizedName.substring(0, standardizedName.indexOf("___"))
+        String name = null
+        try{
+            name = standardizedName.substring(0, standardizedName.indexOf("___"))
+        }catch(Exception e){
+            log.error("Could not parse name ${standardizedName}. Cause: ${e.getCause()}")
+        }
+        return name
     }
 
     /**
@@ -49,7 +59,7 @@ class LiberoHelper {
     {
 
         String timestamp = applicationStandardizedName.split("___")[1]
-        timestamp = timestamp.substring(0, timestamp.lastIndexOf("."))
+        timestamp = timestamp.substring(0, 15)
         toTimestamp(timestamp)
 
     }
@@ -85,4 +95,24 @@ class LiberoHelper {
     static String getCurrentTimestamp(){
         new Date().format(DATE_FORMAT).toString()
     }
+
+    /**
+     * Loops through instances and sets the oldness level for each instance according to its timestamp
+     *
+     * @param instances
+     * @return list of instances
+     */
+    static List<Instance> oldnessLevel(List<Instance> instances){
+
+        instances.sort{it.timestamp}
+        instances.reverse(true)
+
+        instances.eachWithIndex { Instance entry, int i ->
+            entry.setOldness(i)
+        }
+
+        return instances
+
+    }
+
 }

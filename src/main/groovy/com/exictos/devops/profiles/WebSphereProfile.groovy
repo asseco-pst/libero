@@ -1,11 +1,22 @@
 package com.exictos.devops.profiles
 
+import com.exictos.devops.helpers.CmdRunner
+import com.exictos.devops.helpers.LiberoHelper
+import com.exictos.devops.helpers.WSAdminWrapper
+
 /**
  * This class represents a concrete WebSphere profile, and implements methods to get information about the profile
  * and the applications installed
  *
  */
 class WebSphereProfile extends Profile{
+
+    WSAdminWrapper wsadmin
+
+    WebSphereProfile(WSAdminWrapper aWsadmin)
+    {
+        wsadmin = aWsadmin
+    }
 
     /**
      * Lists all instances of all applications installed in this profile
@@ -14,7 +25,18 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<Instance> listAllInstances() {
-        return null
+        List<String> deployments = wsadmin.list()
+
+        List<Instance> instances = new ArrayList<Instance>()
+
+        deployments.each {deployment ->
+            Instance instance = new Instance()
+            instance.setName(deployment)
+            instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
+            instances.add(instance)
+        }
+
+        return instances
     }
 
     /**
@@ -25,7 +47,20 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<Instance> listInstances(String applicationName) {
-        return null
+
+        List<Instance> instances = new ArrayList<Instance>()
+        List<Instance> deployments = listAllInstances()
+
+        deployments.each {instance ->
+            if(LiberoHelper.extractName(instance.getName()) == applicationName) {
+                instances.add(instance)
+            }
+        }
+
+        instances = LiberoHelper.oldnessLevel(instances)
+
+        return instances
+
     }
 
     /**
@@ -35,7 +70,20 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<String> listInstalledApplications() {
-        return null
+
+        List<String> applications = new ArrayList<String>()
+        List<Instance> deployments = listAllInstances()
+
+        deployments.each{deployment ->
+            String name = LiberoHelper.extractName(deployment.getName())
+            if(!applications.contains(name) && name != null){
+                applications.add(name)
+            }
+        }
+
+
+        return applications
+
     }
 
 }

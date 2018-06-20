@@ -24,7 +24,7 @@ class CmdRunner {
         def line
 
         while((line = reader.readLine()) != null){
-            log.info((String)line)
+            println line
         }
 
         process.exitValue()
@@ -51,6 +51,7 @@ class CmdRunner {
         StringBuilder sb = new StringBuilder()
         while((line = reader.readLine()) != null){
             sb.append(line)
+            sb.append("\n")
         }
 
         return sb.toString()

@@ -44,4 +44,10 @@ class FileUtils {
         file.getAbsolutePath().replace(".zip", "")
     }
 
+    static boolean removeFolder(String folder)
+    {
+        def file = new File(folder)
+        file.deleteDir()
+    }
+
 }

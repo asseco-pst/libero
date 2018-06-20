@@ -1,6 +1,7 @@
 package com.exictos.devops.profiles
 
 import com.exictos.devops.helpers.LiberoHelper
+import groovy.util.logging.Slf4j
 import org.jboss.as.cli.scriptsupport.CLI
 import java.sql.Timestamp
 
@@ -9,6 +10,7 @@ import java.sql.Timestamp
  * and the applications installed
  *
  */
+@Slf4j
 class WildFlyProfile extends Profile{
 
     CLI cli
@@ -24,7 +26,7 @@ class WildFlyProfile extends Profile{
      */
     @Override
     List<Instance> listAllInstances(){
-
+        log.info("Getting all deployments in profile...")
         List<Instance> instances = new ArrayList<Instance>()
         def result  = cli.cmd("/deployment=*:read-resource()")
         def response = result.getResponse()
@@ -32,9 +34,9 @@ class WildFlyProfile extends Profile{
 
         nodes.asList().each { it ->
 
+            Instance instance = new Instance()
             try {
 
-                Instance instance = new Instance()
                 instance.setName(it.get("result").get("name").asString())
                 instance.setEnabled(it.get("result").get("enabled").asBoolean())
 
@@ -46,14 +48,12 @@ class WildFlyProfile extends Profile{
                 instance.setTimestamp(timestamp)
                 instances.add(instance)
             }catch(Exception e) {
-                //TODO: log.warning("Instance [${instance.getName()}] does not follow naming convention: appName___yyyyMMdd_HHmmss")
+                log.error("Instance [${instance.getName()}] does not follow naming convention: appName___yyyyMMdd_HHmmss" +
+                        ". Cause: ${e.getCause()}")
             }
         }
 
-
-
         return instances
-
     }
 
     /**
@@ -64,16 +64,19 @@ class WildFlyProfile extends Profile{
      */
     @Override
     List<Instance> listInstances(String applicationName){
+        log.info("Getting instances of ${applicationName}...")
 
         List<Instance> instances = new ArrayList<Instance>()
         List<Instance> deployments = listAllInstances()
 
         deployments.each {instance ->
-            if(LiberoHelper.extractName(instance.getName()) == applicationName)
+            if(LiberoHelper.extractName(instance.getName()) == applicationName) {
+                log.debug("\t${instance.getName()}")
                 instances.add(instance)
+            }
         }
 
-        instances = oldnessLevel(instances)
+        instances = LiberoHelper.oldnessLevel(instances)
 
         return instances
     }
@@ -81,38 +84,24 @@ class WildFlyProfile extends Profile{
     /**
      * Lists all installed applications in this profile
      *
-     * @return List of application names
+     * @return list of application names
      */
     @Override
     List<String> listInstalledApplications() {
+        log.info("Getting all installed applications...")
 
         List<String> applications = new ArrayList<String>()
         List<Instance> deployments = listAllInstances()
 
         deployments.each {deployment ->
             String name = LiberoHelper.extractName(deployment.getName())
-            if(!applications.contains(name))
+            if(!applications.contains(name)){
+                log.debug("\t${name}")
                 applications.add(name)
+            }
         }
 
         return applications
     }
 
-    /**
-     * Loops through instances and sets the oldness level for each instance according to its timestamp
-     *
-     * @param instances
-     * @return list of instances
-     */
-    private List<Instance> oldnessLevel(List<Instance> instances){
-
-        instances.sort{it.timestamp}
-        instances.reverse(true)
-
-        instances.eachWithIndex { Instance entry, int i ->
-            entry.setOldness(i)
-        }
-
-        return instances
-    }
 }

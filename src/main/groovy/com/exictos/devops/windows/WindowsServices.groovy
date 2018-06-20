@@ -4,6 +4,7 @@ import com.exictos.devops.helpers.CmdRunner
 import com.exictos.devops.helpers.FileUtils
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.NssmWrapper
+import com.exictos.devops.profiles.Instance
 import groovy.util.logging.Slf4j
 
 @Slf4j
@@ -96,6 +97,7 @@ class WindowsServices {
     void uninstallApp(String serviceName)
     {
         log.info("Removing service ${serviceName}...")
+        stopApp(serviceName)
         if(runAction(NssmWrapper.Command.remove, serviceName, "confirm"))
             log.error("Failed to remove service")
         else
@@ -121,6 +123,25 @@ class WindowsServices {
      */
     private NssmWrapper.Status status(String serviceName){
         nssm.status(serviceName)
+    }
+
+    static List<Instance> listInstances(String packageName, String installDirectory){
+
+        List<Instance> instances = new ArrayList<Instance>()
+
+        def folder = new File(installDirectory)
+        folder.eachDir {directory ->
+            if(directory.getName().startsWith(packageName)){
+                Instance inst = new Instance()
+                inst.setTimestamp(LiberoHelper.extractTimestamp(directory.getName()))
+                inst.setName(directory.getName())
+                instances.add(inst)
+            }
+        }
+
+        instances = LiberoHelper.oldnessLevel(instances)
+
+        return instances
     }
 
 }
