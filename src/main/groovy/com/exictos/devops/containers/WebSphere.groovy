@@ -10,6 +10,7 @@ class WebSphere extends Container{
 
     WSAdminWrapper wsadmin
 
+    @SuppressWarnings("SpellCheckingInspection")
     WebSphere(String host, int port, String username, char[] password, String aWsadmin)
     {
         wsadmin = new WSAdminWrapper(aWsadmin,host,port,username,password)
@@ -20,23 +21,23 @@ class WebSphere extends Container{
         profile.password = password
     }
 
-    void test(){
-        log.info("Starting test....")
-        log.error("Test failed")
-        log.warn("WARNING")
+    /**
+     * Connects the CLI to the provided WebSphere server instance
+     *
+     */
+    @Override
+    boolean connect() {
+        false
     }
 
     /**
-     * Connects the CLI to the provided WebSphere server instance
-     */
-    @Override
-    boolean connect() {}
-
-    /**
      * Disconnects the CLI from the provided WebSphere server instance
+     *
      */
     @Override
-    void disconnect() {}
+    void disconnect() {
+        false
+    }
 
     /**
      * Installs application with the package provided at pathToPackage and with the name applicationName standardized

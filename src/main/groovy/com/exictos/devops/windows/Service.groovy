@@ -61,6 +61,7 @@ class Service {
      *
      * @return this service status (Check NssmWrapper.Status enum)
      */
+    @SuppressWarnings("SpellCheckingInspection")
     NssmWrapper.Status status(){
         nssm.status(name)
     }

@@ -27,6 +27,7 @@ class WSAdminWrapper {
         String output = run("\$AdminApp list")
         List<String> lines = new ArrayList<String>()
         output.split("\n").each {line ->
+            //noinspection SpellCheckingInspection
             if(!line.startsWith("WASX7209I"))
                 lines.add(line)
         }

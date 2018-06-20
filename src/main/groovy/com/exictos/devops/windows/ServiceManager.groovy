@@ -6,6 +6,7 @@ import com.exictos.devops.helpers.NssmWrapper
 import com.exictos.devops.profiles.Instance
 import groovy.util.logging.Slf4j
 
+@SuppressWarnings("SpellCheckingInspection")
 @Slf4j
 class ServiceManager {
 

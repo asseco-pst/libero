@@ -42,7 +42,7 @@ abstract class Container {
      * @param applicationName
      * @return the deployment name in the standard form
      */
-    String installAppWithRollBack(String pathToPackage, String applicationName)
+    void installAppWithRollBack(String pathToPackage, String applicationName)
     {
         log.info("--------------------------------------------------------")
         log.info("           INSTALL APPLICATION WITH ROLLBACK            ")
