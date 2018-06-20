@@ -20,6 +20,12 @@ class WebSphere extends Container{
         profile.password = password
     }
 
+    void test(){
+        log.info("Starting test....")
+        log.error("Test failed")
+        log.warn("WARNING")
+    }
+
     /**
      * Connects the CLI to the provided WebSphere server instance
      */
@@ -40,7 +46,7 @@ class WebSphere extends Container{
      * @return
      */
     @Override
-    String installApp(String pathToPackage, String applicationName)
+    protected String installApp(String pathToPackage, String applicationName)
     {
         log.info("Installing application ${applicationName} from package at ${pathToPackage}...")
         String name = null

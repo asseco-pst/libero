@@ -12,7 +12,7 @@ class Instance implements Serializable{
     String name
     Timestamp timestamp
     boolean enabled
-    int oldness
+    int oldness = -1
 
     String toString()
     {

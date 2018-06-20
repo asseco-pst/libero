@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>
-                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{0} - %msg%n
-            </Pattern>
-        </layout>
+        <encoder>
+            <pattern>%highlight(%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger - %msg%n)</pattern>
+        </encoder>
     </appender>
-    <logger name="com.exictos.devops" level="debug"
-            additivity="false">
-        <appender-ref ref="STDOUT" />
-    </logger>
-    <root level="error">
+    <root level="debug">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
