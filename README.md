@@ -24,6 +24,16 @@ gradlew build
 ### Installing an application in a WildFly profile
 
 ```groovy
-Container wildfly = new WildFly("***REMOVED***","49990",***REMOVED***,***REMOVED***.toCharArray())
-wildfly.installWithRollback("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
+Container wildfly = new WildFly("***REMOVED***", 49990, ***REMOVED***, ***REMOVED***.toCharArray())
+
+wildfly.connect()
+wildfly.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
+```
+
+### Installing an application in a WAS profile
+
+```groovy
+Container was = new WebSphere("***REMOVED***", 8881, ***REMOVED***, ***REMOVED***.toCharArray(), "C:/IBM/WebSphere/AppServer/bin/wsadmin.bat")
+
+was.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
 ```
