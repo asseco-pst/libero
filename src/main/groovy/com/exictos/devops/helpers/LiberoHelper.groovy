@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat
 /**
  * Utils class containing several different helpers methods
  * Should be refactored into different classes if it gets too big
+ *
  */
 @Slf4j
 class LiberoHelper {
@@ -114,6 +115,12 @@ class LiberoHelper {
         return instances
     }
 
+    /**
+     *  Extracts the package name, given a file as input (removes extension .zip)
+     *
+     * @param _package file
+     * @return resulting folder name
+     */
     static String extractFolderNameFromPackageFile(File _package)
     {
         _package.getName().replace(".zip","")

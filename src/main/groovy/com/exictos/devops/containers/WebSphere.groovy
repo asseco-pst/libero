@@ -10,7 +10,6 @@ class WebSphere extends Container{
 
     WSAdminWrapper wsadmin
 
-    @SuppressWarnings("SpellCheckingInspection")
     WebSphere(String host, int port, String username, char[] password, String aWsadmin)
     {
         wsadmin = new WSAdminWrapper(aWsadmin,host,port,username,password)

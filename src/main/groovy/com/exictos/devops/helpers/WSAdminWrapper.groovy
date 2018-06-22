@@ -1,5 +1,8 @@
 package com.exictos.devops.helpers
 
+/**
+ * This is a wrapper for WebSphere wsadmin script. It encapsulates the basic logic of calling wsadmin.
+ */
 class WSAdminWrapper {
 
     String home

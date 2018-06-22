@@ -10,7 +10,6 @@ import groovy.util.logging.Slf4j
  * and the applications installed
  *
  */
-@SuppressWarnings("SpellCheckingInspection")
 @Slf4j
 class WebSphereProfile extends Profile{
 
