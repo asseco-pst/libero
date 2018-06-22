@@ -64,3 +64,22 @@ appserver.profile.listInstalledApplications().each{ instance ->
 }
 
 ```
+The output would be something like:
+```console
+Installed applications: 
+    - IRC_WS_BB
+    - Server
+    - ReportingServices
+```
+
+### Starting most recent applications in a profile
+
+```groovy
+Container appserver = new WildFly/WebSphere(...)
+
+// Explicitly connect if deploying to WildFly
+appserver.connect()
+
+appserver.startMostRecentApps()
+
+```
