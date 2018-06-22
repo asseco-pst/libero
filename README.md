@@ -37,3 +37,30 @@ Container was = new WebSphere("***REMOVED***", 8881, ***REMOVED***, ***REMOVED**
 
 was.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
 ```
+
+### Starting an application in a WildFly/WebSphere profile
+
+```groovy
+Container appserver = new WildFly/WebSphere(...)
+
+// Explicitly connect if deploying to WildFly
+appserver.connect()
+
+String deployment = appserver.profile.listInstances("IRC_WS_BB").first().getName()
+
+appserver.startApp(deployment)
+```
+
+### Listing all installed applications in a profile
+
+```groovy
+Container appserver = new WildFly/WebSphere(...)
+
+appserver.connect()
+
+println "Installed applications: "
+appserver.profile.listInstalledApplications().each{ instance ->
+    println "\t - instance"
+}
+
+```
