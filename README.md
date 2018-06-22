@@ -83,3 +83,18 @@ appserver.connect()
 appserver.startMostRecentApps()
 
 ```
+
+### Installing a Windows service
+
+```groovy
+ServiceManager ws = new ServiceManager()
+
+Service service = new Service()
+    service.set_package(new File("C:\\package\\pfs_hardware.zip"))
+    service.setBin(new File("C:\\Users\\jcoelho\\AppData\\Roaming\\nvm\\v6.11.2\\node.exe"))
+    service.setInstallDirectory(new File("C:\\NodeJS"))
+    service.setName("Exictos - PFS Hardware")
+    service.setArguments(["main.js"])
+
+ws.installServiceWithRollback(service)
+```
