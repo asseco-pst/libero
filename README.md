@@ -18,3 +18,12 @@ git clone git@gitlab.dcs.exictos.com:devops/libero.git
 ```sh
 gradlew build
 ```
+
+## Usage
+
+### Installing an application in a WildFly profile
+
+```groovy
+Container wildfly = new WildFly("***REMOVED***","49990",***REMOVED***,***REMOVED***.toCharArray())
+wildfly.installWithRollback("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
+```
