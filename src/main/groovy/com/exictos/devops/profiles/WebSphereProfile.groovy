@@ -36,6 +36,7 @@ class WebSphereProfile extends Profile{
                 Instance instance = new Instance()
                 instance.setName(deployment)
                 instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
+                instance.setEnabled(wsadmin.isApplicationRunning(deployment))
                 instances.add(instance)
             }
         }catch(Exception e){

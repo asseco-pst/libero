@@ -31,14 +31,9 @@ class WSAdminWrapper {
     List<String> list()
     {
         String output = run("\$AdminApp list")
-        List<String> lines = new ArrayList<String>()
-        output.split("\n").each {line ->
-            //noinspection SpellCheckingInspection
-            if(!line.startsWith("WASX7209I"))
-                lines.add(line)
-        }
-        lines
+        toLines(output)
     }
+
 
     void installApplication(String pathToPackage, String applicationName)
     {
@@ -62,6 +57,14 @@ class WSAdminWrapper {
         saveConfig()
     }
 
+    boolean isApplicationRunning(String deploymentName)
+    {
+        String output = run("\$AdminControl completeObjectName type=Application,name=${deploymentName},*")
+        if(toLines(output).isEmpty())
+            return false
+        return true
+    }
+
     void saveConfig()
     {
         run("\$AdminConfig save")
@@ -73,6 +76,16 @@ class WSAdminWrapper {
         String output = CmdRunner.runOutput(cmd)
         log.info(output.trim())
         return output
+    }
+
+    private static List<String> toLines(String output){
+        List<String> lines = new ArrayList<String>()
+        output.split("\n").each {line ->
+            //noinspection SpellCheckingInspection
+            if(!line.startsWith("WASX7209I"))
+                lines.add(line)
+        }
+        lines
     }
 
 }
