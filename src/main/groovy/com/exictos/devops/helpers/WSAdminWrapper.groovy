@@ -1,8 +1,11 @@
 package com.exictos.devops.helpers
 
+import groovy.util.logging.Slf4j
+
 /**
  * This is a wrapper for WebSphere wsadmin script. It encapsulates the basic logic of calling wsadmin.
  */
+@Slf4j
 class WSAdminWrapper {
 
     String home
@@ -67,7 +70,9 @@ class WSAdminWrapper {
     String run(String command){
         String cmd = "${home} -conntype SOAP -host ${host} -port ${port} -user ${username} -password ${password.toString()} " +
                 "-c \"${command}\""
-        CmdRunner.runOutput(cmd)
+        String output = CmdRunner.runOutput(cmd)
+        log.info(output.trim())
+        return output
     }
 
 }

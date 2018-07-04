@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat
 @Slf4j
 class LiberoHelper {
 
-    private static String DATE_FORMAT = "yyyyMMdd_HHmmss"
+    private static String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
 
     /**
      * Returns the application standard name for installation. In the format appName___20180611_172035.pkg
@@ -60,7 +60,7 @@ class LiberoHelper {
     {
 
         String timestamp = applicationStandardizedName.split("___")[1]
-        timestamp = timestamp.substring(0, 15)
+        timestamp = timestamp.substring(0, DATE_FORMAT.length())
         toTimestamp(timestamp)
 
     }

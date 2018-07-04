@@ -47,12 +47,9 @@ abstract class Container {
         log.info("--------------------------------------------------------")
         log.info("           INSTALL APPLICATION WITH ROLLBACK            ")
         log.info("--------------------------------------------------------")
-        String oldest = uninstallAppOldInstances(applicationName)
-        String newest = installApp(pathToPackage, applicationName)
+        uninstallAppOldInstances(applicationName)
 
-        stopApp(oldest)
-        startApp(newest)
-        newest
+        installApp(pathToPackage, applicationName)
     }
 
     /**
