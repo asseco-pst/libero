@@ -2,6 +2,10 @@ package com.exictos.devops.windows
 
 import com.exictos.devops.helpers.NssmWrapper
 
+/**
+ * This class represents a system service. It is used by ServiceManager class to implement its methods
+ *
+ */
 class Service {
 
     NssmWrapper nssm

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.0-beta] - 2018-06-20
+
 ### Added
 	- Deployment manager support for WildFly
 	- Deployment manager support for Windows Services

@@ -1,5 +1,11 @@
 package com.exictos.devops.helpers
 
+import groovy.util.logging.Slf4j
+
+/**
+ * This is a wrapper for WebSphere wsadmin script. It encapsulates the basic logic of calling wsadmin.
+ */
+@Slf4j
 class WSAdminWrapper {
 
     String home
@@ -25,13 +31,9 @@ class WSAdminWrapper {
     List<String> list()
     {
         String output = run("\$AdminApp list")
-        List<String> lines = new ArrayList<String>()
-        output.split("\n").each {line ->
-            if(!line.startsWith("WASX7209I"))
-                lines.add(line)
-        }
-        lines
+        toLines(output)
     }
+
 
     void installApplication(String pathToPackage, String applicationName)
     {
@@ -55,6 +57,14 @@ class WSAdminWrapper {
         saveConfig()
     }
 
+    boolean isApplicationRunning(String deploymentName)
+    {
+        String output = run("\$AdminControl completeObjectName type=Application,name=${deploymentName},*")
+        if(toLines(output).isEmpty())
+            return false
+        return true
+    }
+
     void saveConfig()
     {
         run("\$AdminConfig save")
@@ -63,7 +73,19 @@ class WSAdminWrapper {
     String run(String command){
         String cmd = "${home} -conntype SOAP -host ${host} -port ${port} -user ${username} -password ${password.toString()} " +
                 "-c \"${command}\""
-        CmdRunner.runOutput(cmd)
+        String output = CmdRunner.runOutput(cmd)
+        log.info(output.trim())
+        return output
+    }
+
+    private static List<String> toLines(String output){
+        List<String> lines = new ArrayList<String>()
+        output.split("\n").each {line ->
+            //noinspection SpellCheckingInspection
+            if(!line.startsWith("WASX7209I"))
+                lines.add(line)
+        }
+        lines
     }
 
 }

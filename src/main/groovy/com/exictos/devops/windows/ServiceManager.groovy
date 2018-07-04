@@ -6,6 +6,10 @@ import com.exictos.devops.helpers.NssmWrapper
 import com.exictos.devops.profiles.Instance
 import groovy.util.logging.Slf4j
 
+/**
+ * This class manages system services. At the moment only supports Windows services using NSSM tool.
+ *
+ */
 @Slf4j
 class ServiceManager {
 
