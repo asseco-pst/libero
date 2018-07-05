@@ -101,15 +101,14 @@ ws.installServiceWithRollback(service)
 
 ## Uploading artifact to Nexus
 
-In order to upload the artifact to our internal Nexus repository:
-1. Set the following variables in the gradle.properties file:
+1. Make sure the project version specified in build.gradle is correct
+2. Set the following variables in the gradle.properties file:
 ```yaml
 nexusUrl=http://nexus.dcs.exictos.com
 nexusUsername=<ldap_username>
 nexusPassword=<ldap_password>
 ```
-
-2. Run the following command:
+3. Run the following command:
 ```sh
 gradlew upload
 ```
