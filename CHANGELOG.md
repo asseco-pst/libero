@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+	- Gradle task to upload archive to Nexus Repository
+
 ## [1.0.0-beta] - 2018-06-20
 
 ### Added
