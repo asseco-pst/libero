@@ -1,7 +1,6 @@
 package com.exictos.devops.containers
 
 import com.exictos.devops.helpers.LiberoHelper
-import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.WildFlyProfile
 import groovy.util.logging.Slf4j
 import org.jboss.as.cli.scriptsupport.CLI
