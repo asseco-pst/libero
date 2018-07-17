@@ -98,3 +98,19 @@ Service service = new Service()
 
 ws.installServiceWithRollback(service)
 ```
+
+## Uploading artifact to Nexus
+
+1. Make sure the project version specified in build.gradle is correct
+2. Set the following variables in the gradle.properties file:
+
+```properties
+nexusUrl=http://nexus.dcs.exictos.com
+nexusUsername=<ldap_username>
+nexusPassword=<ldap_password>
+```
+3. Run the following command:
+
+```sh
+gradlew upload
+```

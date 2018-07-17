@@ -6,26 +6,62 @@
  */
 
 apply plugin:'groovy'
+apply plugin:'maven'
+apply plugin:'idea'
 
 group 'com.exictos.devops'
-version '1.0.0-beta'
+version '1.0.0'
 
 repositories {
-    mavenCentral()
+    maven{
+        url "${nexusUrl}/repository/dcs-maven/"
+        credentials{
+            username = nexusUsername
+            password = nexusPassword
+        }
+    }
+}
+
+configurations {
+    // configuration that holds jars to include in the jar
+    extraLibs
 }
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.15'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     // https://mvnrepository.com/artifact/org.wildfly.core/wildfly-cli
-    compile group: 'org.wildfly.core', name: 'wildfly-cli', version: '4.0.0.Final'
+    extraLibs group: 'org.wildfly.core', name: 'wildfly-cli', version: '4.0.0.Final'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    extraLibs group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     compile group: 'com.bloidonia', name: 'groovy-common-extensions', version:'0.7.0'
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.13'
+    extraLibs group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.13'
+
+    configurations.compile.extendsFrom(configurations.extraLibs)
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${nexusUrl}/repository/dcs-maven-releases") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            pom.version = "1.0.0"
+            pom.artifactId = "libero"
+            pom.groupId = "com.exictos.devops"
+        }
+    }
 }
 
 groovydoc{
     docTitle = "Libero API"
     includePrivate = true
+}
+
+jar {
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }

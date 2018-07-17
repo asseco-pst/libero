@@ -43,6 +43,7 @@ class CmdRunner {
 
         Process process = builder.start()
 
+
         InputStream stdout = process.getInputStream()
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))
@@ -56,6 +57,36 @@ class CmdRunner {
 
         return sb.toString()
 
+    }
+
+    static CmdResponse getResponse(String command){
+        ProcessBuilder builder = new ProcessBuilder(command.split(' '))
+        builder.redirectErrorStream(true)
+
+        Process process = builder.start()
+
+
+        InputStream stdout = process.getInputStream()
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))
+
+        def line
+        StringBuilder sb = new StringBuilder()
+        while((line = reader.readLine()) != null){
+            sb.append(line)
+            sb.append("\n")
+        }
+
+        CmdResponse response = new CmdResponse()
+        response.setExitCode(process.exitValue())
+        response.setOutput(sb.toString())
+
+        return response
+    }
+
+    static class CmdResponse{
+        int exitCode
+        String output
     }
 
 }

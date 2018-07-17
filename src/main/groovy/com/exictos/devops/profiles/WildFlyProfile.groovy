@@ -48,7 +48,8 @@ class WildFlyProfile extends Profile{
                 instance.setTimestamp(timestamp)
                 instances.add(instance)
             }catch(Exception e) {
-                log.error("Could not get list of all deployments. Cause: ${e.getCause()}")
+                log.error("Could not get list of all deployments. Cause: ${e.getMessage()}")
+                throw e
             }
         }
 
@@ -75,7 +76,8 @@ class WildFlyProfile extends Profile{
             }
             instances = LiberoHelper.oldnessLevel(instances)
         }catch(Exception e){
-            log.error("Could not get list of instances of ${applicationName}. Cause: ${e.getCause()}")
+            log.error("Could not get list of instances of ${applicationName}. Cause: ${e.getMessage()}")
+            throw e
         }
 
         return instances
@@ -100,7 +102,8 @@ class WildFlyProfile extends Profile{
                 }
             }
         }catch(Exception e){
-            log.error("Could not get list of installed applications. Cause: ${e.getCause()}")
+            log.error("Could not get list of installed applications. Cause: ${e.getMessage()}")
+            throw e
         }
 
         return applications

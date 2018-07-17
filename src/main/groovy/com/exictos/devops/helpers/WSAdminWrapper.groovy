@@ -37,7 +37,8 @@ class WSAdminWrapper {
 
     void installApplication(String pathToPackage, String applicationName)
     {
-        run("\$AdminApp install ${pathToPackage} {-appname ${applicationName}}")
+        String normalizedPath = LiberoHelper.normalizePath(pathToPackage)
+        run("\$AdminApp install ${normalizedPath} {-appname ${applicationName}}")
         saveConfig()
     }
 
@@ -73,9 +74,14 @@ class WSAdminWrapper {
     String run(String command){
         String cmd = "${home} -conntype SOAP -host ${host} -port ${port} -user ${username} -password ${password.toString()} " +
                 "-c \"${command}\""
-        String output = CmdRunner.runOutput(cmd)
-        log.info(output.trim())
-        return output
+        CmdRunner.CmdResponse response = CmdRunner.getResponse(cmd)
+        if(response.exitCode != 0){
+            log.error(response.getOutput().trim())
+            throw new RuntimeException("WSAdmin command returned non-zero code(${response.getExitCode()})")
+        }
+
+        log.info(response.getOutput().trim())
+        return response.getOutput().trim()
     }
 
     private static List<String> toLines(String output){

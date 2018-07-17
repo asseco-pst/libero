@@ -40,7 +40,8 @@ class WebSphereProfile extends Profile{
                 instances.add(instance)
             }
         }catch(Exception e){
-            log.error("Could not get list of all deployments. Cause: ${e.getCause()}")
+            log.error("Could not get list of all deployments. Cause: ${e.getMessage()}")
+            throw e
         }
 
         return instances
@@ -66,6 +67,7 @@ class WebSphereProfile extends Profile{
             instances = LiberoHelper.oldnessLevel(instances)
         }catch(Exception e){
             log.error("Could not get list of instances of ${applicationName}. Cause: ${e.getCause()}")
+            throw e
         }
 
         return instances
@@ -89,7 +91,8 @@ class WebSphereProfile extends Profile{
                 }
             }
         }catch(Exception e){
-            log.error("Could not get list of installed applications. Cause: ${e.getCause()}")
+            log.error("Could not get list of installed applications. Cause: ${e.getMessage()}")
+            throw e
         }
 
         return applications
