@@ -1,10 +1,8 @@
 package com.exictos.devops.helpers
 
 import com.exictos.devops.profiles.Instance
+import org.apache.commons.lang3.SystemUtils
 import groovy.util.logging.Slf4j
-
-import java.nio.file.Files
-import java.nio.file.Path
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
@@ -124,5 +122,12 @@ class LiberoHelper {
     static String extractFolderNameFromPackageFile(File _package)
     {
         _package.getName().replace(".zip","")
+    }
+
+    static String normalizePath(String path) {
+        if(SystemUtils.IS_OS_WINDOWS)
+            return path.replace("\\","/")
+        else
+            return path
     }
 }
