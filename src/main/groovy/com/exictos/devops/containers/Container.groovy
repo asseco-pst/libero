@@ -32,7 +32,7 @@ abstract class Container {
      * @param applicationName
      * @return the deployment name in the standard form
      */
-    abstract protected String installApp(String pathToPackage, String applicationName)
+    abstract protected String installApp(File pathToPackage, String applicationName)
 
     /**
      *  Installs application with the package provided at pathToPackage and with the name applicationName standardized.
@@ -42,14 +42,13 @@ abstract class Container {
      * @param applicationName
      * @return the deployment name in the standard form
      */
-    String installAppWithRollBack(String pathToPackage, String applicationName)
+    String installAppWithRollBack(File pathToPackage, String applicationName)
     {
         log.info("--------------------------------------------------------")
         log.info("           INSTALL APPLICATION WITH ROLLBACK            ")
         log.info("--------------------------------------------------------")
-        uninstallAppOldInstances(applicationName)
-
         installApp(pathToPackage, applicationName)
+        uninstallAppOldInstances(applicationName)
     }
 
     /**

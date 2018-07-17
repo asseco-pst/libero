@@ -39,8 +39,8 @@ class WildFly extends Container{
             return true
         }catch(Exception e){
             log.error("Unable to connect to controller ${profile.host}:${profile.port}. Cause: ${e.getCause()}")
+            throw e
         }
-        return false
     }
 
     /**
@@ -62,15 +62,15 @@ class WildFly extends Container{
      * @return
      */
     @Override
-    protected String installApp(String aPathToPackage, String aApplicationName)
+    protected String installApp(File aPathToPackage, String aApplicationName)
     {
         log.info("Installing application ${aApplicationName} from package at ${aPathToPackage}...")
         String name = null
 
         try{
 
-            name = LiberoHelper.standardizeName(aPathToPackage, aApplicationName)
-            cli.cmd("deploy --name=${name} --runtime-name=${name} ${aPathToPackage} --disabled")
+            name = LiberoHelper.standardizeName(aPathToPackage.getAbsolutePath(), aApplicationName)
+            cli.cmd("deploy --name=${name} --runtime-name=${name} ${aPathToPackage.getAbsolutePath()} --disabled")
             log.info("${aApplicationName} installed successfully as ${name}")
 
         }catch(IllegalArgumentException iae) {
