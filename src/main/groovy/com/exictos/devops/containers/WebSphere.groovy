@@ -26,6 +26,7 @@ class WebSphere extends Container{
      */
     @Override
     boolean connect() {
+    	println "teste"
         false
     }
 
@@ -46,16 +47,17 @@ class WebSphere extends Container{
      * @return
      */
     @Override
-    protected String installApp(String pathToPackage, String applicationName)
+    protected String installApp(File pathToPackage, String applicationName)
     {
         log.info("Installing application ${applicationName} from package at ${pathToPackage}...")
         String name = null
         try{
-            name = LiberoHelper.standardizeName(pathToPackage, applicationName)
-            wsadmin.installApplication(pathToPackage,name)
+            name = LiberoHelper.standardizeName(pathToPackage.getAbsolutePath(), applicationName)
+            wsadmin.installApplication(pathToPackage.getAbsolutePath(),name)
             log.info("${applicationName} installed successfully as ${name}")
         }catch(Exception e){
-            log.error "Could not install application ${applicationName} from package ${pathToPackage}. Cause: ${e.getCause()}"
+            log.error "Could not install application ${applicationName} from package ${pathToPackage}. Cause: ${e.getMessage()}"
+            throw e
         }
         return name
     }
