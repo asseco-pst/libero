@@ -15,6 +15,15 @@ abstract class Container {
     Profile profile
 
     /**
+     * Sets the file path to log events
+     *
+     * @param the full filePath (eg. C:/logs/output.log)
+     */
+    static void setLogFile(File filePath){
+        MDC.put("filepath", filePath.toString())
+    }
+
+    /**
      * Connects to the container's profile specified by host:port
      *
      */
