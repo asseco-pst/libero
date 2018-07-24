@@ -31,6 +31,8 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.15'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    // https://mvnrepository.com/artifact/org.codehaus.janino/janino
+    compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.8'
     // https://mvnrepository.com/artifact/org.wildfly.core/wildfly-cli
     extraLibs group: 'org.wildfly.core', name: 'wildfly-cli', version: '4.0.0.Final'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
