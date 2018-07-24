@@ -1,9 +1,9 @@
-package com.exictos.devops.windows
+package com.exictos.devops.services
 
 import com.exictos.devops.helpers.NssmWrapper
 
 /**
- * This class represents a system service. It is used by ServiceManager class to implement its methods
+ * This class represents a system service. It is used by WindowsServiceManager class to implement its methods
  *
  */
 class Service {
@@ -67,6 +67,12 @@ class Service {
      */
     NssmWrapper.Status status(){
         nssm.status(name)
+    }
+
+    enum Status{
+        STARTED,
+        STOPPED,
+        PAUSED
     }
 
 }

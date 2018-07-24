@@ -1,9 +1,10 @@
-package com.exictos.devops.windows
+package com.exictos.devops.services.managers
 
 import com.exictos.devops.helpers.FileUtils
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.NssmWrapper
 import com.exictos.devops.profiles.Instance
+import com.exictos.devops.services.Service
 import groovy.util.logging.Slf4j
 
 /**
@@ -11,12 +12,32 @@ import groovy.util.logging.Slf4j
  *
  */
 @Slf4j
-class ServiceManager {
+class WindowsServiceManager extends ServiceManager{
 
     NssmWrapper nssm
 
-    ServiceManager(){
+    WindowsServiceManager(){
         nssm = new NssmWrapper()
+    }
+
+    @Override
+    boolean start(Service service) {
+        return false
+    }
+
+    @Override
+    boolean stop(Service service) {
+        return false
+    }
+
+    @Override
+    boolean remove(Service service) {
+        return false
+    }
+
+    @Override
+    Service.Status status(Service service) {
+        return null
     }
 
     /**
@@ -56,7 +77,7 @@ class ServiceManager {
     }
 
     /**
-    * Installs a windows service. If the service already exists, it will stop the service, uninstall it and reinstall
+    * Installs a services service. If the service already exists, it will stop the service, uninstall it and reinstall
     * it with the new parameters.
     *
     * @param pathToPackage - a .zip file
@@ -81,7 +102,7 @@ class ServiceManager {
     }
 
     /**
-    * Installs a windows service. Used by installService()
+    * Installs a services service. Used by installService()
     *
     * @param pathToPackage
     * @param installDirectory
@@ -89,7 +110,8 @@ class ServiceManager {
     * @param binPath
     * @param argument
     */
-    private void install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
+    @Override
+    boolean install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
     {
         log.info("Installing service ${serviceName}...")
         def timestamp = LiberoHelper.getCurrentTimestamp()

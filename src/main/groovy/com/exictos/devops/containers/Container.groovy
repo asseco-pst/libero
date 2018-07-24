@@ -3,6 +3,7 @@ package com.exictos.devops.containers
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.Profile
 import groovy.util.logging.Slf4j
+import org.slf4j.MDC
 
 /**
  * Container abstract class
