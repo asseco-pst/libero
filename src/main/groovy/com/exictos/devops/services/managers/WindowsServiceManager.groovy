@@ -20,60 +20,43 @@ class WindowsServiceManager extends ServiceManager{
         nssm = new NssmWrapper()
     }
 
-    @Override
-    boolean start(Service service) {
-        return false
-    }
-
-    @Override
-    boolean stop(Service service) {
-        return false
-    }
-
-    @Override
-    boolean remove(Service service) {
-        return false
-    }
-
-    @Override
-    Service.Status status(Service service) {
-        return null
+    /**
+     * Starts this service with NSSM
+     *
+     * @return true if successful
+     */
+    boolean start(Service service)
+    {
+        nssm.run(NssmWrapper.Command.start, service.name) == 0
     }
 
     /**
-     * Lists all instances of service
+     * Stops this service
      *
-     * @param service
-     * @return list of instances
+     * @return true if successful
      */
-    static List<Instance> listInstances(Service service)
+    boolean stop(Service service)
     {
-        List<Instance> instances = new ArrayList<Instance>()
-        String instancePrefix = LiberoHelper.extractFolderNameFromPackageFile(service._package)
-
-        service.installDirectory.eachDir {directory ->
-            if(directory.getName().startsWith(instancePrefix)){
-                Instance instance = new Instance()
-                instance.setName(directory.getName())
-                instance.setTimestamp(LiberoHelper.extractTimestamp(directory.getName()))
-                instances.add(instance)
-            }
-        }
-
-        LiberoHelper.oldnessLevel(instances)
+        nssm.run(NssmWrapper.Command.stop, service.name) == 0
     }
 
     /**
-     * Install service with rollback procedure
+     * Uninstall this service
      *
-     * @param service
+     * @return true if successful
      */
-    void installServiceWithRollback(Service service)
+    boolean remove(Service service)
     {
-        service.stop()
-        uninstallOldInstances(service)
-        installService(service)
-        service.start()
+        nssm.run(NssmWrapper.Command.remove, service.name, "confirm") == 0
+    }
+
+    /**
+     * Gets the current status of this service
+     *
+     * @return this service status (Check NssmWrapper.Status enum)
+     */
+    NssmWrapper.Status status(Service service){
+        nssm.status(service.name)
     }
 
     /**
@@ -86,11 +69,11 @@ class WindowsServiceManager extends ServiceManager{
     * @param binPath - Path to the executable
     * @param argument - argument to append to the executable
     */
-    void installService(Service service)
+    protected void installService(Service service)
     {
-        if(service.status() != NssmWrapper.Status.SERVICE_NOT_FOUND){
-            service.stop()
-            service.remove()
+        if(status(service) != NssmWrapper.Status.SERVICE_NOT_FOUND){
+            stop(service)
+            remove(service)
             uninstallOldInstances(service)
             install(service._package.toString(), service.installDirectory.toString(), service.getName()
                     , service.getBin().toString(), service.arguments.first())
@@ -111,7 +94,7 @@ class WindowsServiceManager extends ServiceManager{
     * @param argument
     */
     @Override
-    boolean install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
+    protected boolean install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
     {
         log.info("Installing service ${serviceName}...")
         def timestamp = LiberoHelper.getCurrentTimestamp()
@@ -134,10 +117,7 @@ class WindowsServiceManager extends ServiceManager{
      */
     static void uninstallOldInstances(Service service, int oldnessThreshold = 0)
     {
-        listInstances(service).each {instance ->
-            if(instance.getOldness() > oldnessThreshold)
-                new File(service.installDirectory,instance.getName()).deleteDir()
-        }
+
     }
 
 }
