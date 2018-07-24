@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <property name="filepath" value="${filepath}"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%highlight(%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger - %msg%n)</pattern>
@@ -9,7 +10,7 @@
     <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
         <discriminator>
             <key>filepath</key>
-            <defaultValue>unknown</defaultValue>
+            <defaultValue>%d{yyyy-MM-dd HH:mm:ss.SSS}</defaultValue>
         </discriminator>
         <sift>
             <appender name="FILE-${filepath}" class="ch.qos.logback.core.FileAppender">

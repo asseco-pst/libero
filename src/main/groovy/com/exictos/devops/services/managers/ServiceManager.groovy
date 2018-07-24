@@ -4,10 +4,18 @@ import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.NssmWrapper
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.services.Service
+import org.slf4j.MDC
 
 abstract class ServiceManager {
 
-
+    /**
+     * Sets the file path to log events
+     *
+     * @param the full filePath (eg. C:/logs/output.log)
+     */
+    static void setLogFile(File filePath){
+        MDC.put("filepath", filePath.toString())
+    }
 
     /**
      * Installs service
