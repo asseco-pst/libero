@@ -3,6 +3,7 @@ package com.exictos.devops.containers
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.Profile
 import groovy.util.logging.Slf4j
+import org.slf4j.MDC
 
 /**
  * Container abstract class
@@ -12,6 +13,15 @@ import groovy.util.logging.Slf4j
 abstract class Container {
 
     Profile profile
+
+    /**
+     * Sets the file path to log events
+     *
+     * @param the full filePath (eg. C:/logs/output.log)
+     */
+    static void setLogFile(File filePath){
+        MDC.put("filepath", filePath.toString())
+    }
 
     /**
      * Connects to the container's profile specified by host:port
