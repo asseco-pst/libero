@@ -1,9 +1,10 @@
-package com.exictos.devops.windows
+package com.exictos.devops.services.managers
 
 import com.exictos.devops.helpers.FileUtils
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.NssmWrapper
 import com.exictos.devops.profiles.Instance
+import com.exictos.devops.services.Service
 import groovy.util.logging.Slf4j
 
 /**
@@ -11,52 +12,55 @@ import groovy.util.logging.Slf4j
  *
  */
 @Slf4j
-class ServiceManager {
+class WindowsServiceManager extends ServiceManager{
 
     NssmWrapper nssm
 
-    ServiceManager(){
+    WindowsServiceManager(){
         nssm = new NssmWrapper()
     }
 
     /**
-     * Lists all instances of service
+     * Starts this service with NSSM
      *
-     * @param service
-     * @return list of instances
+     * @return true if successful
      */
-    static List<Instance> listInstances(Service service)
+    boolean start(Service service)
     {
-        List<Instance> instances = new ArrayList<Instance>()
-        String instancePrefix = LiberoHelper.extractFolderNameFromPackageFile(service._package)
-
-        service.installDirectory.eachDir {directory ->
-            if(directory.getName().startsWith(instancePrefix)){
-                Instance instance = new Instance()
-                instance.setName(directory.getName())
-                instance.setTimestamp(LiberoHelper.extractTimestamp(directory.getName()))
-                instances.add(instance)
-            }
-        }
-
-        LiberoHelper.oldnessLevel(instances)
+        nssm.run(NssmWrapper.Command.start, service.name) == 0
     }
 
     /**
-     * Install service with rollback procedure
+     * Stops this service
      *
-     * @param service
+     * @return true if successful
      */
-    void installServiceWithRollback(Service service)
+    boolean stop(Service service)
     {
-        service.stop()
-        uninstallOldInstances(service)
-        installService(service)
-        service.start()
+        nssm.run(NssmWrapper.Command.stop, service.name) == 0
     }
 
     /**
-    * Installs a windows service. If the service already exists, it will stop the service, uninstall it and reinstall
+     * Uninstall this service
+     *
+     * @return true if successful
+     */
+    boolean remove(Service service)
+    {
+        nssm.run(NssmWrapper.Command.remove, service.name, "confirm") == 0
+    }
+
+    /**
+     * Gets the current status of this service
+     *
+     * @return this service status (Check NssmWrapper.Status enum)
+     */
+    NssmWrapper.Status status(Service service){
+        nssm.status(service.name)
+    }
+
+    /**
+    * Installs a services service. If the service already exists, it will stop the service, uninstall it and reinstall
     * it with the new parameters.
     *
     * @param pathToPackage - a .zip file
@@ -65,11 +69,11 @@ class ServiceManager {
     * @param binPath - Path to the executable
     * @param argument - argument to append to the executable
     */
-    void installService(Service service)
+    protected void installService(Service service)
     {
-        if(service.status() != NssmWrapper.Status.SERVICE_NOT_FOUND){
-            service.stop()
-            service.remove()
+        if(status(service) != NssmWrapper.Status.SERVICE_NOT_FOUND){
+            stop(service)
+            remove(service)
             uninstallOldInstances(service)
             install(service._package.toString(), service.installDirectory.toString(), service.getName()
                     , service.getBin().toString(), service.arguments.first())
@@ -81,7 +85,7 @@ class ServiceManager {
     }
 
     /**
-    * Installs a windows service. Used by installService()
+    * Installs a services service. Used by installService()
     *
     * @param pathToPackage
     * @param installDirectory
@@ -89,7 +93,8 @@ class ServiceManager {
     * @param binPath
     * @param argument
     */
-    private void install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
+    @Override
+    protected boolean install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
     {
         log.info("Installing service ${serviceName}...")
         def timestamp = LiberoHelper.getCurrentTimestamp()
@@ -112,10 +117,7 @@ class ServiceManager {
      */
     static void uninstallOldInstances(Service service, int oldnessThreshold = 0)
     {
-        listInstances(service).each {instance ->
-            if(instance.getOldness() > oldnessThreshold)
-                new File(service.installDirectory,instance.getName()).deleteDir()
-        }
+
     }
 
 }

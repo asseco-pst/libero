@@ -10,7 +10,7 @@ apply plugin:'maven'
 apply plugin:'idea'
 
 group 'com.exictos.devops'
-version '1.0.0'
+version '1.1.0-SNAPSHOT'
 
 repositories {
     maven{
@@ -31,6 +31,8 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.15'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    // https://mvnrepository.com/artifact/org.codehaus.janino/janino
+    compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.8'
     // https://mvnrepository.com/artifact/org.wildfly.core/wildfly-cli
     extraLibs group: 'org.wildfly.core', name: 'wildfly-cli', version: '4.0.0.Final'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
@@ -45,10 +47,10 @@ dependencies {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "${nexusUrl}/repository/dcs-maven-releases") {
+            repository(url: "${nexusUrl}/repository/dcs-maven-snapshots") {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
-            pom.version = "1.0.0"
+            pom.version = "1.1.0-SNAPSHOT"
             pom.artifactId = "libero"
             pom.groupId = "com.exictos.devops"
         }

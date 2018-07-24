@@ -1,5 +1,9 @@
 package com.exictos.devops.containers
 
+import ch.qos.logback.classic.LoggerContext
+import ch.qos.logback.classic.PatternLayout
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder
+import ch.qos.logback.core.FileAppender
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.WSAdminWrapper
 import com.exictos.devops.profiles.WebSphereProfile
