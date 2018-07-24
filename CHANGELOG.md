@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.0] - 2018-07-24
+### Changed
+    - Logging strategy now allows to specify a file to log to.
+
 ## [1.0.0] - 2018-07-17
 ### Added
 	- Gradle task to upload archive to Nexus Repository
