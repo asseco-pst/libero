@@ -21,6 +21,7 @@ abstract class Container {
      */
     static void setLogFile(File filePath){
         MDC.put("filepath", filePath.toString())
+        log.debug("Logging to ${filePath.toString()}")
     }
 
     /**

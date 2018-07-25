@@ -4,8 +4,10 @@ import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.NssmWrapper
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.services.Service
+import groovy.util.logging.Slf4j
 import org.slf4j.MDC
 
+@Slf4j
 abstract class ServiceManager {
 
     /**
@@ -15,6 +17,7 @@ abstract class ServiceManager {
      */
     static void setLogFile(File filePath){
         MDC.put("filepath", filePath.toString())
+        log.debug("Logging to ${filePath.toString()}")
     }
 
     /**
@@ -65,6 +68,7 @@ abstract class ServiceManager {
      */
     static List<Instance> listInstances(Service service)
     {
+        log.info("Listing instances of ${service.getName()}...")
         List<Instance> instances = new ArrayList<Instance>()
         String instancePrefix = LiberoHelper.extractFolderNameFromPackageFile(service._package)
 
@@ -87,6 +91,7 @@ abstract class ServiceManager {
      */
     void installServiceWithRollback(Service service)
     {
+        log.info("Installing service ${service.getName()} with rollback...")
         stop(service)
         uninstallOldInstances(service)
         installService(service)
@@ -107,6 +112,7 @@ abstract class ServiceManager {
     */
     static void uninstallOldInstances(Service service, int oldnessThreshold = 0)
     {
+        log.info("uninstalling old instances of ${service.getName()}...")
         listInstances(service).each {instance ->
             if(instance.getOldness() > oldnessThreshold)
                 new File(service.installDirectory,instance.getName()).deleteDir()
