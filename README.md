@@ -2,7 +2,15 @@
 
 A container agnostic deployment management tool for application servers
 
-## Currently Supports
+## Index
+
+ * [Containers Supported](#containers-supported)
+ * [Getting Started](#getting-started)
+ * [Usage](#usage)
+ * [Uploading artifact to Nexus](#uploading-artifact-to-nexus)
+ 
+
+## Containers Supported
  * WebSphere Application Server
  * WildFly
  * Windows Services
@@ -99,9 +107,28 @@ Service service = new Service()
 ws.installServiceWithRollback(service)
 ```
 
+### Setting a log file
+
+If you need Libero to log to a specific file do the following:
+
+```groovy
+File logFile = new File("C:/Exictos/logs/deployment.log")
+
+Container was = new WebSphere(...)
+was.setLogFile(logFile)
+
+was.installAppWithRollBack(...)
+```
+
 ## Uploading artifact to Nexus
 
-1. Make sure the project version specified in build.gradle is correct
+1. Make sure the project ìnformation specified in ``build.gradle`` is correct
+```properties
+pom.version = "1.1.0"
+pom.artifactId = "libero"
+pom.groupId = "com.exictos.devops"
+```
+
 2. Set the following variables in the gradle.properties file:
 ```properties
 nexusUrl=http://nexus.dcs.exictos.com
