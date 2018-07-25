@@ -122,9 +122,9 @@ was.installAppWithRollBack(...)
 
 ## Uploading artifact to Nexus
 
-1. Make sure the project version specified in build.gradle is correct
+1. Make sure the project ìnformation specified in ``build.gradle`` is correct
 ```properties
-pom.version = "1.1.0" <---
+pom.version = "1.1.0"
 pom.artifactId = "libero"
 pom.groupId = "com.exictos.devops"
 ```
