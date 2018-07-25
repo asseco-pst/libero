@@ -113,3 +113,16 @@ nexusPassword=<ldap_password>
 ```sh
 gradlew upload
 ```
+
+## Setting a log file
+
+If you need Libero to log to a specific file do the following:
+
+```groovy
+File logFile = new File("C:/Exictos/logs/deployment.log")
+
+Container was = new WebSphere(...)
+was.setLogFile(logFile)
+
+was.installAppWithRollBack(...)
+```
