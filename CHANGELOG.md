@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+    - More verbose logging
+
 ## [1.1.0] - 2018-07-24
 ### Changed
     - Logging strategy now allows to specify a file to log to.
