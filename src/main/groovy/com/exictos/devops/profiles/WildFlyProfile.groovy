@@ -132,8 +132,8 @@ class WildFlyProfile extends Profile{
             def result = cli.cmd("/deployment=${newestInstance.getName()}/subdeployment=*/subsystem=undertow:read-attribute(name=context-root)")
             def response = result.getResponse()
             ModelNode nodes = response.get("result").get(0)
-            String contextRoot = nodes.get("result").asString()
-            return contextRoot
+
+            nodes.get("result").asString()
         }catch(Exception e){
             log.error("Could not get application ${applicationName} context root. Cause: ${e})")
             throw e

@@ -58,6 +58,12 @@ class WSAdminWrapper {
         saveConfig()
     }
 
+    String getApplicationContextRoot(String deploymentName)
+    {
+        run("\$AdminApp view  ${deploymentName} {-CtxRootForWebMod}")
+
+    }
+
     boolean isApplicationRunning(String deploymentName)
     {
         String output = run("\$AdminControl completeObjectName type=Application,name=${deploymentName},*")
