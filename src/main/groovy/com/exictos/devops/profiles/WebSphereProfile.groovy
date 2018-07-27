@@ -98,4 +98,8 @@ class WebSphereProfile extends Profile{
         return applications
     }
 
+    @Override
+    String getApplicationContextRoot(String application) {
+        return null
+    }
 }
