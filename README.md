@@ -17,6 +17,23 @@ A container agnostic deployment management tool for application servers
 
 ## Getting Started
 
+### Include in your project as a dependency:
+
+Maven:
+```xml
+<dependency>
+    <groupId>com.exictos.devops</groupId>
+    <artifactId>libero</artifactId>
+    <version>1.1.0</version>
+</dependency>
+```
+
+Gradle:
+```json
+compile group: 'com.exictos.devops', name: 'libero', version: '1.1.0'
+```
+
+### Build from source
 1. Clone the project
 ```sh
 git clone git@gitlab.dcs.exictos.com:devops/libero.git
