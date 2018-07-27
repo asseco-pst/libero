@@ -30,7 +30,7 @@ class LiberoHelper {
     {
         if(!aApplicationName.contains("___"))
             throw new IllegalArgumentException("Application name provided ${aApplicationName} is not valid. Missing the date separator '___'")
-        
+
         def version = ""
         if(aVersion != null) {
             if (!Pattern.matches(VERSION_VALIDATOR_REGEX, aVersion))
@@ -40,7 +40,7 @@ class LiberoHelper {
 
         def now = aTimestamp.format(DATE_FORMAT)
         if(now == null)
-            now = new Date().format(DATE_FORMAT)
+            now = getCurrentTimestamp()
 
         def _package = packageType(aPathToPackage)
 
@@ -55,12 +55,18 @@ class LiberoHelper {
      */
     static String extractName(String standardizedName)
     {
+        if(!standardizedName.contains("___"))
+            throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
+
         String name = null
         try{
-            name = standardizedName.substring(0, standardizedName.indexOf("___"))
+            name = standardizedName.split("___").first()
+            if(name.contains("_v"))
+                name = name.substring(0, name.indexOf("_v"))
         }catch(Exception e){
-            log.error("Could not parse name ${standardizedName}. Cause: ${e.getCause()}")
+            log.error("Could not parse name ${standardizedName}. Cause: ${e}")
         }
+
         return name
     }
 
@@ -73,7 +79,7 @@ class LiberoHelper {
     static Timestamp extractTimestamp(String applicationStandardizedName)
     {
 
-        String timestamp = applicationStandardizedName.split("___")[1]
+        String timestamp = applicationStandardizedName.split("___").last()
         timestamp = timestamp.substring(0, DATE_FORMAT.length())
         toTimestamp(timestamp)
 
@@ -87,9 +93,11 @@ class LiberoHelper {
      */
     static Timestamp toTimestamp(String timestamp)
     {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT)
         Date parsedDate = dateFormat.parse(timestamp)
         new Timestamp(parsedDate.getTime())
+
     }
 
     /**
