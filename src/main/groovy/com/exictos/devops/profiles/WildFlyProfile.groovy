@@ -111,6 +111,13 @@ class WildFlyProfile extends Profile{
         return applications
     }
 
+    /**
+     * Returns an installed application context root.
+     * The application must be running otherwise this method will returned undefined
+     *
+     * @param applicationName
+     * @return the application context root
+     */
     @Override
     String getApplicationContextRoot(String applicationName)
     {
