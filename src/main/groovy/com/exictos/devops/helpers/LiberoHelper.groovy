@@ -5,6 +5,7 @@ import org.apache.commons.lang3.SystemUtils
 import groovy.util.logging.Slf4j
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.util.regex.Pattern
 
 /**
  * Utils class containing several different helpers methods
@@ -14,21 +15,36 @@ import java.text.SimpleDateFormat
 @Slf4j
 class LiberoHelper {
 
-    private static String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
+    private static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
+    private static final String NAME_VALIDATOR_REGEX = "^([A-Za-z0-9_]+)((_v{1})(([1-9]{1,2}.){2,4})|(___))"
+    private static final String VERSION_VALIDATOR_REGEX = "^(([1-9]{1,2}.){2,4})"
 
     /**
-     * Returns the application standard name for installation. In the format appName___20180611_172035.pkg
+     * Returns the application standard name for installation. In the format appName___2018-06-11_17-20-35.pkg
      *
      * @param aPathToPackage
      * @param aApplicationName
      * @return applicationName in the standard form for installation
      */
-    static String standardizeName(String aPathToPackage, String aApplicationName) throws IllegalArgumentException
+    static String standardizeName(String aPathToPackage, String aApplicationName, String aVersion = null, Timestamp aTimestamp = null) throws IllegalArgumentException
     {
+        if(!aApplicationName.contains("___"))
+            throw new IllegalArgumentException("Application name provided ${aApplicationName} is not valid. Missing the date separator '___'")
+        
+        def version = ""
+        if(aVersion != null) {
+            if (!Pattern.matches(VERSION_VALIDATOR_REGEX, aVersion))
+                throw new IllegalArgumentException("Version provided ${aVersion} is not valid.")
+            version = "_v${aVersion}"
+        }
 
-        def now = new Date().format(DATE_FORMAT)
+        def now = aTimestamp.format(DATE_FORMAT)
+        if(now == null)
+            now = new Date().format(DATE_FORMAT)
+
         def _package = packageType(aPathToPackage)
-        "${aApplicationName}___${now}.${_package}"
+
+        "${aApplicationName}${version}___${now}.${_package}"
     }
 
     /**
