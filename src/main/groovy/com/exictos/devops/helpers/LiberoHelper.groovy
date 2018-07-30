@@ -5,6 +5,7 @@ import org.apache.commons.lang3.SystemUtils
 import groovy.util.logging.Slf4j
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.util.regex.Pattern
 
 /**
  * Utils class containing several different helpers methods
@@ -14,21 +15,35 @@ import java.text.SimpleDateFormat
 @Slf4j
 class LiberoHelper {
 
-    private static String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
+    private static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
+    private static final String NAME_VALIDATOR_REGEX = "^([A-Za-z0-9_]+)((_v{1})(([1-9]{1,2}.){2,4})|(___))"
+    private static final String VERSION_VALIDATOR_REGEX = "^(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3}\$"
 
     /**
-     * Returns the application standard name for installation. In the format appName___20180611_172035.pkg
+     * Returns the application standard name for installation. In the format appName___2018-06-11_17-20-35.pkg
      *
      * @param aPathToPackage
      * @param aApplicationName
      * @return applicationName in the standard form for installation
      */
-    static String standardizeName(String aPathToPackage, String aApplicationName) throws IllegalArgumentException
+    static String standardizeName(String aPathToPackage, String aApplicationName, String aVersion = null, Timestamp aTimestamp = null) throws IllegalArgumentException
     {
+        def version = ""
+        if(aVersion != null) {
+            if (!Pattern.matches(VERSION_VALIDATOR_REGEX, aVersion))
+                throw new IllegalArgumentException("Version provided ${aVersion} is not valid.")
+            version = "_v${aVersion}"
+        }
 
-        def now = new Date().format(DATE_FORMAT)
+        def now
+        if(aTimestamp != null)
+            now = aTimestamp.format(DATE_FORMAT)
+        else
+            now = getCurrentTimestamp()
+
         def _package = packageType(aPathToPackage)
-        "${aApplicationName}___${now}.${_package}"
+
+        "${aApplicationName}${version}___${now}.${_package}"
     }
 
     /**
@@ -39,13 +54,34 @@ class LiberoHelper {
      */
     static String extractName(String standardizedName)
     {
-        String name = null
+        if(!standardizedName.contains("___"))
+            throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
+
         try{
-            name = standardizedName.substring(0, standardizedName.indexOf("___"))
+            String name = standardizedName.split("___").first()
+            if(name.contains("_v"))
+                name = name.substring(0, name.indexOf("_v"))
+            return name
         }catch(Exception e){
-            log.error("Could not parse name ${standardizedName}. Cause: ${e.getCause()}")
+            log.error("Could not parse name ${standardizedName}. Cause: ${e}")
+            throw e
         }
-        return name
+    }
+
+    static String extractVersion(String standardizedName)
+    {
+        if(!standardizedName.contains("___"))
+            throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
+        if(!standardizedName.contains("_v"))
+            throw new IllegalArgumentException("Application name provided ${standardizedName} does not contain a version number.")
+
+        try{
+            String version = standardizedName.substring(standardizedName.indexOf("_v"), standardizedName.indexOf("___"))
+            return version
+        }catch(Exception e){
+            log.error("Could not parse name ${standardizedName}. Cause: ${e}")
+            throw e
+        }
     }
 
     /**
@@ -57,7 +93,7 @@ class LiberoHelper {
     static Timestamp extractTimestamp(String applicationStandardizedName)
     {
 
-        String timestamp = applicationStandardizedName.split("___")[1]
+        String timestamp = applicationStandardizedName.split("___").last()
         timestamp = timestamp.substring(0, DATE_FORMAT.length())
         toTimestamp(timestamp)
 
@@ -71,9 +107,11 @@ class LiberoHelper {
      */
     static Timestamp toTimestamp(String timestamp)
     {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT)
         Date parsedDate = dateFormat.parse(timestamp)
         new Timestamp(parsedDate.getTime())
+
     }
 
     /**
@@ -87,7 +125,7 @@ class LiberoHelper {
         try{
             filePath.substring(filePath.lastIndexOf(".")+1).toLowerCase().trim()
         }catch(Exception e){
-            throw new IllegalArgumentException("Could not extract package type from file: ${filePath}. Cause: ${e.getCause()}")
+            throw new IllegalArgumentException("Could not extract package type from file: ${filePath}. Cause: ${e}")
         }
     }
 

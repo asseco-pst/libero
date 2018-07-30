@@ -5,6 +5,8 @@ import com.exictos.devops.profiles.WildFlyProfile
 import groovy.util.logging.Slf4j
 import org.jboss.as.cli.scriptsupport.CLI
 
+import java.sql.Timestamp
+
 /**
  * WildFly container concrete class. Implements all the necessary methods to manage and deploy applications
  *
@@ -37,7 +39,7 @@ class WildFly extends Container{
             takeSnapshot()
             return true
         }catch(Exception e){
-            log.error("Unable to connect to controller ${profile.host}:${profile.port}. Cause: ${e.getCause()}")
+            log.error("Unable to connect to controller ${profile.host}:${profile.port}. Cause: ${e}")
             throw e
         }
     }
@@ -61,24 +63,23 @@ class WildFly extends Container{
      * @return
      */
     @Override
-    protected String installApp(File aPathToPackage, String aApplicationName)
+    protected String installApp(File aPathToPackage, String aApplicationName, String aApplicationVersion = null
+                                 , Timestamp aTimestamp = null)
     {
         log.info("Installing application ${aApplicationName} from package at ${aPathToPackage}...")
-        String name = null
-
         try{
-
-            name = LiberoHelper.standardizeName(aPathToPackage.getAbsolutePath(), aApplicationName)
+            String name = LiberoHelper.standardizeName(aPathToPackage.getAbsolutePath(), aApplicationName, aApplicationVersion
+                    , aTimestamp)
             cli.cmd("deploy --name=${name} --runtime-name=${name} ${aPathToPackage.getAbsolutePath()} --disabled")
             log.info("${aApplicationName} installed successfully as ${name}")
-
+            return name
         }catch(IllegalArgumentException iae) {
-            log.error "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${iae.getCause()}"
+            log.error "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${iae}"
+            throw iae
         }catch(Exception e){
-            log.error "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${e.getCause()}"
+            log.error "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${e}"
+            throw e
         }
-
-        return name
     }
 
     /**
@@ -94,7 +95,8 @@ class WildFly extends Container{
             cli.cmd("deploy --name=${deploymentName}")
             log.info("Deployment ${deploymentName} started.")
         }catch(Exception e){
-            log.error("Could not start application ${deploymentName}. Cause: ${e.getCause()}")
+            log.error("Could not start application ${deploymentName}. Cause: ${e}")
+            throw e
         }
     }
 
@@ -112,7 +114,8 @@ class WildFly extends Container{
             cli.cmd("undeploy ${deploymentName} --keep-content")
             log.info("Deployment ${deploymentName} stopped")
         }catch(Exception e){
-            log.error("Could not stop deployment: ${deploymentName}. Cause: ${e.getCause()}")
+            log.error("Could not stop deployment: ${deploymentName}. Cause: ${e}")
+            throw e
         }
     }
 
@@ -129,7 +132,8 @@ class WildFly extends Container{
             cli.cmd("/deployment=${deploymentName}:remove()")
             log.info("Deployment ${deploymentName} uninstalled.")
         }catch(Exception e){
-            log.error "Could not uninstall ${deploymentName}. Cause: ${e.getCause()}"
+            log.error "Could not uninstall ${deploymentName}. Cause: ${e}"
+            throw e
         }
     }
 
@@ -146,7 +150,8 @@ class WildFly extends Container{
             String path = result.getResponse().get("result").asString()
             log.info("Snapshot saved at ${path}")
         }catch(Exception e){
-            log.error("Could not take snapshot. Cause ${e.getCause()}")
+            log.error("Could not take snapshot. Cause ${e}")
+            throw e
         }
     }
 

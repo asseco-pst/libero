@@ -14,16 +14,16 @@ class WSAdminWrapper {
     String username
     char[] password
 
-    WSAdminWrapper(String path, String aHost, int aPort, String aUsername, char[] aPassword){
-        home = path
-        host = aHost
-        port = aPort
-        username = aUsername
-        password = aPassword
+    WSAdminWrapper(String path, String host, int port, String username, char[] password){
+        this.home = path
+        this.host = host
+        this.port = port
+        this.username = username
+        this.password = password
     }
 
-    boolean isAppReady(String aDeploymentName){
-        String output = run("\$AdminApp isAppReady ${aDeploymentName}")
+    boolean isAppReady(String deploymentName){
+        String output = run("\$AdminApp isAppReady ${deploymentName}")
         String[] lines = output.split("\n")
         lines.last() == "true"
     }
@@ -56,6 +56,12 @@ class WSAdminWrapper {
     {
         run("\$AdminApp uninstall ${applicationName}")
         saveConfig()
+    }
+
+    String getApplicationContextRoot(String deploymentName)
+    {
+        run("\$AdminApp view  ${deploymentName} {-CtxRootForWebMod}")
+
     }
 
     boolean isApplicationRunning(String deploymentName)

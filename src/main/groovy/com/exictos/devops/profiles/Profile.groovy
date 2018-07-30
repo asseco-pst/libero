@@ -35,4 +35,6 @@ abstract class Profile {
      */
     abstract List<String> listInstalledApplications()
 
+    abstract String getApplicationContextRoot(String applicationName)
+
 }

@@ -4,6 +4,7 @@ import com.exictos.devops.helpers.CmdRunner
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.WSAdminWrapper
 import groovy.util.logging.Slf4j
+import org.jboss.dmr.ModelNode
 
 /**
  * This class represents a concrete WebSphere profile, and implements methods to get information about the profile
@@ -66,7 +67,7 @@ class WebSphereProfile extends Profile{
             }
             instances = LiberoHelper.oldnessLevel(instances)
         }catch(Exception e){
-            log.error("Could not get list of instances of ${applicationName}. Cause: ${e.getCause()}")
+            log.error("Could not get list of instances of ${applicationName}. Cause: ${e}")
             throw e
         }
 
@@ -98,4 +99,26 @@ class WebSphereProfile extends Profile{
         return applications
     }
 
+    @Override
+    String getApplicationContextRoot(String applicationName) {
+        log.info("Getting application context root...")
+        try {
+            Instance newestInstance = new Instance()
+            listInstances(applicationName).each { instance ->
+                if (instance.getOldness() == 0)
+                    newestInstance = instance
+            }
+
+            String contextRoot
+            wsadmin.getApplicationContextRoot(newestInstance.getName()).readLines().each { line ->
+                if(line.startsWith("Context Root"))
+                    contextRoot = line
+            }
+            contextRoot = contextRoot.replace("Context Root:  ", "")
+            return contextRoot
+        }catch(Exception e){
+            log.error("Could not get application ${applicationName} context root. Cause: ${e})")
+            throw e
+        }
+    }
 }

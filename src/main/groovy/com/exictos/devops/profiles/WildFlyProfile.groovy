@@ -3,6 +3,8 @@ package com.exictos.devops.profiles
 import com.exictos.devops.helpers.LiberoHelper
 import groovy.util.logging.Slf4j
 import org.jboss.as.cli.scriptsupport.CLI
+import org.jboss.dmr.ModelNode
+
 import java.sql.Timestamp
 
 /**
@@ -107,6 +109,35 @@ class WildFlyProfile extends Profile{
         }
 
         return applications
+    }
+
+    /**
+     * Returns an installed application context root.
+     * The application must be running otherwise this method will returned undefined
+     *
+     * @param applicationName
+     * @return the application context root
+     */
+    @Override
+    String getApplicationContextRoot(String applicationName)
+    {
+        log.info("Getting application context root...")
+        try {
+            Instance newestInstance = new Instance()
+            listInstances(applicationName).each { instance ->
+                if (instance.getOldness() == 0)
+                    newestInstance = instance
+            }
+            log.debug("/deployment=${newestInstance.getName()}/subdeployment=*/subsystem=undertow:read-attribute(name=context-root)")
+            def result = cli.cmd("/deployment=${newestInstance.getName()}/subdeployment=*/subsystem=undertow:read-attribute(name=context-root)")
+            def response = result.getResponse()
+            ModelNode nodes = response.get("result").get(0)
+
+            nodes.get("result").asString()
+        }catch(Exception e){
+            log.error("Could not get application ${applicationName} context root. Cause: ${e})")
+            throw e
+        }
     }
 
 }

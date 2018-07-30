@@ -9,6 +9,8 @@ import com.exictos.devops.helpers.WSAdminWrapper
 import com.exictos.devops.profiles.WebSphereProfile
 import groovy.util.logging.Slf4j
 
+import java.sql.Timestamp
+
 @Slf4j
 class WebSphere extends Container{
 
@@ -51,19 +53,20 @@ class WebSphere extends Container{
      * @return
      */
     @Override
-    protected String installApp(File pathToPackage, String applicationName)
+    protected String installApp(File pathToPackage, String applicationName, String applicationVersion
+                                , Timestamp timestamp)
     {
         log.info("Installing application ${applicationName} from package at ${pathToPackage}...")
-        String name = null
         try{
-            name = LiberoHelper.standardizeName(pathToPackage.getAbsolutePath(), applicationName)
+            String name = LiberoHelper.standardizeName(pathToPackage.getAbsolutePath(), applicationName, applicationVersion
+                    , timestamp)
             wsadmin.installApplication(pathToPackage.getAbsolutePath(),name)
             log.info("${applicationName} installed successfully as ${name}")
+            return name
         }catch(Exception e){
             log.error "Could not install application ${applicationName} from package ${pathToPackage}. Cause: ${e.getMessage()}"
             throw e
         }
-        return name
     }
 
     /**
@@ -80,7 +83,8 @@ class WebSphere extends Container{
                 wsadmin.startApplication(deploymentName)
             log.info("Deployment ${deploymentName} started.")
         }catch(Exception e){
-            log.error("Could not start application ${deploymentName}. Cause: ${e.getCause()}")
+            log.error("Could not start application ${deploymentName}. Cause: ${e}")
+            throw e
         }
     }
 
@@ -98,7 +102,8 @@ class WebSphere extends Container{
             wsadmin.stopApplication(deploymentName)
             log.info("Deployment ${deploymentName} stopped")
         }catch(Exception e){
-            log.error("Could not stop deployment: ${deploymentName}. Cause: ${e.getCause()}")
+            log.error("Could not stop deployment: ${deploymentName}. Cause: ${e}")
+            throw e
         }
     }
 
@@ -115,7 +120,8 @@ class WebSphere extends Container{
             wsadmin.uninstallApp(deploymentName)
             log.info("Deployment ${deploymentName} uninstalled.")
         }catch(Exception e){
-            log.error "Could not uninstall ${deploymentName}. Cause: ${e.getCause()}"
+            log.error "Could not uninstall ${deploymentName}. Cause: ${e}"
+            throw e
         }
     }
 

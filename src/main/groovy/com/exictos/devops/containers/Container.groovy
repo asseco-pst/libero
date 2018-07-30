@@ -5,6 +5,8 @@ import com.exictos.devops.profiles.Profile
 import groovy.util.logging.Slf4j
 import org.slf4j.MDC
 
+import java.sql.Timestamp
+
 /**
  * Container abstract class
  * Should be extended by WildFly, WebSphere and other concrete containers
@@ -21,6 +23,7 @@ abstract class Container {
      */
     static void setLogFile(File filePath){
         MDC.put("filepath", filePath.toString())
+        log.debug("Logging to ${filePath.toString()}")
     }
 
     /**
@@ -42,7 +45,7 @@ abstract class Container {
      * @param applicationName
      * @return the deployment name in the standard form
      */
-    abstract protected String installApp(File pathToPackage, String applicationName)
+    abstract protected String installApp(File pathToPackage, String applicationName,String applicationVersion = null, Timestamp timestamp = null)
 
     /**
      *  Installs application with the package provided at pathToPackage and with the name applicationName standardized.
@@ -52,12 +55,13 @@ abstract class Container {
      * @param applicationName
      * @return the deployment name in the standard form
      */
-    String installAppWithRollBack(File pathToPackage, String applicationName)
+    String installAppWithRollBack(File pathToPackage, String applicationName, String applicationVersion = null
+                                  , Timestamp timestamp = null)
     {
         log.info("--------------------------------------------------------")
         log.info("           INSTALL APPLICATION WITH ROLLBACK            ")
         log.info("--------------------------------------------------------")
-        installApp(pathToPackage, applicationName)
+        installApp(pathToPackage, applicationName, applicationVersion, timestamp)
         uninstallAppOldInstances(applicationName)
     }
 
