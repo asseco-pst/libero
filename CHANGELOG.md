@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Added
+### Added 
     - More verbose logging
     - WildFly profile can now return a running application's context root
     - WebSphere profile can now return an application's context root
+    
+### Changed
+    - Applications can be installed with a version number and a specific timestamp (#7)
 
 ## [1.1.0] - 2018-07-24
 ### Changed
