@@ -24,13 +24,13 @@ Maven:
 <dependency>
     <groupId>com.exictos.devops</groupId>
     <artifactId>libero</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
 Gradle:
 ```json
-compile group: 'com.exictos.devops', name: 'libero', version: '1.1.0'
+compile group: 'com.exictos.devops', name: 'libero', version: '1.2.0'
 ```
 
 ### Build from source
