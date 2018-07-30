@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.2.1] - 2018-07-30
+### Fixed
+    - NSSM executable path is passed as an argument in the WindowsServiceManager constructor, instead of using an exe 
+    included in the jar file.
+
 ## [1.2.0] - 2018-07-30
 ### Added 
     - More verbose logging

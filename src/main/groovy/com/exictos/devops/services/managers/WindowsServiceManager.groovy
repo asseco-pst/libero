@@ -16,8 +16,8 @@ class WindowsServiceManager extends ServiceManager{
 
     NssmWrapper nssm
 
-    WindowsServiceManager(){
-        nssm = new NssmWrapper()
+    WindowsServiceManager(File nssmExecutable){
+        nssm = new NssmWrapper(nssmExecutable.toString())
     }
 
     /**
