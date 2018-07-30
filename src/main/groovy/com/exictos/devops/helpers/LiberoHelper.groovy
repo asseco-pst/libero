@@ -17,7 +17,7 @@ class LiberoHelper {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
     private static final String NAME_VALIDATOR_REGEX = "^([A-Za-z0-9_]+)((_v{1})(([1-9]{1,2}.){2,4})|(___))"
-    private static final String VERSION_VALIDATOR_REGEX = "^(([1-9]{1,2}.){2,4})"
+    private static final String VERSION_VALIDATOR_REGEX = "^(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3}\$"
 
     /**
      * Returns the application standard name for installation. In the format appName___2018-06-11_17-20-35.pkg
@@ -28,9 +28,6 @@ class LiberoHelper {
      */
     static String standardizeName(String aPathToPackage, String aApplicationName, String aVersion = null, Timestamp aTimestamp = null) throws IllegalArgumentException
     {
-        if(!aApplicationName.contains("___"))
-            throw new IllegalArgumentException("Application name provided ${aApplicationName} is not valid. Missing the date separator '___'")
-
         def version = ""
         if(aVersion != null) {
             if (!Pattern.matches(VERSION_VALIDATOR_REGEX, aVersion))
@@ -38,8 +35,10 @@ class LiberoHelper {
             version = "_v${aVersion}"
         }
 
-        def now = aTimestamp.format(DATE_FORMAT)
-        if(now == null)
+        def now
+        if(aTimestamp != null)
+            now = aTimestamp.format(DATE_FORMAT)
+        else
             now = getCurrentTimestamp()
 
         def _package = packageType(aPathToPackage)
@@ -58,16 +57,15 @@ class LiberoHelper {
         if(!standardizedName.contains("___"))
             throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
 
-        String name = null
         try{
-            name = standardizedName.split("___").first()
+            String name = standardizedName.split("___").first()
             if(name.contains("_v"))
                 name = name.substring(0, name.indexOf("_v"))
+            return name
         }catch(Exception e){
             log.error("Could not parse name ${standardizedName}. Cause: ${e}")
+            throw e
         }
-
-        return name
     }
 
     /**
@@ -111,7 +109,7 @@ class LiberoHelper {
         try{
             filePath.substring(filePath.lastIndexOf(".")+1).toLowerCase().trim()
         }catch(Exception e){
-            throw new IllegalArgumentException("Could not extract package type from file: ${filePath}. Cause: ${e.getCause()}")
+            throw new IllegalArgumentException("Could not extract package type from file: ${filePath}. Cause: ${e}")
         }
     }
 

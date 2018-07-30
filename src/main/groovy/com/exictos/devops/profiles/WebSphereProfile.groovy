@@ -67,7 +67,7 @@ class WebSphereProfile extends Profile{
             }
             instances = LiberoHelper.oldnessLevel(instances)
         }catch(Exception e){
-            log.error("Could not get list of instances of ${applicationName}. Cause: ${e.getCause()}")
+            log.error("Could not get list of instances of ${applicationName}. Cause: ${e}")
             throw e
         }
 
