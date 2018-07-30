@@ -68,6 +68,22 @@ class LiberoHelper {
         }
     }
 
+    static String extractVersion(String standardizedName)
+    {
+        if(!standardizedName.contains("___"))
+            throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
+        if(!standardizedName.contains("_v"))
+            throw new IllegalArgumentException("Application name provided ${standardizedName} does not contain a version number.")
+
+        try{
+            String version = standardizedName.substring(standardizedName.indexOf("_v"), standardizedName.indexOf("___"))
+            return version
+        }catch(Exception e){
+            log.error("Could not parse name ${standardizedName}. Cause: ${e}")
+            throw e
+        }
+    }
+
     /**
      * Extracts the timestamp from an application standardized name
      *
