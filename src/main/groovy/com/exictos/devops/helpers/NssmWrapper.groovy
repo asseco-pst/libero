@@ -8,9 +8,8 @@ class NssmWrapper {
 
     private String nssmHome
 
-    NssmWrapper(){
-        def file = new File(NssmWrapper.class.getResource('/exec/nssm.exe').toURI())
-        nssmHome = file.getAbsolutePath()
+    NssmWrapper(String nssmHome){
+        this.nssmHome = nssmHome
     }
 
     /**
