@@ -1,18 +1,18 @@
 package com.exictos.devops.profiles
 
-import com.exictos.devops.helpers.CmdRunner
+import ch.qos.logback.classic.Logger
 import com.exictos.devops.helpers.LiberoHelper
+import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.WSAdminWrapper
-import groovy.util.logging.Slf4j
-import org.jboss.dmr.ModelNode
 
 /**
  * This class represents a concrete WebSphere profile, and implements methods to get information about the profile
  * and the applications installed
  *
  */
-@Slf4j
 class WebSphereProfile extends Profile{
+
+    protected static final Logger log = LiberoLogger.getLogger()
 
     WSAdminWrapper wsadmin
 

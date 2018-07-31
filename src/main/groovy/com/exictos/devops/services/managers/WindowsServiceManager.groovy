@@ -1,18 +1,19 @@
 package com.exictos.devops.services.managers
 
+import ch.qos.logback.classic.Logger
 import com.exictos.devops.helpers.FileUtils
 import com.exictos.devops.helpers.LiberoHelper
+import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.NssmWrapper
-import com.exictos.devops.profiles.Instance
 import com.exictos.devops.services.Service
-import groovy.util.logging.Slf4j
 
 /**
  * This class manages system services. At the moment only supports Windows services using NSSM tool.
  *
  */
-@Slf4j
 class WindowsServiceManager extends ServiceManager{
+
+    protected static final Logger log = LiberoLogger.getLogger()
 
     NssmWrapper nssm
 
