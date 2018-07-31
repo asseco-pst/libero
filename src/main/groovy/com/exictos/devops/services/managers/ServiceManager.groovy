@@ -73,7 +73,7 @@ abstract class ServiceManager {
         String instancePrefix = LiberoHelper.extractFolderNameFromPackageFile(service._package)
 
         service.installDirectory.eachDir {directory ->
-            if(directory.getName().startsWith(instancePrefix)){
+            if(directory.getName().startsWith(instancePrefix) && LiberoHelper.isValidDeploymentName(directory.getName())){
                 Instance instance = new Instance()
                 instance.setName(directory.getName())
                 instance.setTimestamp(LiberoHelper.extractTimestamp(directory.getName()))

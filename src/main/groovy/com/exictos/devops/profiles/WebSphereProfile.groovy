@@ -109,7 +109,7 @@ class WebSphereProfile extends Profile{
                     newestInstance = instance
             }
 
-            String contextRoot
+            String contextRoot = ""
             wsadmin.getApplicationContextRoot(newestInstance.getName()).readLines().each { line ->
                 if(line.startsWith("Context Root"))
                     contextRoot = line
