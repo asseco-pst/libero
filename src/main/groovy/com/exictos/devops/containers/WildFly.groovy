@@ -1,10 +1,9 @@
 package com.exictos.devops.containers
 
-import ch.qos.logback.classic.Logger
+
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.profiles.WildFlyProfile
 import org.jboss.as.cli.scriptsupport.CLI
-import org.slf4j.LoggerFactory
 
 import java.sql.Timestamp
 
@@ -17,7 +16,6 @@ class WildFly extends Container{
     CLI cli
 
     WildFly(String aHost, int aPort = 9990, String aUsername = null, char[] aPassword = null){
-
         cli = CLI.newInstance()
         profile = new WildFlyProfile(cli)
         profile.host = aHost

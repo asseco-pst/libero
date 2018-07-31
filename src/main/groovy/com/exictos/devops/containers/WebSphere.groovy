@@ -1,10 +1,9 @@
 package com.exictos.devops.containers
 
-import ch.qos.logback.classic.Logger
+
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.WSAdminWrapper
 import com.exictos.devops.profiles.WebSphereProfile
-import org.slf4j.LoggerFactory
 
 import java.sql.Timestamp
 
@@ -27,7 +26,9 @@ class WebSphere extends Container{
      *
      */
     @Override
-    boolean connect() {}
+    boolean connect() {
+        true
+    }
 
     /**
      * Disconnects the CLI from the provided WebSphere server instance
@@ -35,7 +36,7 @@ class WebSphere extends Container{
      */
     @Override
     void disconnect() {
-        false
+        true
     }
 
     /**
