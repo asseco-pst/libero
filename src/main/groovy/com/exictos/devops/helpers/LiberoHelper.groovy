@@ -5,6 +5,7 @@ import org.apache.commons.lang3.SystemUtils
 import groovy.util.logging.Slf4j
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 /**
@@ -176,6 +177,8 @@ class LiberoHelper {
 
     static boolean isValidDeploymentName(String deploymentName)
     {
-        Pattern.matches(NAME_VALIDATOR_REGEX, deploymentName)
+        Pattern pattern = Pattern.compile(NAME_VALIDATOR_REGEX, Pattern.CASE_INSENSITIVE)
+        Matcher matcher = pattern.matcher(deploymentName)
+        matcher.find()
     }
 }
