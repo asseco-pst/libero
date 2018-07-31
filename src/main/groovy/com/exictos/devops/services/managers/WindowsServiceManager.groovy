@@ -38,7 +38,7 @@ class WindowsServiceManager extends ServiceManager{
      */
     boolean stop(Service service)
     {
-        log.info("Stoping service ${service.getName()}...")
+        log.info("Stopping service ${service.getName()}...")
         nssm.run(NssmWrapper.Command.stop, service.name) == 0
     }
 

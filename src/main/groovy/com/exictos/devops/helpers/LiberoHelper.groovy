@@ -16,7 +16,7 @@ import java.util.regex.Pattern
 class LiberoHelper {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
-    private static final String NAME_VALIDATOR_REGEX = "^([A-Za-z0-9_]+)((_v{1})(([1-9]{1,2}.){2,4})|(___))"
+    private static final String NAME_VALIDATOR_REGEX = "^([aA-zZ]+)((_v)(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3})?(___)"
     private static final String VERSION_VALIDATOR_REGEX = "^(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3}\$"
 
     /**
@@ -54,7 +54,7 @@ class LiberoHelper {
      */
     static String extractName(String standardizedName)
     {
-        if(!standardizedName.contains("___"))
+        if(!isValidDeploymentName(standardizedName))
             throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
 
         try{
@@ -70,7 +70,7 @@ class LiberoHelper {
 
     static String extractVersion(String standardizedName)
     {
-        if(!standardizedName.contains("___"))
+        if(!isValidDeploymentName(standardizedName))
             throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
         if(!standardizedName.contains("_v"))
             throw new IllegalArgumentException("Application name provided ${standardizedName} does not contain a version number.")
@@ -92,6 +92,8 @@ class LiberoHelper {
      */
     static Timestamp extractTimestamp(String applicationStandardizedName)
     {
+        if(!applicationStandardizedName.contains("___"))
+            throw new IllegalArgumentException("Application name provided ${applicationStandardizedName} is not valid. Missing the date separator '___'")
 
         String timestamp = applicationStandardizedName.split("___").last()
         timestamp = timestamp.substring(0, DATE_FORMAT.length())
@@ -159,6 +161,9 @@ class LiberoHelper {
      */
     static String extractFolderNameFromPackageFile(File _package)
     {
+        if(!_package.getName().contains(".zip"))
+            throw new IllegalArgumentException("Package file name is not valid. Should be a zip file.")
+
         _package.getName().replace(".zip","")
     }
 
@@ -167,5 +172,10 @@ class LiberoHelper {
             return path.replace("\\","/")
         else
             return path
+    }
+
+    static boolean isValidDeploymentName(String deploymentName)
+    {
+        Pattern.matches(NAME_VALIDATOR_REGEX, deploymentName)
     }
 }
