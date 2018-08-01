@@ -10,7 +10,7 @@ apply plugin:'maven'
 apply plugin:'idea'
 
 group 'com.exictos.devops'
-version '1.2.3'
+version '1.3.0'
 
 repositories {
     maven{
@@ -50,7 +50,7 @@ uploadArchives {
             repository(url: "${nexusUrl}/repository/dcs-maven-releases") {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
-            pom.version = "1.2.3"
+            pom.version = "1.3.0"
             pom.artifactId = "libero"
             pom.groupId = "com.exictos.devops"
         }
