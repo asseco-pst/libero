@@ -1,8 +1,9 @@
 package com.exictos.devops.helpers
 
+import ch.qos.logback.classic.Logger
 import com.exictos.devops.profiles.Instance
 import org.apache.commons.lang3.SystemUtils
-import groovy.util.logging.Slf4j
+
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.regex.Matcher
@@ -13,8 +14,9 @@ import java.util.regex.Pattern
  * Should be refactored into different classes if it gets too big
  *
  */
-@Slf4j
 class LiberoHelper {
+
+    protected static final Logger log = LiberoLogger.getLogger()
 
     private static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
     private static final String NAME_VALIDATOR_REGEX = "^([aA-zZ]+)((_v)(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3})?(___)"

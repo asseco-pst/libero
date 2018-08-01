@@ -12,8 +12,6 @@ import com.exictos.devops.helpers.WSAdminWrapper
  */
 class WebSphereProfile extends Profile{
 
-    protected static final Logger log = LiberoLogger.getLogger()
-
     WSAdminWrapper wsadmin
 
     WebSphereProfile(WSAdminWrapper aWsadmin)
