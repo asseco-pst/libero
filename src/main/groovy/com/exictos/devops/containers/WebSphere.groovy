@@ -7,6 +7,10 @@ import com.exictos.devops.profiles.WebSphereProfile
 
 import java.sql.Timestamp
 
+/**
+ * WebSphere container concrete class. Implements all the necessary methods to manage and deploy applications
+ *
+ */
 class WebSphere extends Container{
 
     WSAdminWrapper wsadmin

@@ -1,8 +1,7 @@
 package com.exictos.devops.profiles
 
-import ch.qos.logback.classic.Logger
+
 import com.exictos.devops.helpers.LiberoHelper
-import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.WSAdminWrapper
 
 /**
@@ -97,6 +96,12 @@ class WebSphereProfile extends Profile{
         return applications
     }
 
+    /**
+     * Gets the context root of an application.
+     *
+     * @param applicationName
+     * @return the context root
+     */
     @Override
     String getApplicationContextRoot(String applicationName) {
         log.info("Getting application context root...")

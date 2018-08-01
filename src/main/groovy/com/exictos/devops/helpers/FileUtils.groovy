@@ -1,5 +1,8 @@
 package com.exictos.devops.helpers
 
+/**
+ * Libero file utils.
+ */
 class FileUtils {
 
     /**

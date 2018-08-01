@@ -10,8 +10,8 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 /**
- * Utils class containing several different helpers methods
- * Should be refactored into different classes if it gets too big
+ * Utils class containing several different helpers methods.
+ * Should be refactored into different classes if it gets too big.
  *
  */
 class LiberoHelper {

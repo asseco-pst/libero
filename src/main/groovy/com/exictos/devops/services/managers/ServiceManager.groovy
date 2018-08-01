@@ -7,6 +7,9 @@ import com.exictos.devops.helpers.NssmWrapper
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.services.Service
 
+/**
+ * The abstract class representing a service manager. Should be extended by concrete classes for each supported OS.
+ */
 abstract class ServiceManager {
 
     protected static final Logger log = LiberoLogger.getLogger()

@@ -2,6 +2,9 @@ package com.exictos.devops.helpers
 
 import ch.qos.logback.classic.Logger
 
+/**
+ * A systems commands runner wrapper.
+ */
 class CmdRunner {
 
     protected static final Logger log = LiberoLogger.getLogger()
