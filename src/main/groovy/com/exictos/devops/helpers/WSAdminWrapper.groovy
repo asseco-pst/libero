@@ -1,12 +1,13 @@
 package com.exictos.devops.helpers
 
-import groovy.util.logging.Slf4j
+import ch.qos.logback.classic.Logger
 
 /**
  * This is a wrapper for WebSphere wsadmin script. It encapsulates the basic logic of calling wsadmin.
  */
-@Slf4j
 class WSAdminWrapper {
+
+    protected static final Logger log = LiberoLogger.getLogger()
 
     String home
     String host

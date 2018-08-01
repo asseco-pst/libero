@@ -1,8 +1,8 @@
 package com.exictos.devops.containers
 
+
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.profiles.WildFlyProfile
-import groovy.util.logging.Slf4j
 import org.jboss.as.cli.scriptsupport.CLI
 
 import java.sql.Timestamp
@@ -11,13 +11,11 @@ import java.sql.Timestamp
  * WildFly container concrete class. Implements all the necessary methods to manage and deploy applications
  *
  */
-@Slf4j
 class WildFly extends Container{
 
     CLI cli
 
     WildFly(String aHost, int aPort = 9990, String aUsername = null, char[] aPassword = null){
-
         cli = CLI.newInstance()
         profile = new WildFlyProfile(cli)
         profile.host = aHost

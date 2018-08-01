@@ -1,9 +1,9 @@
 package com.exictos.devops.containers
 
+import ch.qos.logback.classic.Logger
+import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.Profile
-import groovy.util.logging.Slf4j
-import org.slf4j.MDC
 
 import java.sql.Timestamp
 
@@ -11,8 +11,9 @@ import java.sql.Timestamp
  * Container abstract class
  * Should be extended by WildFly, WebSphere and other concrete containers
  */
-@Slf4j
 abstract class Container {
+
+    protected static final Logger log = LiberoLogger.getLogger()
 
     Profile profile
 
@@ -22,8 +23,8 @@ abstract class Container {
      * @param the full filePath (eg. C:/logs/output.log)
      */
     static void setLogFile(File filePath){
-        MDC.put("filepath", filePath.toString())
-        log.debug("Logging to ${filePath.toString()}")
+        LiberoLogger.setLogFile(filePath.toString())
+        log.debug("Logging to ${filePath}")
     }
 
     /**

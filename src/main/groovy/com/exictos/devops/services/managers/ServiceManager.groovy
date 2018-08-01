@@ -1,14 +1,15 @@
 package com.exictos.devops.services.managers
 
+import ch.qos.logback.classic.Logger
 import com.exictos.devops.helpers.LiberoHelper
+import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.NssmWrapper
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.services.Service
-import groovy.util.logging.Slf4j
-import org.slf4j.MDC
 
-@Slf4j
 abstract class ServiceManager {
+
+    protected static final Logger log = LiberoLogger.getLogger()
 
     /**
      * Sets the file path to log events
@@ -16,7 +17,7 @@ abstract class ServiceManager {
      * @param the full filePath (eg. C:/logs/output.log)
      */
     static void setLogFile(File filePath){
-        MDC.put("filepath", filePath.toString())
+        LiberoLogger.setLogFile(filePath.toString())
         log.debug("Logging to ${filePath.toString()}")
     }
 

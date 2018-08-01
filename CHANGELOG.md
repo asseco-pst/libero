@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.3.0] - 2018-08-01
+### Changed
+    - All classes use the same logger. If a log file is set the console appender is disabled.
+
 ## [1.2.3] - 2018-07-31
 ### Fixed
     - Minor bug with the Pattern matching used to detect invalid deployment names

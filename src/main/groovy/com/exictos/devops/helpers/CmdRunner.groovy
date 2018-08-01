@@ -1,9 +1,10 @@
 package com.exictos.devops.helpers
 
-import groovy.util.logging.Slf4j
+import ch.qos.logback.classic.Logger
 
-@Slf4j
 class CmdRunner {
+
+    protected static final Logger log = LiberoLogger.getLogger()
 
     /**
      * Runs a bash command and returns its exit code
@@ -21,10 +22,9 @@ class CmdRunner {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))
 
-        def line
-
+        String line
         while((line = reader.readLine()) != null){
-            println line
+            log.debug(line)
         }
 
         process.exitValue()

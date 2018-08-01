@@ -1,7 +1,6 @@
 package com.exictos.devops.profiles
 
 import com.exictos.devops.helpers.LiberoHelper
-import groovy.util.logging.Slf4j
 import org.jboss.as.cli.scriptsupport.CLI
 import org.jboss.dmr.ModelNode
 
@@ -12,7 +11,6 @@ import java.sql.Timestamp
  * and the applications installed
  *
  */
-@Slf4j
 class WildFlyProfile extends Profile{
 
     CLI cli

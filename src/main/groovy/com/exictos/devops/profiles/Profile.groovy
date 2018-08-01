@@ -1,11 +1,16 @@
 package com.exictos.devops.profiles
 
+import ch.qos.logback.classic.Logger
+import com.exictos.devops.helpers.LiberoLogger
+
 /**
  * Profile abstract class that represents an application server profile
  * Should be extended by classes such as WildFlyProfile, WebSphereProfile, etc.
  *
  */
 abstract class Profile {
+
+    protected static final Logger log = LiberoLogger.getLogger()
 
     String host = "127.0.0.1"
     int port
