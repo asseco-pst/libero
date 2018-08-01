@@ -1,17 +1,12 @@
 package com.exictos.devops.containers
 
-import ch.qos.logback.classic.LoggerContext
-import ch.qos.logback.classic.PatternLayout
-import ch.qos.logback.classic.encoder.PatternLayoutEncoder
-import ch.qos.logback.core.FileAppender
+
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.WSAdminWrapper
 import com.exictos.devops.profiles.WebSphereProfile
-import groovy.util.logging.Slf4j
 
 import java.sql.Timestamp
 
-@Slf4j
 class WebSphere extends Container{
 
     WSAdminWrapper wsadmin
@@ -32,8 +27,7 @@ class WebSphere extends Container{
      */
     @Override
     boolean connect() {
-    	println "teste"
-        false
+        true
     }
 
     /**
@@ -42,7 +36,7 @@ class WebSphere extends Container{
      */
     @Override
     void disconnect() {
-        false
+        true
     }
 
     /**
