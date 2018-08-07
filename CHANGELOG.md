@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+ - Added literal '-' to name regex validtor to support PortalPFS modules names.
+
 ## [1.3.0] - 2018-08-01
 ### Changed
 - All classes use the same logger. If a log file is set the console appender is disabled.
