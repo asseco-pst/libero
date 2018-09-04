@@ -47,12 +47,19 @@ dependencies {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "${nexusUrl}/repository/dcs-maven-releases") {
+            
+            def url = "${nexusUrl}/repository/dcs-maven-"
+            if(project.version.toString().contains("-SNAPSHOT"))
+                url += "snapshots"
+            else
+                url += "releases"
+
+            repository(url: url) {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
-            pom.version = "1.3.0"
-            pom.artifactId = "libero"
-            pom.groupId = "com.exictos.devops"
+            pom.version = project.version
+            pom.artifactId = project.name
+            pom.groupId = project.group
         }
     }
 }
