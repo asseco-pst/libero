@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+ - Jenkinsfile with declarative pipeline to build and archive the generated jar
+ - Snapshot or release validation when uploading to Maven repo.
+
 ### Fixed
  - Added literal '-' to name regex validtor to support PortalPFS modules names.
 
