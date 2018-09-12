@@ -1,0 +1,44 @@
+{
+  "options": [
+    {
+      "option": "help",
+      "desc": "Show help",
+      "hasArg": false
+    },
+    {
+      "option": "host",
+      "desc": "Hostname or IP",
+      "hasArg": true
+    },
+    {
+      "option": "port",
+      "desc": "Management or SOAP port",
+      "hasArg": true
+    },
+    {
+      "option": "username",
+      "desc": "Application server admin username",
+      "hasArg": true
+    },
+    {
+      "option": "password",
+      "desc": "Application server admin password",
+      "hasArg": true
+    },
+    {
+      "option": "actions",
+      "desc": "Comma separated list of actions to run on the profile",
+      "hasArg": true
+    },
+    {
+      "option": "appName",
+      "desc": "Application Name",
+      "hasArg": true
+    },
+    {
+      "option": "appLocation",
+      "desc": "Path to application package",
+      "hasArg": true
+    }
+  ]
+}
