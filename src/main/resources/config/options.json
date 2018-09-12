@@ -3,42 +3,56 @@
     {
       "option": "help",
       "desc": "Show help",
-      "hasArg": false
+      "hasArg": false,
+      "required": false
+    },
+    {
+      "option": "container",
+      "desc": "The container you wish to deploy to. Can be WildFly - 'wildfly', WebSphere - 'was' or Windows Service - 'ws'",
+      "hasArg": true,
+      "required": true
     },
     {
       "option": "host",
       "desc": "Hostname or IP",
-      "hasArg": true
+      "hasArg": true,
+      "required": false
     },
     {
       "option": "port",
       "desc": "Management or SOAP port",
-      "hasArg": true
+      "hasArg": true,
+      "required": false
     },
     {
       "option": "username",
       "desc": "Application server admin username",
-      "hasArg": true
+      "hasArg": true,
+      "required": false
     },
     {
       "option": "password",
       "desc": "Application server admin password",
-      "hasArg": true
+      "hasArg": true,
+      "required": false
     },
     {
       "option": "actions",
       "desc": "Comma separated list of actions to run on the profile",
-      "hasArg": true
+      "hasArg": true,
+      "required": false
     },
     {
       "option": "appName",
       "desc": "Application Name",
-      "hasArg": true
+      "hasArg": true,
+      "required": false
     },
     {
       "option": "appLocation",
       "desc": "Path to application package",
-      "hasArg": true
+      "hasArg": true,
+      "required": false
     }
   ]
 }

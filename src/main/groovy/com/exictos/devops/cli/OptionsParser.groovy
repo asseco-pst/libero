@@ -1,6 +1,7 @@
 package com.exictos.devops.cli
 
 import groovy.json.JsonSlurper
+import org.apache.commons.cli.MissingArgumentException
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
 
@@ -17,7 +18,12 @@ class OptionsParser {
                     .argName((String)object["option"])
                     .hasArg((boolean)object["hasArg"])
                     .desc((String)object["desc"])
+                    .required((boolean)object["required"])
                     .build()
+
+            if(option.isRequired() && option.getValue() == null)
+                throw new MissingArgumentException(option)
+
             options.addOption(option)
         }
 
