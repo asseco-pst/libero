@@ -52,8 +52,8 @@ gradlew build
 
 **Note:** When using from CLI you can only deploy applications
 
-```sh
-> java -jar libero.jar -help
+```console
+C:\> java -jar libero.jar -help
 
 =========================================
                  HELP
@@ -64,7 +64,7 @@ usage: libero [-appLocation <appLocation>] [-appName <appName>] [-appVersion
        [-wsadmin <wsadmin>]
 
 
-> java -jar libero.jar -container wildfly -host ***REMOVED*** -port 9997 -username admin -password ***REMOVED*** -appName BackOfficeWS -appLocation C:/BackOfficeWSEAR.ear -appVersion 1.2.3
+C:\> java -jar libero.jar -container wildfly -host ***REMOVED*** -port 9997 -username admin -password ***REMOVED*** -appName BackOfficeWS -appLocation C:/BackOfficeWSEAR.ear -appVersion 1.2.3
 
 ```
 
