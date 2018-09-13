@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.4.0] - 2018-09-13
 ### Added
  - Command Line Interface functionality #11
  - Jenkinsfile with declarative pipeline to build and archive the generated jar
