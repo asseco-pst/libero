@@ -68,7 +68,7 @@ C:\> java -jar libero.jar -container wildfly -host ***REMOVED*** -port 9997 -use
 
 ```
 
-### Aa a Groovy Lib
+### As a Groovy Lib
 
 #### Installing an application in a WildFly profile
 
