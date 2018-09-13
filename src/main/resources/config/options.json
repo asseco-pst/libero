@@ -65,6 +65,24 @@
       "desc": "The path to the NSSM executable",
       "hasArg": true,
       "required": false
+    },
+    {
+      "option": "bin",
+      "desc": "The path to the service executable (eg. node.exe)",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "argument",
+      "desc": "The argument to append to the install directory. (usually the entry point file)",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "installDir",
+      "desc": "The path to the directory where you'd like to install the service",
+      "hasArg": true,
+      "required": false
     }
   ]
 }
