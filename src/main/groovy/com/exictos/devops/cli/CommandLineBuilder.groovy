@@ -8,8 +8,14 @@ class CommandLineBuilder {
 
     static CommandLine commandLine(String[] args)
     {
-        CommandLine cmd = cmdParser.parse(getOptions(), args)
+        if(args.contains("-help")){
+            printUsage()
+            return null
+        }
+
+        CommandLine cmd = cmdParser.parse(options, args)
         return cmd
+
     }
 
     static Options getOptions()
