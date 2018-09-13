@@ -55,13 +55,32 @@ gradlew build
 ```console
 C:\> java -jar libero.jar -help
 
-=========================================
-                 HELP
-=========================================
-usage: libero [-appLocation <appLocation>] [-appName <appName>] [-appVersion
-       <appVersion>] -container <container> [-help] [-host <host>] [-nssm
-       <nssm>] [-password <password>] [-port <port>] [-username <username>]
-       [-wsadmin <wsadmin>]
+usage: libero -container <CONTAINER> [-host] [...]
+Install an application in either WildFly, WebSphere or as a Windows
+service
+ -appLocation <APPLOCATION>   The path to the application package
+ -appName <APPNAME>           The application name
+ -appVersion <APPVERSION>     The application version
+ -argument <ARGUMENT>         The argument to append to the install
+                              directory. (usually the entry point file)
+ -bin <BIN>                   The path to the service executable (eg.
+                              node.exe)
+ -container <CONTAINER>       [REQUIRED] The container you wish to deploy
+                              to.
+                              WildFly - 'wildfly'
+                              WebSphere - 'was'
+                              Windows Service - 'ws'
+ -help                        Show help
+ -host <HOST>                 Hostname or IP
+ -installDir <INSTALLDIR>     The path to the directory where you'd like
+                              to install the service
+ -nssm <NSSM>                 The path to the NSSM executable
+ -password <PASSWORD>         Application server admin password
+ -port <PORT>                 Management or SOAP port
+ -username <USERNAME>         Application server admin username
+ -wsadmin <WSADMIN>           The path to WebSphere wsadmin script
+
+Please report issues at https://gitlab.dcs.exictos.com/devops/libero
 
 
 C:\> java -jar libero.jar -container wildfly -host ***REMOVED*** -port 9997 -username admin -password ***REMOVED*** -appName BackOfficeWS -appLocation C:/BackOfficeWSEAR.ear -appVersion 1.2.3
