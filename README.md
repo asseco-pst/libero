@@ -48,7 +48,31 @@ gradlew build
 
 ## Usage
 
-### Installing an application in a WildFly profile
+### As a CLI
+
+**Note:** When using from CLI you can only deploy applications
+
+```sh
+java -jar libero.jar -help
+```
+
+```sh
+=========================================
+                 HELP
+=========================================
+usage: libero [-appLocation <appLocation>] [-appName <appName>] [-appVersion
+       <appVersion>] -container <container> [-help] [-host <host>] [-nssm
+       <nssm>] [-password <password>] [-port <port>] [-username <username>]
+       [-wsadmin <wsadmin>]
+```
+
+```sh
+java -jar libero.jar -container wildfly -host ***REMOVED*** -port 9997 -username admin -password ***REMOVED*** -appName BackOfficeWS -appLocation C:/BackOfficeWSEAR.ear -appVersion 1.2.3
+```
+
+### Aa a Groovy Lib
+
+#### Installing an application in a WildFly profile
 
 ```groovy
 Container wildfly = new WildFly("***REMOVED***", 49990, ***REMOVED***, ***REMOVED***.toCharArray())
@@ -57,7 +81,7 @@ wildfly.connect()
 wildfly.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
 ```
 
-### Installing an application in a WAS profile
+#### Installing an application in a WAS profile
 
 ```groovy
 Container was = new WebSphere("***REMOVED***", 8881, ***REMOVED***, ***REMOVED***.toCharArray(), "C:/IBM/WebSphere/AppServer/bin/wsadmin.bat")
@@ -65,7 +89,7 @@ Container was = new WebSphere("***REMOVED***", 8881, ***REMOVED***, ***REMOVED**
 was.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
 ```
 
-### Starting an application in a WildFly/WebSphere profile
+#### Starting an application in a WildFly/WebSphere profile
 
 ```groovy
 Container appserver = new WildFly/WebSphere(...)
@@ -78,7 +102,7 @@ String deployment = appserver.profile.listInstances("IRC_WS_BB").first().getName
 appserver.startApp(deployment)
 ```
 
-### Listing all installed applications in a profile
+#### Listing all installed applications in a profile
 
 ```groovy
 Container appserver = new WildFly/WebSphere(...)
@@ -99,7 +123,7 @@ Installed applications:
     - ReportingServices
 ```
 
-### Starting most recent applications in a profile
+#### Starting most recent applications in a profile
 
 ```groovy
 Container appserver = new WildFly/WebSphere(...)
@@ -111,7 +135,7 @@ appserver.startMostRecentApps()
 
 ```
 
-### Installing a Windows service
+#### Installing a Windows service
 
 ```groovy
 ServiceManager ws = new ServiceManager()
@@ -126,7 +150,7 @@ Service service = new Service()
 ws.installServiceWithRollback(service)
 ```
 
-### Setting a log file
+#### Setting a log file
 
 If you need Libero to log to a specific file do the following:
 
