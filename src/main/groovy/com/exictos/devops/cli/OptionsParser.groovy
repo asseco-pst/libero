@@ -14,12 +14,16 @@ class OptionsParser {
         Options options = new Options()
 
         for(Object object in data["options"]) {
+
             Option option = Option.builder((String)object["option"])
                     .argName((String)object["option"])
                     .hasArg((boolean)object["hasArg"])
                     .desc((String)object["desc"])
                     .required((boolean)object["required"])
                     .build()
+
+            if(option.getArgName() == "help")
+                return new Options().addOption(option)
 
             if(option.isRequired() && option.getValue() == null)
                 throw new MissingArgumentException(option)
