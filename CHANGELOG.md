@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
+ - Command Line Interface functionality #11
  - Jenkinsfile with declarative pipeline to build and archive the generated jar
  - Snapshot or release validation when uploading to Maven repo.
  - Gradle Shadow plugin to build an uberJar.
