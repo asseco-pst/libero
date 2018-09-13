@@ -1,0 +1,88 @@
+{
+  "options": [
+    {
+      "option": "help",
+      "desc": "Show help",
+      "hasArg": false,
+      "required": false
+    },
+    {
+      "option": "container",
+      "desc": "[REQUIRED] The container you wish to deploy to.\nWildFly - 'wildfly'\nWebSphere - 'was'\nWindows Service - 'ws'",
+      "hasArg": true,
+      "required": true
+    },
+    {
+      "option": "host",
+      "desc": "Hostname or IP",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "port",
+      "desc": "Management or SOAP port",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "username",
+      "desc": "Application server admin username",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "password",
+      "desc": "Application server admin password",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "appName",
+      "desc": "The application name",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "appLocation",
+      "desc": "The path to the application package",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "appVersion",
+      "desc": "The application version",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "wsadmin",
+      "desc": "The path to WebSphere wsadmin script",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "nssm",
+      "desc": "The path to the NSSM executable",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "bin",
+      "desc": "The path to the service executable (eg. node.exe)",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "argument",
+      "desc": "The argument to append to the install directory. (usually the entry point file)",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "installDir",
+      "desc": "The path to the directory where you'd like to install the service",
+      "hasArg": true,
+      "required": false
+    }
+  ]
+}
