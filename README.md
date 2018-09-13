@@ -7,6 +7,8 @@ A container agnostic deployment management tool for application servers
  * [Containers Supported](#containers-supported)
  * [Getting Started](#getting-started)
  * [Usage](#usage)
+    * [As a CLI](#as-a-cli)
+    * [As a Groovy lib](#as-a-groovy-lib)
  * [Uploading artifact to Nexus](#uploading-artifact-to-nexus)
  
 
