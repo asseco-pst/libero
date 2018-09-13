@@ -37,12 +37,6 @@
       "required": false
     },
     {
-      "option": "actions",
-      "desc": "Comma separated list of actions to run on the profile",
-      "hasArg": true,
-      "required": false
-    },
-    {
       "option": "appName",
       "desc": "Application Name",
       "hasArg": true,
@@ -51,6 +45,24 @@
     {
       "option": "appLocation",
       "desc": "Path to application package",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "appVersion",
+      "desc": "Application version",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "wsadmin",
+      "desc": "Path to WebSphere wsadmin script",
+      "hasArg": true,
+      "required": false
+    },
+    {
+      "option": "nssm",
+      "desc": "Path to NSSM executable",
       "hasArg": true,
       "required": false
     }
