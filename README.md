@@ -7,6 +7,8 @@ A container agnostic deployment management tool for application servers
  * [Containers Supported](#containers-supported)
  * [Getting Started](#getting-started)
  * [Usage](#usage)
+    * [As a CLI](#as-a-cli)
+    * [As a Groovy lib](#as-a-groovy-lib)
  * [Uploading artifact to Nexus](#uploading-artifact-to-nexus)
  
 
@@ -24,13 +26,13 @@ Maven:
 <dependency>
     <groupId>com.exictos.devops</groupId>
     <artifactId>libero</artifactId>
-    <version>1.2.0</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
 Gradle:
 ```json
-compile group: 'com.exictos.devops', name: 'libero', version: '1.2.0'
+compile group: 'com.exictos.devops', name: 'libero', version: '1.4.0'
 ```
 
 ### Build from source
@@ -46,7 +48,48 @@ gradlew build
 
 ## Usage
 
-### Installing an application in a WildFly profile
+### As a CLI (since v1.4.0)
+
+**Note:** When using from CLI you can only deploy applications
+
+```console
+C:\> java -jar libero.jar -help
+
+usage: libero -container <CONTAINER> [-host] [...]
+Install an application in either WildFly, WebSphere or as a Windows
+service
+ -appLocation <APPLOCATION>   The path to the application package
+ -appName <APPNAME>           The application name
+ -appVersion <APPVERSION>     The application version
+ -argument <ARGUMENT>         The argument to append to the install
+                              directory. (usually the entry point file)
+ -bin <BIN>                   The path to the service executable (eg.
+                              node.exe)
+ -container <CONTAINER>       [REQUIRED] The container you wish to deploy
+                              to.
+                              WildFly - 'wildfly'
+                              WebSphere - 'was'
+                              Windows Service - 'ws'
+ -help                        Show help
+ -host <HOST>                 Hostname or IP
+ -installDir <INSTALLDIR>     The path to the directory where you'd like
+                              to install the service
+ -nssm <NSSM>                 The path to the NSSM executable
+ -password <PASSWORD>         Application server admin password
+ -port <PORT>                 Management or SOAP port
+ -username <USERNAME>         Application server admin username
+ -wsadmin <WSADMIN>           The path to WebSphere wsadmin script
+
+Please report issues at https://gitlab.dcs.exictos.com/devops/libero
+
+
+C:\> java -jar libero.jar -container wildfly -host ***REMOVED*** -port 9997 -username admin -password ***REMOVED*** -appName BackOfficeWS -appLocation C:/BackOfficeWSEAR.ear -appVersion 1.2.3
+
+```
+
+### As a Groovy Lib
+
+#### Installing an application in a WildFly profile
 
 ```groovy
 Container wildfly = new WildFly("***REMOVED***", 49990, ***REMOVED***, ***REMOVED***.toCharArray())
@@ -55,7 +98,7 @@ wildfly.connect()
 wildfly.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
 ```
 
-### Installing an application in a WAS profile
+#### Installing an application in a WAS profile
 
 ```groovy
 Container was = new WebSphere("***REMOVED***", 8881, ***REMOVED***, ***REMOVED***.toCharArray(), "C:/IBM/WebSphere/AppServer/bin/wsadmin.bat")
@@ -63,7 +106,7 @@ Container was = new WebSphere("***REMOVED***", 8881, ***REMOVED***, ***REMOVED**
 was.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
 ```
 
-### Starting an application in a WildFly/WebSphere profile
+#### Starting an application in a WildFly/WebSphere profile
 
 ```groovy
 Container appserver = new WildFly/WebSphere(...)
@@ -76,7 +119,7 @@ String deployment = appserver.profile.listInstances("IRC_WS_BB").first().getName
 appserver.startApp(deployment)
 ```
 
-### Listing all installed applications in a profile
+#### Listing all installed applications in a profile
 
 ```groovy
 Container appserver = new WildFly/WebSphere(...)
@@ -97,7 +140,7 @@ Installed applications:
     - ReportingServices
 ```
 
-### Starting most recent applications in a profile
+#### Starting most recent applications in a profile
 
 ```groovy
 Container appserver = new WildFly/WebSphere(...)
@@ -109,7 +152,7 @@ appserver.startMostRecentApps()
 
 ```
 
-### Installing a Windows service
+#### Installing a Windows service
 
 ```groovy
 ServiceManager ws = new ServiceManager()
@@ -124,7 +167,7 @@ Service service = new Service()
 ws.installServiceWithRollback(service)
 ```
 
-### Setting a log file
+#### Setting a log file
 
 If you need Libero to log to a specific file do the following:
 
@@ -141,9 +184,9 @@ was.installAppWithRollBack(...)
 
 1. Make sure the project ìnformation specified in ``build.gradle`` is correct
 ```properties
-pom.version = "1.1.0"
-pom.artifactId = "libero"
-pom.groupId = "com.exictos.devops"
+project.version = "1.1.0"
+project.name = "libero"
+project.group = "com.exictos.devops"
 ```
 
 2. Set the following variables in the gradle.properties file:

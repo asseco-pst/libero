@@ -8,8 +8,8 @@ import com.exictos.devops.profiles.Profile
 import java.sql.Timestamp
 
 /**
- * Container abstract class
- * Should be extended by WildFly, WebSphere and other concrete containers
+ * Container abstract class.
+ * Should be extended by WildFly, WebSphere and other concrete containers.
  */
 abstract class Container {
 

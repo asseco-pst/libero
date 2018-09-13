@@ -40,6 +40,12 @@ abstract class Profile {
      */
     abstract List<String> listInstalledApplications()
 
+    /**
+     * Gets the context root of an application.
+     *
+     * @param applicationName
+     * @return the context root
+     */
     abstract String getApplicationContextRoot(String applicationName)
 
 }
