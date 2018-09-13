@@ -8,7 +8,7 @@
     },
     {
       "option": "container",
-      "desc": "The container you wish to deploy to. Can be WildFly - 'wildfly', WebSphere - 'was' or Windows Service - 'ws'",
+      "desc": "[REQUIRED] The container you wish to deploy to.\nWildFly - 'wildfly'\nWebSphere - 'was'\nWindows Service - 'ws'",
       "hasArg": true,
       "required": true
     },
@@ -38,31 +38,31 @@
     },
     {
       "option": "appName",
-      "desc": "Application Name",
+      "desc": "The application name",
       "hasArg": true,
       "required": false
     },
     {
       "option": "appLocation",
-      "desc": "Path to application package",
+      "desc": "The path to the application package",
       "hasArg": true,
       "required": false
     },
     {
       "option": "appVersion",
-      "desc": "Application version",
+      "desc": "The application version",
       "hasArg": true,
       "required": false
     },
     {
       "option": "wsadmin",
-      "desc": "Path to WebSphere wsadmin script",
+      "desc": "The path to WebSphere wsadmin script",
       "hasArg": true,
       "required": false
     },
     {
       "option": "nssm",
-      "desc": "Path to NSSM executable",
+      "desc": "The path to the NSSM executable",
       "hasArg": true,
       "required": false
     }

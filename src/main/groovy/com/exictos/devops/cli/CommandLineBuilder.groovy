@@ -9,8 +9,8 @@ class CommandLineBuilder {
     static CommandLine commandLine(String[] args)
     {
         if(args.contains("-help")){
-            printUsage()
-            return null
+            printHelp()
+            System.exit(0)
         }
 
         CommandLine cmd = cmdParser.parse(options, args)
@@ -24,18 +24,15 @@ class CommandLineBuilder {
         return options
     }
 
-    static void printUsage()
+    static void printHelp()
     {
         final HelpFormatter formatter = new HelpFormatter()
-        final String syntax = "libero"
+        String syntax = "libero -container <CONTAINER> [-host] [...]"
 
-        println("\n=========================================")
-        println("                 HELP                    ")
-        println("=========================================")
+        final String header = "Install an application in either WildFly, WebSphere or as a Windows service\n"
+        final String footer = "\nPlease report issues at https://gitlab.dcs.exictos.com/devops/libero"
 
-        final PrintWriter pw = new PrintWriter(System.out)
-        formatter.printUsage(pw, 80, syntax, options)
-        pw.flush()
+        formatter.printHelp(syntax, header, options, footer)
     }
 
 }

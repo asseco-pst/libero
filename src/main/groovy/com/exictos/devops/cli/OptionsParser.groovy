@@ -15,7 +15,7 @@ class OptionsParser {
         for(Object object in data["options"]) {
 
             Option option = Option.builder((String)object["option"])
-                    .argName((String)object["option"])
+                    .argName(((String)(object["option"])).toUpperCase())
                     .hasArg((boolean)object["hasArg"])
                     .desc((String)object["desc"])
                     .required((boolean)object["required"])
