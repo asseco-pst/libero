@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [1.4.0] - 2018-09-13
+## :arrow_forward: v1.4.0 <sup>2018-09-13</sup>
 ### Added
  - Command Line Interface functionality #11
  - Jenkinsfile with declarative pipeline to build and archive the generated jar
@@ -15,25 +15,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
  - Gradle Shadow plugin to build an uberJar.
 
 ### Fixed
- - Added literal '-' to name regex validtor to support PortalPFS modules names.
+ - Added literal '-' to name regex validator to support PortalPFS modules names.
 
-## [1.3.0] - 2018-08-01
+## :arrow_forward: v1.3.0 <sup>2018-08-01</sup>
 ### Changed
 - All classes use the same logger. If a log file is set the console appender is disabled.
 
-## [1.2.3] - 2018-07-31
+## :arrow_forward: v1.2.3 <sup>2018-07-31</sup>
 ### Fixed
 - Minor bug with the Pattern matching used to detect invalid deployment names
 
-## [1.2.2] - 2018-07-31
+## :arrow_forward: v1.2.2 <sup>2018-07-31</sup>
 ### Fixed
 - Minor bug when looking for installed instances of Windows Services
 
-## [1.2.1] - 2018-07-30
+## :arrow_forward: v1.2.1 <sup>2018-07-30</sup>
 ### Fixed
 - NSSM executable path is passed as an argument in the WindowsServiceManager constructor, instead of using an exe included in the jar file.
 
-## [1.2.0] - 2018-07-30
+## :arrow_forward: v1.2.0 <sup>2018-07-30</sup>
 ### Added 
 - More verbose logging
 - WildFly profile can now return a running application's context root
@@ -42,16 +42,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Applications can be installed with a version number and a specific timestamp (#7)
 
-## [1.1.0] - 2018-07-24
+## :arrow_forward: v1.1.0 <sup>2018-07-24</sup>
 ### Changed
 - Logging strategy now allows to specify a file to log to.
 
-## [1.0.0] - 2018-07-17
+## :arrow_forward: v1.0.0 <sup>2018-07-17</sup>
 ### Added
 - Gradle task to upload archive to Nexus Repository
 - Use File class instead of Strings for files
 
-## [1.0.0-beta] - 2018-06-20
+## :arrow_forward: v1.0.0-beta <sup>2018-06-20</sup>
 
 ### Added
 - Deployment manager support for WildFly
