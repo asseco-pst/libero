@@ -135,7 +135,11 @@ class LiberoHelper {
     }
 
     static String getCurrentTimestamp(){
-        new Date().format(DATE_FORMAT).toString()
+
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT)
+        Date now = new Date()
+        return sdf.format(now)
+
     }
 
     /**
