@@ -9,6 +9,7 @@ A container agnostic deployment management tool for application servers
  * [Usage](#usage)
     * [As a CLI](#as-a-cli-since-v140)
     * [As a Groovy lib](#as-a-groovy-lib)
+    * [In Jenkins](#in-jenkins)
  * [Uploading artifact to Nexus](#uploading-artifact-to-nexus)
  
 
@@ -179,6 +180,10 @@ was.setLogFile(logFile)
 
 was.installAppWithRollBack(...)
 ```
+
+### In Jenkins
+
+Check out the [wiki](https://gitlab.dcs.exictos.com/devops/libero/wikis/using-libero-in-jenkins)
 
 ## Uploading artifact to Nexus
 
