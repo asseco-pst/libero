@@ -21,15 +21,22 @@ class Libero {
     private String appLocation
     private String appVersion
 
+    private boolean install
+    private boolean start
+    private boolean startMostRecentApps
+    private boolean stopAllApps
+    private boolean uninstallOldInstances
+    private String uninstallAppOldInstances
+
+
+
     /**
      * This method evaluates the arguments received from the CLI and calls the appropriate functions
      * @param cmd
      */
     void run(CommandLine cmd){
 
-        appName = cmd.getOptionValue("appName")
-        appLocation = cmd.getOptionValue("appLocation")
-        appVersion = cmd.getOptionValue("appVersion")
+        populateArguments(cmd)
 
         switch(cmd.getOptionValue("container")){
             case "wildfly":
@@ -38,7 +45,7 @@ class Libero {
                 username = cmd.getOptionValue("username")
                 password = cmd.getOptionValue("password")
 
-                wildfly()
+                wildfly(start, startMostRecentApps,stopAllApps, uninstallOldInstances, uninstallAppOldInstances)
                 break
             case "was":
                 host = cmd.getOptionValue("host")
@@ -63,14 +70,35 @@ class Libero {
 
     }
 
+    private void populateArguments(CommandLine cmd){
+
+        appName = cmd.getOptionValue("appName")
+        appLocation = cmd.getOptionValue("appLocation")
+        appVersion = cmd.getOptionValue("appVersion")
+
+        install = cmd.hasOption("install")
+        start = cmd.hasOption("start")
+        startMostRecentApps = cmd.hasOption("startMostRecentApps")
+        stopAllApps = cmd.hasOption("stopAllApps")
+        uninstallOldInstances = cmd.hasOption("uninstallOldInstances")
+        uninstallAppOldInstances = cmd.getOptionValue("uninstallAppOldInstances")
+
+    }
+
     /**
      * Installs an application in WildFly with rollback using the arguments from the CLI
      */
-    private void wildfly(){
+    private void wildfly(String start, String startMostRecentApps, String stopAllApps, String uninstallOldInstances
+                         , String uninstallAppOldInstances){
 
         Container wildfly = new WildFly(host, port.toInteger(), username, password.toCharArray())
         wildfly.connect()
-        wildfly.installAppWithRollBack(new File(appLocation), appName, appVersion)
+        String deploymentName = wildfly.installAppWithRollBack(new File(appLocation), appName, appVersion)
+
+        if(start)
+            wildfly.startApp(deploymentName)
+
+
 
     }
 
