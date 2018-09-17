@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+ - Use java util SimpleDateFormat to format dates
+
 ## :arrow_forward: v1.4.0 <sup>2018-09-13</sup>
 ### Added
  - Command Line Interface functionality #11
