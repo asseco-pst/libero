@@ -47,7 +47,7 @@ class Libero {
 
                 wildfly(cmd)
                 break
-            case "was":
+            case "websphere":
                 host = cmd.getOptionValue("host")
                 port = cmd.getOptionValue("port")
                 username = cmd.getOptionValue("username")
