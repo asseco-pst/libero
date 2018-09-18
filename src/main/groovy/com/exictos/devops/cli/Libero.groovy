@@ -26,7 +26,7 @@ class Libero {
     private boolean startMostRecentApps
     private boolean stopAllApps
     private boolean uninstallOldInstances
-    private String uninstallAppOldInstances
+    private boolean uninstallAppOldInstances
 
 
 
@@ -45,7 +45,7 @@ class Libero {
                 username = cmd.getOptionValue("username")
                 password = cmd.getOptionValue("password")
 
-                wildfly(start, startMostRecentApps,stopAllApps, uninstallOldInstances, uninstallAppOldInstances)
+                wildfly(cmd)
                 break
             case "was":
                 host = cmd.getOptionValue("host")
@@ -54,7 +54,7 @@ class Libero {
                 password = cmd.getOptionValue("password")
                 String wsadmin = cmd.getOptionValue("wsadmin")
 
-                was(wsadmin)
+                was(wsadmin, cmd)
 
                 break
             case "ws":
@@ -81,35 +81,27 @@ class Libero {
         startMostRecentApps = cmd.hasOption("startMostRecentApps")
         stopAllApps = cmd.hasOption("stopAllApps")
         uninstallOldInstances = cmd.hasOption("uninstallOldInstances")
-        uninstallAppOldInstances = cmd.getOptionValue("uninstallAppOldInstances")
+        uninstallAppOldInstances = cmd.hasOption("uninstallAppOldInstances")
 
     }
 
     /**
-     * Installs an application in WildFly with rollback using the arguments from the CLI
+     * Runs actions specified in the arguments from the CLI in WildFly
      */
-    private void wildfly(String start, String startMostRecentApps, String stopAllApps, String uninstallOldInstances
-                         , String uninstallAppOldInstances){
+    private void wildfly(CommandLine cmd){
 
         Container wildfly = new WildFly(host, port.toInteger(), username, password.toCharArray())
-        wildfly.connect()
-        String deploymentName = wildfly.installAppWithRollBack(new File(appLocation), appName, appVersion)
-
-        if(start)
-            wildfly.startApp(deploymentName)
-
-
+        runActions(wildfly, cmd)
 
     }
 
     /**
-     * Installs an application in WebSphere with rollback using the arguments from the CLI
+     * Runs actions specified in the arguments from the CLI in WebSphere
      */
-    private void was(String wsadmin){
+    private void was(String wsadmin, CommandLine cmd){
 
         Container was = new WebSphere(host, port.toInteger(), username, password.toCharArray(), wsadmin)
-        was.connect()
-        was.installAppWithRollBack(new File(appLocation), appName, appVersion)
+        runActions(was, cmd)
 
     }
 
@@ -128,6 +120,31 @@ class Libero {
 
         ServiceManager wsm = new WindowsServiceManager(new File(nssm))
         wsm.installServiceWithRollback(service)
+
+    }
+
+    private void runActions(Container container, CommandLine cmd){
+
+        container.connect()
+
+        if(install){
+            String deployment = container.installAppWithRollBack(new File(appLocation), appName, appVersion)
+            if(start)
+                container.startApp(deployment)
+        }
+
+        if(startMostRecentApps)
+            container.startMostRecentApps()
+
+        if(stopAllApps)
+            container.stopAllApps()
+
+        if(uninstallOldInstances)
+            container.uninstallOldInstances()
+
+        if(uninstallAppOldInstances)
+            container.uninstallAppOldInstances(cmd.getOptionValue("uninstallAppOldInstances"))
+
 
     }
 
