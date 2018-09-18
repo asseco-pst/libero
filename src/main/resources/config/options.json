@@ -9,7 +9,7 @@
     },
     {
       "option": "container",
-      "desc": "[REQUIRED] The container you wish to deploy to.\nWildFly - 'wildfly'\nWebSphere - 'was'\nWindows Service - 'ws'",
+      "desc": "[REQUIRED] The container you wish to deploy to.\nWildFly - 'wildfly'\nWebSphere - 'websphere'\nWindows Service - 'ws'",
       "hasArg": true,
       "required": true,
       "argName":"CONTAINER"
