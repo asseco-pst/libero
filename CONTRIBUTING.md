@@ -1,3 +1,7 @@
+# General practices
+
+1. Document **every** method in **every** class
+
 # Release a version of this project
 
 ## Create a tag
@@ -20,6 +24,7 @@ git flow release finish
 ## Build the project
 
 1. Run the following command on the root of the project:
+
 ```sh
 gradlew clean build
 ```
@@ -36,3 +41,4 @@ gradlew clean upload
 
 1. Update ``README.md`` file where necessary
 2. Update the project badge `latest release`
+
