@@ -55,7 +55,7 @@ class WSAdminWrapper {
     void installApplication(String pathToPackage, String applicationName)
     {
         String normalizedPath = LiberoHelper.normalizePath(pathToPackage)
-        run("\$AdminApp install ${normalizedPath} {-appname ${applicationName}}")
+        run("\$AdminApp install {${normalizedPath}} {-appname ${applicationName}}")
         saveConfig()
     }
 
