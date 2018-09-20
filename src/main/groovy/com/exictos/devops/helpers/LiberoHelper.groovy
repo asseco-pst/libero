@@ -19,7 +19,7 @@ class LiberoHelper {
     protected static final Logger log = LiberoLogger.getLogger()
 
     private static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
-    private static final String NAME_VALIDATOR_REGEX = "^([aA-zZ\\-]+)((_v)(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3})?(___)"
+    private static final String NAME_VALIDATOR_REGEX = "^([aA-zZ0-9\\-]+)((_v)(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3})?(___)"
     private static final String VERSION_VALIDATOR_REGEX = "^(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3}\$"
 
     /**
