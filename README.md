@@ -59,27 +59,37 @@ C:\> java -jar libero.jar -help
 usage: libero -container <CONTAINER> [-host] [...]
 Install an application in either WildFly, WebSphere or as a Windows
 service
- -appLocation <APPLOCATION>   The path to the application package
- -appName <APPNAME>           The application name
- -appVersion <APPVERSION>     The application version
- -argument <ARGUMENT>         The argument to append to the install
-                              directory. (usually the entry point file)
- -bin <BIN>                   The path to the service executable (eg.
-                              node.exe)
- -container <CONTAINER>       [REQUIRED] The container you wish to deploy
-                              to.
-                              WildFly - 'wildfly'
-                              WebSphere - 'was'
-                              Windows Service - 'ws'
- -help                        Show help
- -host <HOST>                 Hostname or IP
- -installDir <INSTALLDIR>     The path to the directory where you'd like
-                              to install the service
- -nssm <NSSM>                 The path to the NSSM executable
- -password <PASSWORD>         Application server admin password
- -port <PORT>                 Management or SOAP port
- -username <USERNAME>         Application server admin username
- -wsadmin <WSADMIN>           The path to WebSphere wsadmin script
+ -appLocation <APPLOCATION>            The path to the application package
+ -appName <APPNAME>                    The application name
+ -appVersion <APPVERSION>              The application version
+ -argument <ARGUMENT>                  The argument to append to the
+                                       install directory. (usually the
+                                       entry point file)
+ -bin <BIN>                            The path to the service executable
+                                       (eg. node.exe)
+ -container <CONTAINER>                [REQUIRED] The container you wish
+                                       to deploy to.
+                                       WildFly - 'wildfly'
+                                       WebSphere - 'websphere'
+                                       Windows Service - 'ws'
+ -help                                 Show help
+ -host <HOST>                          Hostname or IP
+ -install                              Installs an application with
+                                       rollback
+ -installDir <INSTALLDIR>              The path to the directory where
+                                       you'd like to install the service
+ -nssm <NSSM>                          The path to the NSSM executable
+ -password <PASSWORD>                  Application server admin password
+ -port <PORT>                          Management or SOAP port
+ -start                                Start application after installing
+ -startMostRecentApps                  Start all most recent applications
+ -stopAllApps                          Stops all applications installed
+ -uninstallAppOldInstances <APPNAME>   Uninstalls old instances from an
+                                       application
+ -uninstallOldInstances                Uninstalls all old instances
+ -username <USERNAME>                  Application server admin username
+ -wsadmin <WSADMIN>                    The path to WebSphere wsadmin
+                                       script
 
 Please report issues at https://gitlab.dcs.exictos.com/devops/libero
 
