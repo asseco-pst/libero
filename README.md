@@ -27,13 +27,13 @@ Maven:
 <dependency>
     <groupId>com.exictos.devops</groupId>
     <artifactId>libero</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
 Gradle:
 ```json
-compile group: 'com.exictos.devops', name: 'libero', version: '1.4.0'
+compile group: 'com.exictos.devops', name: 'libero', version: '1.5.0'
 ```
 
 ### Build from source
@@ -49,7 +49,7 @@ gradlew build
 
 ## Usage
 
-### As a CLI (since v1.4.0)
+### As a CLI (since v1.5.0)
 
 **Note:** When using from CLI you can only deploy applications
 

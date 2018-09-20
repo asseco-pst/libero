@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## :arrow_forward: v1.5.0 <sup>2018-09-20</sup>
 ### Added
  - Gradle plugin Launch4j to convert UberJar to EXE file
  - Command Line interface features to support Jenkins integration
