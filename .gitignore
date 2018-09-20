@@ -2,7 +2,6 @@
 .settings
 .classpath
 bin/*
-Main.groovy
 out/
 /bin/
 /build/

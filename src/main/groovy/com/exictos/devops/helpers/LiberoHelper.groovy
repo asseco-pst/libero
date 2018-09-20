@@ -19,11 +19,11 @@ class LiberoHelper {
     protected static final Logger log = LiberoLogger.getLogger()
 
     private static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
-    private static final String NAME_VALIDATOR_REGEX = "^([aA-zZ\\-]+)((_v)(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3})?(___)"
+    private static final String NAME_VALIDATOR_REGEX = "^([aA-zZ0-9\\-]+)((_v)(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3})?(___)"
     private static final String VERSION_VALIDATOR_REGEX = "^(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3}\$"
 
     /**
-     * Returns the application standard name for installation. In the format appName___2018-06-11_17-20-35.pkg
+     * Returns the application standard name for installation. In the format appName___vx.x.x___2018-06-11_17-20-35.pkg
      *
      * @param aPathToPackage
      * @param aApplicationName
@@ -35,7 +35,7 @@ class LiberoHelper {
         if(aVersion != null) {
             if (!Pattern.matches(VERSION_VALIDATOR_REGEX, aVersion))
                 throw new IllegalArgumentException("Version provided ${aVersion} is not valid.")
-            version = "_v${aVersion}"
+            version = "___v${aVersion}"
         }
 
         def now
@@ -135,7 +135,11 @@ class LiberoHelper {
     }
 
     static String getCurrentTimestamp(){
-        new Date().format(DATE_FORMAT).toString()
+
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT)
+        Date now = new Date()
+        return sdf.format(now)
+
     }
 
     /**

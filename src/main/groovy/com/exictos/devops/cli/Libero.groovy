@@ -21,15 +21,22 @@ class Libero {
     private String appLocation
     private String appVersion
 
+    private boolean install
+    private boolean start
+    private boolean startMostRecentApps
+    private boolean stopAllApps
+    private boolean uninstallOldInstances
+    private boolean uninstallAppOldInstances
+
+
+
     /**
      * This method evaluates the arguments received from the CLI and calls the appropriate functions
      * @param cmd
      */
     void run(CommandLine cmd){
 
-        appName = cmd.getOptionValue("appName")
-        appLocation = cmd.getOptionValue("appLocation")
-        appVersion = cmd.getOptionValue("appVersion")
+        populateArguments(cmd)
 
         switch(cmd.getOptionValue("container")){
             case "wildfly":
@@ -38,16 +45,16 @@ class Libero {
                 username = cmd.getOptionValue("username")
                 password = cmd.getOptionValue("password")
 
-                wildfly()
+                wildfly(cmd)
                 break
-            case "was":
+            case "websphere":
                 host = cmd.getOptionValue("host")
                 port = cmd.getOptionValue("port")
                 username = cmd.getOptionValue("username")
                 password = cmd.getOptionValue("password")
                 String wsadmin = cmd.getOptionValue("wsadmin")
 
-                was(wsadmin)
+                was(wsadmin, cmd)
 
                 break
             case "ws":
@@ -63,25 +70,38 @@ class Libero {
 
     }
 
-    /**
-     * Installs an application in WildFly with rollback using the arguments from the CLI
-     */
-    private void wildfly(){
+    private void populateArguments(CommandLine cmd){
 
-        Container wildfly = new WildFly(host, port.toInteger(), username, password.toCharArray())
-        wildfly.connect()
-        wildfly.installAppWithRollBack(new File(appLocation), appName, appVersion)
+        appName = cmd.getOptionValue("appName")
+        appLocation = cmd.getOptionValue("appLocation")
+        appVersion = cmd.getOptionValue("appVersion")
+
+        install = cmd.hasOption("install")
+        start = cmd.hasOption("start")
+        startMostRecentApps = cmd.hasOption("startMostRecentApps")
+        stopAllApps = cmd.hasOption("stopAllApps")
+        uninstallOldInstances = cmd.hasOption("uninstallOldInstances")
+        uninstallAppOldInstances = cmd.hasOption("uninstallAppOldInstances")
 
     }
 
     /**
-     * Installs an application in WebSphere with rollback using the arguments from the CLI
+     * Runs actions specified in the arguments from the CLI in WildFly
      */
-    private void was(String wsadmin){
+    private void wildfly(CommandLine cmd){
+
+        Container wildfly = new WildFly(host, port.toInteger(), username, password.toCharArray())
+        runActions(wildfly, cmd)
+
+    }
+
+    /**
+     * Runs actions specified in the arguments from the CLI in WebSphere
+     */
+    private void was(String wsadmin, CommandLine cmd){
 
         Container was = new WebSphere(host, port.toInteger(), username, password.toCharArray(), wsadmin)
-        was.connect()
-        was.installAppWithRollBack(new File(appLocation), appName, appVersion)
+        runActions(was, cmd)
 
     }
 
@@ -100,6 +120,31 @@ class Libero {
 
         ServiceManager wsm = new WindowsServiceManager(new File(nssm))
         wsm.installServiceWithRollback(service)
+
+    }
+
+    private void runActions(Container container, CommandLine cmd){
+
+        container.connect()
+
+        if(install){
+            String deployment = container.installAppWithRollBack(new File(appLocation), appName, appVersion)
+            if(start)
+                container.startApp(deployment)
+        }
+
+        if(startMostRecentApps)
+            container.startMostRecentApps()
+
+        if(stopAllApps)
+            container.stopAllApps()
+
+        if(uninstallOldInstances)
+            container.uninstallOldInstances()
+
+        if(uninstallAppOldInstances)
+            container.uninstallAppOldInstances(cmd.getOptionValue("uninstallAppOldInstances"))
+
 
     }
 

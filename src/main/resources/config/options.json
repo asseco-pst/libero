@@ -4,85 +4,141 @@
       "option": "help",
       "desc": "Show help",
       "hasArg": false,
-      "required": false
+      "required": false,
+      "argName":""
     },
     {
       "option": "container",
-      "desc": "[REQUIRED] The container you wish to deploy to.\nWildFly - 'wildfly'\nWebSphere - 'was'\nWindows Service - 'ws'",
+      "desc": "[REQUIRED] The container you wish to deploy to.\nWildFly - 'wildfly'\nWebSphere - 'websphere'\nWindows Service - 'ws'",
       "hasArg": true,
-      "required": true
+      "required": true,
+      "argName":"CONTAINER"
     },
     {
       "option": "host",
       "desc": "Hostname or IP",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"HOST"
     },
     {
       "option": "port",
       "desc": "Management or SOAP port",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"PORT"
     },
     {
       "option": "username",
       "desc": "Application server admin username",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"USERNAME"
     },
     {
       "option": "password",
       "desc": "Application server admin password",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"PASSWORD"
     },
     {
       "option": "appName",
       "desc": "The application name",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"APPNAME"
     },
     {
       "option": "appLocation",
       "desc": "The path to the application package",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"APPLOCATION"
     },
     {
       "option": "appVersion",
       "desc": "The application version",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"APPVERSION"
     },
     {
       "option": "wsadmin",
       "desc": "The path to WebSphere wsadmin script",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"WSADMIN"
     },
     {
       "option": "nssm",
       "desc": "The path to the NSSM executable",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"NSSM"
     },
     {
       "option": "bin",
       "desc": "The path to the service executable (eg. node.exe)",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"BIN"
     },
     {
       "option": "argument",
       "desc": "The argument to append to the install directory. (usually the entry point file)",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"ARGUMENT"
     },
     {
       "option": "installDir",
       "desc": "The path to the directory where you'd like to install the service",
       "hasArg": true,
-      "required": false
+      "required": false,
+      "argName":"INSTALLDIR"
+    },
+    {
+      "option":"install",
+      "desc":"Installs an application with rollback",
+      "hasArg":false,
+      "required":false,
+      "argName":""
+    },
+    {
+      "option":"start",
+      "desc":"Start application after installing",
+      "hasArg":false,
+      "required":false,
+      "argName":""
+    },
+    {
+      "option":"startMostRecentApps",
+      "desc":"Start all most recent applications",
+      "hasArg":false,
+      "required":false,
+      "argName":""
+    },
+    {
+      "option":"stopAllApps",
+      "desc":"Stops all applications installed",
+      "hasArg":false,
+      "required":false,
+      "argName":""
+    },
+    {
+      "option":"uninstallOldInstances",
+      "desc":"Uninstalls all old instances",
+      "hasArg":false,
+      "required":false,
+      "argName":""
+    },
+    {
+      "option":"uninstallAppOldInstances",
+      "desc":"Uninstalls old instances from an application",
+      "hasArg":true,
+      "required":false,
+      "argName":"APPNAME"
     }
   ]
 }
