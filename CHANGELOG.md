@@ -9,8 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
  - Gradle plugin Launch4j to convert UberJar to EXE file
+ - Command Line interface features to support Jenkins integration
+
 ### Fixed
  - Use java util SimpleDateFormat to format dates
+ - Minor bugs to support Jenkins integration
 
 ## :arrow_forward: v1.4.0 <sup>2018-09-13</sup>
 ### Added
