@@ -51,8 +51,6 @@ gradlew build
 
 ### As a CLI (since v1.4.0)
 
-**Note:** When using from CLI you can only deploy applications
-
 ```console
 C:\> java -jar libero.jar -help
 
