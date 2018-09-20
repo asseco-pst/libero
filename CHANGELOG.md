@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+ - Gradle plugin Launch4j to convert UberJar to EXE file
 ### Fixed
  - Use java util SimpleDateFormat to format dates
 
