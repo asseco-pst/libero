@@ -4,6 +4,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+        classpath 'edu.sc.seis.gradle:launch4j:2.4.4'
     }
 }
 
@@ -11,6 +12,7 @@ apply plugin:'groovy'
 apply plugin:'maven'
 apply plugin:'idea'
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'edu.sc.seis.launch4j'
 
 group 'com.exictos.devops'
 version '1.4.1-SNAPSHOT'
@@ -70,4 +72,10 @@ jar {
     manifest{
         attributes 'Main-Class': 'com.exictos.devops.Main'
     }
+}
+
+launch4j {
+    mainClassName = 'com.exictos.devops.Main'
+    headerType = "console"
+    jar = "${rootDir}/build/libs/${project.tasks.shadowJar.archiveName}"
 }
