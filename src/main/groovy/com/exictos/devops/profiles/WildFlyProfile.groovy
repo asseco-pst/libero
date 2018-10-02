@@ -44,8 +44,13 @@ class WildFlyProfile extends Profile{
                 if(enabledTime.toString() != "undefined")
                     instance.setEnabledTime(new Timestamp(enabledTime.asLong()))
 
-                Timestamp timestamp = LiberoHelper.extractTimestamp(instance.getName())
-                instance.setTimestamp(timestamp)
+                try{
+                    Timestamp timestamp = LiberoHelper.extractTimestamp(instance.getName())
+                    instance.setTimestamp(timestamp)
+                }catch(Exception e){
+                    log.warn("Could not parse application timestamp. Cause: ${e}")
+                }
+
                 instances.add(instance)
             }catch(Exception e) {
                 log.error("Could not get list of all deployments. Cause: ${e.getMessage()}")
@@ -69,9 +74,13 @@ class WildFlyProfile extends Profile{
         try {
             List<Instance> deployments = listAllInstances()
             deployments.each { instance ->
-                if (LiberoHelper.extractName(instance.getName()) == applicationName) {
-                    log.debug("\t${instance.getName()}")
-                    instances.add(instance)
+                try {
+                    if (LiberoHelper.extractName(instance.getName()) == applicationName) {
+                        log.debug("\t${instance.getName()}")
+                        instances.add(instance)
+                    }
+                }catch(Exception e){
+                    log.warn("Could not parse application name. Cause: ${e}")
                 }
             }
             instances = LiberoHelper.oldnessLevel(instances)
@@ -95,10 +104,14 @@ class WildFlyProfile extends Profile{
         try {
             List<Instance> deployments = listAllInstances()
             deployments.each { deployment ->
-                String name = LiberoHelper.extractName(deployment.getName())
-                if (!applications.contains(name)) {
-                    log.debug("\t${name}")
-                    applications.add(name)
+                try {
+                    String name = LiberoHelper.extractName(deployment.getName())
+                    if (!applications.contains(name)) {
+                        log.debug("\t${name}")
+                        applications.add(name)
+                    }
+                }catch(Exception e){
+                    log.warn("Could not parse application name. Cause: ${e}")
                 }
             }
         }catch(Exception e){

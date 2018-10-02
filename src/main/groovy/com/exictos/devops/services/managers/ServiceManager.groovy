@@ -80,7 +80,11 @@ abstract class ServiceManager {
             if(directory.getName().startsWith(instancePrefix) && LiberoHelper.isValidDeploymentName(directory.getName())){
                 Instance instance = new Instance()
                 instance.setName(directory.getName())
-                instance.setTimestamp(LiberoHelper.extractTimestamp(directory.getName()))
+                try{
+                    instance.setTimestamp(LiberoHelper.extractTimestamp(directory.getName()))
+                }catch(Exception e){
+                    log.warn("Could not parse application timestamp. Cause: ${e}")
+                }
                 instances.add(instance)
             }
         }

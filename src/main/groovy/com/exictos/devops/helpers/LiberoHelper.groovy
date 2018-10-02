@@ -75,7 +75,7 @@ class LiberoHelper {
     {
         if(!isValidDeploymentName(standardizedName))
             throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
-        if(!standardizedName.contains("_v"))
+        if(!standardizedName.contains("___v"))
             throw new IllegalArgumentException("Application name provided ${standardizedName} does not contain a version number.")
 
         try{

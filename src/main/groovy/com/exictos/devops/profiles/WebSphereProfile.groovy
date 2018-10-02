@@ -33,7 +33,11 @@ class WebSphereProfile extends Profile{
             deployments.each {deployment ->
                 Instance instance = new Instance()
                 instance.setName(deployment)
-                instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
+                try{
+                    instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
+                }catch(Exception e){
+                    log.warn("Could not parse application timestamp. Cause: ${e}")
+                }
                 instance.setEnabled(wsadmin.isApplicationRunning(deployment))
                 instances.add(instance)
             }
@@ -58,8 +62,11 @@ class WebSphereProfile extends Profile{
         try{
             List<Instance> deployments = listAllInstances()
             deployments.each {instance ->
-                if(LiberoHelper.extractName(instance.getName()) == applicationName) {
-                    instances.add(instance)
+                try{
+                    if(LiberoHelper.extractName(instance.getName()) == applicationName)
+                        instances.add(instance)
+                }catch(Exception e){
+                    log.warn("Could not parse application name. Cause: ${e}")
                 }
             }
             instances = LiberoHelper.oldnessLevel(instances)
@@ -83,9 +90,12 @@ class WebSphereProfile extends Profile{
         try {
             List<Instance> deployments = listAllInstances()
             deployments.each { deployment ->
-                String name = LiberoHelper.extractName(deployment.getName())
-                if (!applications.contains(name) && name != null) {
-                    applications.add(name)
+                try{
+                    String name = LiberoHelper.extractName(deployment.getName())
+                    if (!applications.contains(name) && name != null)
+                        applications.add(name)
+                }catch(Exception e){
+                    log.warn("Could not parse application name. Cause: ${e}")
                 }
             }
         }catch(Exception e){
