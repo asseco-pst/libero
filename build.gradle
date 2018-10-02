@@ -15,7 +15,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'edu.sc.seis.launch4j'
 
 group 'com.exictos.devops'
-version '1.5.0'
+version '1.5.1-SNAPSHOT'
 
 repositories {
     maven{
