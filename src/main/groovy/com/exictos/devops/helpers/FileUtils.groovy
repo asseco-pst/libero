@@ -1,5 +1,7 @@
 package com.exictos.devops.helpers
 
+import java.nio.file.Path
+
 /**
  * Libero file utils.
  */
@@ -51,6 +53,20 @@ class FileUtils {
     {
         def file = new File(folder)
         file.deleteDir()
+    }
+
+    static boolean fileExists(Path aPath) {
+        return new File(aPath.toString()).exists()
+    }
+
+    static File createDirectory(Path aPath) {
+
+        File folder = new File(aPath.toString())
+
+        if(!folder.exists())
+            folder.mkdirs()
+
+        return folder
     }
 
 }

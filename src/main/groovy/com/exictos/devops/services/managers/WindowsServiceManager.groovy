@@ -5,6 +5,7 @@ import com.exictos.devops.helpers.FileUtils
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.NssmWrapper
+import com.exictos.devops.helpers.XHDLogger
 import com.exictos.devops.services.Service
 
 /**
@@ -12,8 +13,6 @@ import com.exictos.devops.services.Service
  *
  */
 class WindowsServiceManager extends ServiceManager{
-
-    protected static final Logger log = LiberoLogger.getLogger()
 
     NssmWrapper nssm
 
@@ -28,7 +27,7 @@ class WindowsServiceManager extends ServiceManager{
      */
     boolean start(Service service)
     {
-        log.info("Starting service ${service.getName()}...")
+        log.log("Starting service ${service.getName()}...")
         nssm.run(NssmWrapper.Command.start, service.name) == 0
     }
 
@@ -39,7 +38,7 @@ class WindowsServiceManager extends ServiceManager{
      */
     boolean stop(Service service)
     {
-        log.info("Stopping service ${service.getName()}...")
+        log.log("Stopping service ${service.getName()}...")
         nssm.run(NssmWrapper.Command.stop, service.name) == 0
     }
 
@@ -50,7 +49,7 @@ class WindowsServiceManager extends ServiceManager{
      */
     boolean remove(Service service)
     {
-        log.info("Uninstalling service ${service.getName()}...")
+        log.log("Uninstalling service ${service.getName()}...")
         nssm.run(NssmWrapper.Command.remove, service.name, "confirm") == 0
     }
 
@@ -83,7 +82,7 @@ class WindowsServiceManager extends ServiceManager{
                     , service.getBin().toString(), service.arguments.first())
         }
         else{
-            log.debug("Service not found")
+            log.log("Service not found")
             install(service._package.toString(), service.installDirectory.toString(), service.getName()
                     , service.getBin().toString(), service.arguments.first())
         }
@@ -101,22 +100,22 @@ class WindowsServiceManager extends ServiceManager{
     @Override
     protected boolean install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
     {
-        log.info("Installing service ${serviceName}...")
+        log.log("Installing service ${serviceName}...")
         def timestamp = LiberoHelper.getCurrentTimestamp()
 
-        log.debug("Copying package to install directory")
+        log.log("Copying package to install directory")
         def newFile = FileUtils.copyFile(pathToPackage, installDirectory)
-        log.debug("Unzipping package in install directory")
+        log.log("Unzipping package in install directory")
         def folder = FileUtils.unzip(newFile)
         def newName = new File(folder).getName()
-        log.debug("Renaming folder with current timestamp")
+        log.log("Renaming folder with current timestamp")
         newName = FileUtils.renameFile(folder,"${newName}___${timestamp}")
 
         if(nssm.run(NssmWrapper.Command.install, serviceName, binPath,["${newName}${File.separator}${argument}"])){
-            log.error("Failed to install ${serviceName}")
+            log.log("Failed to install ${serviceName}")
             return false
         }
-        log.info("Service ${serviceName} installed")
+        log.log("Service ${serviceName} installed")
         return true
     }
 

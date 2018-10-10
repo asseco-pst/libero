@@ -14,21 +14,17 @@ import org.slf4j.LoggerFactory
  */
 class LiberoLogger{
 
-    private static final Logger logger = (Logger)LoggerFactory.getLogger(LiberoLogger.class)
+    Logger logger
 
-    /**
-     * Gets the logger instance with the application wide configurations (ie. file to log to)
-     * @return the logger
-     */
-    static Logger getLogger(){
-        return logger
+    LiberoLogger(){
+        logger = (Logger)LoggerFactory.getLogger(LiberoLogger.class)
     }
 
     /**
      * Sets the file path where to log.
      * @param filePath to the log file
      */
-    static void setLogFile(String filePath)
+    void setLogFile(String filePath)
     {
         logger.setAdditive(false)
         logger.addAppender(getFileAppender(filePath))

@@ -1,13 +1,12 @@
 package com.exictos.devops.helpers
 
 import ch.qos.logback.classic.Logger
+import com.exictos.devops.Application
 
 /**
  * This is a wrapper for WebSphere wsadmin script. It encapsulates the basic logic of calling wsadmin.
  */
-class WSAdminWrapper {
-
-    protected static final Logger log = LiberoLogger.getLogger()
+class WSAdminWrapper{
 
     String home
     String host
@@ -135,11 +134,11 @@ class WSAdminWrapper {
                 "-c \"${command}\""
         CmdRunner.CmdResponse response = CmdRunner.getResponse(cmd)
         if(response.exitCode != 0){
-            log.error(response.getOutput().trim())
+            log.log(response.getOutput().trim())
             throw new RuntimeException("WSAdmin command returned non-zero code(${response.getExitCode()})")
         }
 
-        log.info(response.getOutput().trim())
+        log.log(response.getOutput().trim())
         return response.getOutput().trim()
     }
 

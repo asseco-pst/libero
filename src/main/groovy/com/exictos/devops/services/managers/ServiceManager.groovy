@@ -1,27 +1,28 @@
 package com.exictos.devops.services.managers
 
 import ch.qos.logback.classic.Logger
+import com.exictos.devops.Application
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.NssmWrapper
+import com.exictos.devops.helpers.XHDLogger
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.services.Service
 
 /**
  * The abstract class representing a service manager. Should be extended by concrete classes for each supported OS.
  */
-abstract class ServiceManager {
+abstract class ServiceManager{
 
-    protected static final Logger log = LiberoLogger.getLogger()
-
+    protected XHDLogger log = new Application().getLog()
     /**
      * Sets the file path to log events
      *
      * @param the full filePath (eg. C:/logs/output.log)
      */
-    static void setLogFile(File filePath){
-        LiberoLogger.setLogFile(filePath.toString())
-        log.debug("Logging to ${filePath.toString()}")
+    void setLogFile(File filePath){
+        log.setLogFile(filePath.toString())
+        log.log("Logging to ${filePath}")
     }
 
     /**
@@ -70,9 +71,9 @@ abstract class ServiceManager {
      * @param service
      * @return a list of instances of service installed
      */
-    static List<Instance> listInstances(Service service)
+    List<Instance> listInstances(Service service)
     {
-        log.info("Listing instances of ${service.getName()}...")
+        log.log("Listing instances of ${service.getName()}...")
         List<Instance> instances = new ArrayList<Instance>()
         String instancePrefix = LiberoHelper.extractFolderNameFromPackageFile(service._package)
 
@@ -83,7 +84,7 @@ abstract class ServiceManager {
                 try{
                     instance.setTimestamp(LiberoHelper.extractTimestamp(directory.getName()))
                 }catch(Exception e){
-                    log.warn("Could not parse application timestamp. Cause: ${e}")
+                    log.log("Could not parse application timestamp. Cause: ${e}")
                 }
                 instances.add(instance)
             }
@@ -99,7 +100,7 @@ abstract class ServiceManager {
      */
     void installServiceWithRollback(Service service)
     {
-        log.info("Installing service ${service.getName()} with rollback...")
+        log.log("Installing service ${service.getName()} with rollback...")
         stop(service)
         uninstallOldInstances(service)
         installService(service)
@@ -118,9 +119,9 @@ abstract class ServiceManager {
     * @param service
     * @param oldnessThreshold
     */
-    static void uninstallOldInstances(Service service, int oldnessThreshold = 0)
+    void uninstallOldInstances(Service service, int oldnessThreshold = 0)
     {
-        log.info("uninstalling old instances of ${service.getName()}...")
+        log.log("uninstalling old instances of ${service.getName()}...")
         listInstances(service).each {instance ->
             if(instance.getOldness() > oldnessThreshold)
                 new File(service.installDirectory,instance.getName()).deleteDir()
