@@ -1,9 +1,8 @@
 package com.exictos.devops
 
-import ch.qos.logback.classic.Logger
+
 import com.exictos.devops.cli.CommandLineBuilder
 import com.exictos.devops.cli.Libero
-import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.XHDLogger
 import org.apache.commons.cli.CommandLine
 

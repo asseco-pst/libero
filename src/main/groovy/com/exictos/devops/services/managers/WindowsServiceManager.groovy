@@ -1,11 +1,9 @@
 package com.exictos.devops.services.managers
 
-import ch.qos.logback.classic.Logger
+
 import com.exictos.devops.helpers.FileUtils
 import com.exictos.devops.helpers.LiberoHelper
-import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.NssmWrapper
-import com.exictos.devops.helpers.XHDLogger
 import com.exictos.devops.services.Service
 
 /**

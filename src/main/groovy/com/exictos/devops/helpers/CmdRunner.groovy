@@ -1,6 +1,6 @@
 package com.exictos.devops.helpers
 
-import ch.qos.logback.classic.Logger
+
 import com.exictos.devops.Application
 
 /**

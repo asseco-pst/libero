@@ -1,8 +1,4 @@
 package com.exictos.devops.helpers
-
-import ch.qos.logback.classic.Logger
-import com.exictos.devops.Application
-
 /**
  * This is a wrapper for WebSphere wsadmin script. It encapsulates the basic logic of calling wsadmin.
  */

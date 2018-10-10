@@ -1,8 +1,7 @@
 package com.exictos.devops.profiles
 
-import ch.qos.logback.classic.Logger
+
 import com.exictos.devops.Application
-import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.XHDLogger
 
 /**

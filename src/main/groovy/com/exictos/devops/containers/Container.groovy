@@ -1,8 +1,7 @@
 package com.exictos.devops.containers
 
-import ch.qos.logback.classic.Logger
+
 import com.exictos.devops.Application
-import com.exictos.devops.helpers.LiberoLogger
 import com.exictos.devops.helpers.XHDLogger
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.Profile
