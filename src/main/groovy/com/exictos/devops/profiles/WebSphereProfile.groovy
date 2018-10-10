@@ -3,6 +3,7 @@ package com.exictos.devops.profiles
 
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.WSAdminWrapper
+import com.exictos.devops.helpers.XHDLogger
 
 /**
  * This class represents a concrete WebSphere profile, and implements methods to get information about the profile
@@ -13,9 +14,10 @@ class WebSphereProfile extends Profile{
 
     WSAdminWrapper wsadmin
 
-    WebSphereProfile(WSAdminWrapper aWsadmin)
+    WebSphereProfile(WSAdminWrapper aWsadmin, XHDLogger log)
     {
         wsadmin = aWsadmin
+        this.log = log
     }
 
     /**
