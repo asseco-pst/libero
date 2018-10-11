@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
  - Logback for a custom logger to support thread safe logging (#16)
 
+### Added
+ - Unit tests to LiberoHelper class (#6)
+
 ### Fixed
  - Bug when parsing deployed applications (#14)
 

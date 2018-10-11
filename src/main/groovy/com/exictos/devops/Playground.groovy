@@ -9,11 +9,6 @@ class Playground {
     
     static void main(String []args){
 
-        Container wf = new WildFly("***REMOVED***", 9997, ***REMOVED***, ***REMOVED***.toCharArray())
-        wf.setLogFile(new File("C:/logggg.log"))
-        wf.connect()
-        wf.disconnect()
-            
     }
 
 }
