@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+ - Unit tests to LiberoHelper class (#)
+ 
 ### Fixed
  - Bug when parsing deployed applications (#14)
 
