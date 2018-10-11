@@ -35,7 +35,7 @@ class LiberoHelperTests extends GroovyTestCase {
     @Test
     void testExtractName(){
 
-        String actual = LiberoHelper.extractName(standardizedName)
+        String actual = new LiberoHelper().extractName(standardizedName)
         assertEquals("Could not extract name successfully", appName, actual)
 
     }
@@ -43,7 +43,7 @@ class LiberoHelperTests extends GroovyTestCase {
     @Test
     void testExtractVersion(){
 
-        String actual = LiberoHelper.extractVersion(standardizedName)
+        String actual = new LiberoHelper().extractVersion(standardizedName)
         assertEquals("Could not extract version successfully", version, actual)
 
     }
