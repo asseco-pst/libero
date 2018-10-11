@@ -99,5 +99,4 @@ class LiberoHelperTests extends GroovyTestCase {
         assertTrue("Instance 2 oldness should be greater than instance 1", instances.last().getOldness() > instances.first().getOldness())
     }
 
-
 }
