@@ -17,7 +17,7 @@ class WildFly extends Container{
 
     WildFly(String aHost, int aPort = 9990, String aUsername = null, char[] aPassword = null){
         cli = CLI.newInstance()
-        profile = new WildFlyProfile(cli)
+        profile = new WildFlyProfile(cli, log)
         profile.host = aHost
         profile.port = aPort
         profile.username = aUsername
@@ -31,13 +31,13 @@ class WildFly extends Container{
     @Override
     boolean connect()
     {
-        log.info("Connecting ${profile.username}@${profile.host}:${profile.port}")
+        log.log("Connecting ${profile.username}@${profile.host}:${profile.port}")
         try{
             cli.connect(profile.host, profile.port, profile.username, profile.password)
             takeSnapshot()
             return true
         }catch(Exception e){
-            log.error("Unable to connect to controller ${profile.host}:${profile.port}. Cause: ${e}")
+            log.log("Unable to connect to controller ${profile.host}:${profile.port}. Cause: ${e}")
             throw e
         }
     }
@@ -48,7 +48,7 @@ class WildFly extends Container{
     @Override
     void disconnect()
     {
-        log.info("Disconnecting CLI")
+        log.log("Disconnecting CLI")
         cli.disconnect()
         profile.connected = false
     }
@@ -64,18 +64,18 @@ class WildFly extends Container{
     protected String installApp(File aPathToPackage, String aApplicationName, String aApplicationVersion = null
                                  , Timestamp aTimestamp = null)
     {
-        log.info("Installing application ${aApplicationName} from package at ${aPathToPackage}...")
+        log.log("Installing application ${aApplicationName} from package at ${aPathToPackage}...")
         try{
             String name = LiberoHelper.standardizeName(aPathToPackage.getAbsolutePath(), aApplicationName, aApplicationVersion
                     , aTimestamp)
             cli.cmd("deploy --name=${name} --runtime-name=${name} ${aPathToPackage.getAbsolutePath()} --disabled")
-            log.info("${aApplicationName} installed successfully as ${name}")
+            log.log("${aApplicationName} installed successfully as ${name}")
             return name
         }catch(IllegalArgumentException iae) {
-            log.error "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${iae}"
+            log.log "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${iae}"
             throw iae
         }catch(Exception e){
-            log.error "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${e}"
+            log.log "Could not install application ${aApplicationName} from package ${aPathToPackage}. Cause: ${e}"
             throw e
         }
     }
@@ -88,12 +88,12 @@ class WildFly extends Container{
     @Override
     void startApp(String deploymentName)
     {
-        log.info("Starting application: ${deploymentName}...")
+        log.log("Starting application: ${deploymentName}...")
         try{
             cli.cmd("deploy --name=${deploymentName}")
-            log.info("Deployment ${deploymentName} started.")
+            log.log("Deployment ${deploymentName} started.")
         }catch(Exception e){
-            log.error("Could not start application ${deploymentName}. Cause: ${e}")
+            log.log("Could not start application ${deploymentName}. Cause: ${e}")
             throw e
         }
     }
@@ -107,12 +107,12 @@ class WildFly extends Container{
     @Override
     void stopApp(String deploymentName)
     {
-        log.info("Stopping deployment ${deploymentName}...")
+        log.log("Stopping deployment ${deploymentName}...")
         try{
             cli.cmd("undeploy ${deploymentName} --keep-content")
-            log.info("Deployment ${deploymentName} stopped")
+            log.log("Deployment ${deploymentName} stopped")
         }catch(Exception e){
-            log.error("Could not stop deployment: ${deploymentName}. Cause: ${e}")
+            log.log("Could not stop deployment: ${deploymentName}. Cause: ${e}")
             throw e
         }
     }
@@ -125,12 +125,12 @@ class WildFly extends Container{
     @Override
     void uninstallApp(String deploymentName)
     {
-        log.info("Uninstalling deployment ${deploymentName}...")
+        log.log("Uninstalling deployment ${deploymentName}...")
         try{
             cli.cmd("/deployment=${deploymentName}:remove()")
-            log.info("Deployment ${deploymentName} uninstalled.")
+            log.log("Deployment ${deploymentName} uninstalled.")
         }catch(Exception e){
-            log.error "Could not uninstall ${deploymentName}. Cause: ${e}"
+            log.log "Could not uninstall ${deploymentName}. Cause: ${e}"
             throw e
         }
     }
@@ -142,13 +142,13 @@ class WildFly extends Container{
      */
     void takeSnapshot()
     {
-        log.info("Taking current WildFly configuration snapshot...")
+        log.log("Taking current WildFly configuration snapshot...")
         try{
             def result = cli.cmd(":take-snapshot")
             String path = result.getResponse().get("result").asString()
-            log.info("Snapshot saved at ${path}")
+            log.log("Snapshot saved at ${path}")
         }catch(Exception e){
-            log.error("Could not take snapshot. Cause ${e}")
+            log.log("Could not take snapshot. Cause ${e}")
             throw e
         }
     }

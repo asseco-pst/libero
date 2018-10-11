@@ -1,20 +1,21 @@
 package com.exictos.devops.helpers
 
-import ch.qos.logback.classic.Logger
+
+import com.exictos.devops.Application
 
 /**
  * A systems commands runner wrapper.
  */
-class CmdRunner {
+class CmdRunner{
 
-    protected static final Logger log = LiberoLogger.getLogger()
+    protected XHDLogger log = new Application().getLog()
 
     /**
      * Runs a bash command and returns its exit code
      * @param command
      * @return script exit code
      */
-    static int run(String command)
+    int run(String command)
     {
         ProcessBuilder builder = new ProcessBuilder(command.split(' '))
         builder.redirectErrorStream(true)
@@ -27,7 +28,7 @@ class CmdRunner {
 
         String line
         while((line = reader.readLine()) != null){
-            log.debug(line)
+            log.log(line)
         }
 
         process.exitValue()

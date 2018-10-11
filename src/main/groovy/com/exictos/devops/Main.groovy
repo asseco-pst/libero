@@ -1,14 +1,14 @@
 package com.exictos.devops
 
-import ch.qos.logback.classic.Logger
+
 import com.exictos.devops.cli.CommandLineBuilder
 import com.exictos.devops.cli.Libero
-import com.exictos.devops.helpers.LiberoLogger
+import com.exictos.devops.helpers.XHDLogger
 import org.apache.commons.cli.CommandLine
 
 class Main {
 
-    protected static final Logger log = LiberoLogger.getLogger()
+    protected static XHDLogger log = new Application().getLog()
 
     static void main(String[] args){
 
@@ -17,9 +17,9 @@ class Main {
         try{
             cmd = CommandLineBuilder.commandLine(args)
         }catch(Exception e){
-            log.error("Error parsing command line.")
-            log.debug("Cause: ${e}")
-            return
+            log.log("Error parsing command line.")
+            log.log("Cause: ${e}")
+            throw e
         }
 
         new Libero().run(cmd)
