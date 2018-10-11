@@ -31,7 +31,14 @@ class NssmWrapper {
         String cmd = "${nssmHome}"
         cmd += " ${command.toString()} \"${serviceName}\" \"${parameter}\" \"${arguments.join(" ")}\""
 
-        new CmdRunner().run(cmd)
+        PrintStream original = System.out
+        System.setOut(new PrintStream(new OutputStream() {void write(int b) {}}))
+
+        int exitCode = new CmdRunner().run(cmd)
+
+        System.setOut(original)
+
+        return exitCode
     }
 
     /**
