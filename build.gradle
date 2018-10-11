@@ -34,7 +34,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.codehaus.janino/janino
     compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.8'
     // https://mvnrepository.com/artifact/org.wildfly.core/wildfly-cli
-    compile group: 'org.wildfly.core', name: 'wildfly-cli', version: '4.0.0.Final'
+    compile group: 'org.wildfly.core', name: 'wildfly-cli', version: '6.0.2.Final'
     compile group: 'com.bloidonia', name: 'groovy-common-extensions', version:'0.7.0'
     // https://mvnrepository.com/artifact/commons-cli/commons-cli
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'

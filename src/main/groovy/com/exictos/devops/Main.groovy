@@ -19,7 +19,7 @@ class Main {
         }catch(Exception e){
             log.log("Error parsing command line.")
             log.log("Cause: ${e}")
-            return
+            throw e
         }
 
         new Libero().run(cmd)

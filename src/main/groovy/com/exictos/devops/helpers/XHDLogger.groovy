@@ -43,7 +43,10 @@ class XHDLogger {
 
         String log = String.format("%s%s%s\r\n", (aPrintTimestamp) ? logPrefix : "", (level == Level.ERROR) ? "\n${getStackTrace()}\n" : "", aMessage)
 
-        logsFile << log
+        if(logsFile)
+            logsFile << log
+        else
+            println log
     }
 
     private void createLogsFile() {
