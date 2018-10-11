@@ -1,8 +1,13 @@
 package com.exictos.devops.helpers
+
+import com.exictos.devops.Application
+
 /**
  * This is a wrapper for WebSphere wsadmin script. It encapsulates the basic logic of calling wsadmin.
  */
 class WSAdminWrapper{
+
+    protected XHDLogger log = new Application().getLog()
 
     String home
     String host
@@ -10,12 +15,13 @@ class WSAdminWrapper{
     String username
     char[] password
 
-    WSAdminWrapper(String path, String host, int port, String username, char[] password){
+    WSAdminWrapper(String path, String host, int port, String username, char[] password, XHDLogger logger = null){
         this.home = path
         this.host = host
         this.port = port
         this.username = username
         this.password = password
+        this.log = logger
     }
 
     /**

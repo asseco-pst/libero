@@ -2,6 +2,7 @@ package com.exictos.devops.containers
 
 
 import com.exictos.devops.Application
+import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.XHDLogger
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.Profile
@@ -63,7 +64,7 @@ abstract class Container{
         log.log("           INSTALL APPLICATION WITH ROLLBACK            ")
         log.log("--------------------------------------------------------")
         installApp(pathToPackage, applicationName, applicationVersion, timestamp)
-        uninstallAppOldInstances(applicationName)
+        uninstallAppOldInstances(applicationName, 1)
     }
 
     /**

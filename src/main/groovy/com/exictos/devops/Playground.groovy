@@ -9,6 +9,10 @@ class Playground {
     
     static void main(String []args){
 
+        Container wf = new WildFly("***REMOVED***", 9997, ***REMOVED***, ***REMOVED***.toCharArray())
+        wf.connect()
+        wf.installAppWithRollBack(new File("C:/BackOfficeWSEAR.ear"),"BackOfficeWS","1.2.3")
+        wf.disconnect()
     }
 
 }

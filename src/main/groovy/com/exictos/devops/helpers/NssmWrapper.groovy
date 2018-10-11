@@ -31,7 +31,7 @@ class NssmWrapper {
         String cmd = "${nssmHome}"
         cmd += " ${command.toString()} \"${serviceName}\" \"${parameter}\" \"${arguments.join(" ")}\""
 
-        CmdRunner.run(cmd)
+        new CmdRunner().run(cmd)
     }
 
     /**

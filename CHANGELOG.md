@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
  - Bug when parsing deployed applications (#14)
+ - Oldness threshold when installing app with rollback (#17)
 
 ## :arrow_forward: v1.5.0 <sup>2018-09-20</sup>
 ### Added

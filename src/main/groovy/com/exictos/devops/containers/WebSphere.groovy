@@ -17,7 +17,7 @@ class WebSphere extends Container{
 
     WebSphere(String host, int port, String username, char[] password, String aWsadmin)
     {
-        wsadmin = new WSAdminWrapper(aWsadmin,host,port,username,password)
+        wsadmin = new WSAdminWrapper(aWsadmin,host,port,username,password, log)
         profile = new WebSphereProfile(wsadmin, log)
         profile.host = host
         profile.port = port
