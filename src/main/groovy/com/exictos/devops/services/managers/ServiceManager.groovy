@@ -99,7 +99,7 @@ abstract class ServiceManager{
      */
     void installServiceWithRollback(Service service)
     {
-        log.log("Installing service ${service.getName()} with rollback...")
+        log.log("Installing service ${service.getName()} with rollback")
         stop(service)
         uninstallOldInstances(service)
         installService(service)
@@ -120,7 +120,7 @@ abstract class ServiceManager{
     */
     void uninstallOldInstances(Service service, int oldnessThreshold = 0)
     {
-        log.log("uninstalling old instances of ${service.getName()}...")
+        log.log("Uninstalling old instances of ${service.getName()}...")
         listInstances(service).each {instance ->
             if(instance.getOldness() > oldnessThreshold)
                 new File(service.installDirectory,instance.getName()).deleteDir()
