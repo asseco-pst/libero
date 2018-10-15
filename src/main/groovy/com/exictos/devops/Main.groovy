@@ -22,7 +22,7 @@ class Main {
             throw e
         }
 
-        new Libero().run(cmd)
+        new Libero().run(cmd, log)
 
     }
 
