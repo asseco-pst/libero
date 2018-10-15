@@ -47,6 +47,11 @@ git clone git@gitlab.dcs.exictos.com:devops/libero.git
 gradlew build
 ```
 
+### Run unit tests
+```sh
+gradlew test
+```
+
 ## Usage
 
 ### As a CLI (since v1.4.0)
