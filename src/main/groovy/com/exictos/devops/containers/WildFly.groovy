@@ -68,7 +68,7 @@ class WildFly extends Container{
         try{
             String name = LiberoHelper.standardizeName(aPathToPackage.getAbsolutePath(), aApplicationName, aApplicationVersion
                     , aTimestamp)
-            cli.cmd("deploy --name=${name} --runtime-name=${name} ${aPathToPackage.getAbsolutePath()} --disabled")
+            cli.cmd("deploy --name=${name} --runtime-name=${name} \"${aPathToPackage.getAbsolutePath()}\" --disabled")
             log.log("${aApplicationName} installed successfully as ${name}")
             return name
         }catch(IllegalArgumentException iae) {
