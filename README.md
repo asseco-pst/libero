@@ -6,6 +6,7 @@ A container agnostic deployment management tool for application servers
 
  * [Containers Supported](#containers-supported)
  * [Getting Started](#getting-started)
+ * [Available Gradle tasks](#available-gradle-tasks)
  * [Usage](#usage)
     * [As a CLI](#as-a-cli-since-v140)
     * [As a Groovy lib](#as-a-groovy-lib)
