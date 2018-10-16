@@ -52,6 +52,17 @@ gradlew build
 gradlew test
 ```
 
+## Available Gradle Tasks
+
+This is a list of useful Gradle tasks:
+
+|Task|Description|
+|----|-----------|
+|`gradlew shadowJar`|Creates an UberJar of the project|
+|`gradlew upload`|Uploads the current version to a hosted Nexus|
+|`gradlew createExe`|Creates a `.exe` wrapper around the UberJar|
+|`gradlew groovydoc`|Generates the API documentation|
+
 ## Usage
 
 ### As a CLI (since v1.4.0)
