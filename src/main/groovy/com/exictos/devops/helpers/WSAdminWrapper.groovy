@@ -7,7 +7,7 @@ import com.exictos.devops.Application
  */
 class WSAdminWrapper{
 
-    protected XHDLogger log = new Application().getLog()
+    protected XHDLogger log
 
     String home
     String host
@@ -15,7 +15,7 @@ class WSAdminWrapper{
     String username
     char[] password
 
-    WSAdminWrapper(String path, String host, int port, String username, char[] password, XHDLogger logger = null){
+    WSAdminWrapper(String path, String host, int port, String username, char[] password, XHDLogger logger = new Application().getLog()){
         this.home = path
         this.host = host
         this.port = port
