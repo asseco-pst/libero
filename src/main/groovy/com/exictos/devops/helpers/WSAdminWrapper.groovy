@@ -15,7 +15,7 @@ class WSAdminWrapper{
     String username
     char[] password
 
-    WSAdminWrapper(String path, String host, int port, String username, char[] password, XHDLogger logger = new Application().getLog()){
+    WSAdminWrapper(String path, String host, int port, String username, char[] password, XHDLogger logger = new Application().getLogger()){
         this.home = path
         this.host = host
         this.port = port

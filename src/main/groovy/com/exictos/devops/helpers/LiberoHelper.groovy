@@ -17,7 +17,7 @@ import java.util.regex.Pattern
  */
 class LiberoHelper {
 
-    protected XHDLogger log = new Application().getLog()
+    protected XHDLogger logger = new Application().getLogger()
 
     static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
     private static final String NAME_VALIDATOR_REGEX = "^([aA-zZ0-9\\-]+)((_v)(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3})?(___)"
@@ -67,7 +67,7 @@ class LiberoHelper {
                 name = name.substring(0, name.indexOf("_v"))
             return name
         }catch(Exception e){
-            log.log("Could not parse name ${standardizedName}. Cause: ${e}")
+            logger.log("Could not parse name ${standardizedName}. Cause: ${e}")
             throw e
         }
     }
@@ -83,7 +83,7 @@ class LiberoHelper {
             String version = standardizedName.substring(standardizedName.indexOf("___v") + 4, standardizedName.lastIndexOf("___"))
             return version
         }catch(Exception e){
-            log.log("Could not parse name ${standardizedName}. Cause: ${e}")
+            logger.log("Could not parse name ${standardizedName}. Cause: ${e}")
             throw e
         }
     }

@@ -25,7 +25,7 @@ class WindowsServiceManager extends ServiceManager{
      */
     boolean start(Service service)
     {
-        log.log("Starting service ${service.getName()}...")
+        logger.log("Starting service ${service.getName()}...")
         nssm.run(NssmWrapper.Command.start, service.name) == 0
     }
 
@@ -36,7 +36,7 @@ class WindowsServiceManager extends ServiceManager{
      */
     boolean stop(Service service)
     {
-        log.log("Stopping service ${service.getName()}...")
+        logger.log("Stopping service ${service.getName()}...")
         nssm.run(NssmWrapper.Command.stop, service.name) == 0
     }
 
@@ -47,7 +47,7 @@ class WindowsServiceManager extends ServiceManager{
      */
     boolean remove(Service service)
     {
-        log.log("Uninstalling service ${service.getName()}...")
+        logger.log("Uninstalling service ${service.getName()}...")
         nssm.run(NssmWrapper.Command.remove, service.name, "confirm") == 0
     }
 
@@ -80,7 +80,7 @@ class WindowsServiceManager extends ServiceManager{
                     , service.getBin().toString(), service.arguments.first())
         }
         else{
-            log.log("Service not found")
+            logger.log("Service not found")
             install(service._package.toString(), service.installDirectory.toString(), service.getName()
                     , service.getBin().toString(), service.arguments.first())
         }
@@ -98,22 +98,22 @@ class WindowsServiceManager extends ServiceManager{
     @Override
     protected boolean install(String pathToPackage, String installDirectory, String serviceName, String binPath, String argument)
     {
-        log.log("Installing service ${serviceName}...")
+        logger.log("Installing service ${serviceName}...")
         def timestamp = LiberoHelper.getCurrentTimestamp()
 
-        log.log("Copying package to install directory")
+        logger.log("Copying package to install directory")
         def newFile = FileUtils.copyFile(pathToPackage, installDirectory)
-        log.log("Unzipping package in install directory")
+        logger.log("Unzipping package in install directory")
         def folder = FileUtils.unzip(newFile)
         def newName = new File(folder).getName()
-        log.log("Renaming folder with current timestamp")
+        logger.log("Renaming folder with current timestamp")
         newName = FileUtils.renameFile(folder,"${newName}___${timestamp}")
 
         if(nssm.run(NssmWrapper.Command.install, serviceName, binPath,["${newName}${File.separator}${argument}"])){
-            log.log("Failed to install ${serviceName}")
+            logger.log("Failed to install ${serviceName}")
             return false
         }
-        log.log("Service ${serviceName} installed")
+        logger.log("Service ${serviceName} installed")
         return true
     }
 

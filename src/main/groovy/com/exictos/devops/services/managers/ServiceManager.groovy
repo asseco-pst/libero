@@ -13,15 +13,15 @@ import com.exictos.devops.services.Service
  */
 abstract class ServiceManager{
 
-    protected XHDLogger log = new Application().getLog()
+    protected XHDLogger logger = new Application().getLogger()
     /**
-     * Sets the file path to log events
+     * Sets the file path to logger events
      *
-     * @param the full filePath (eg. C:/logs/output.log)
+     * @param the full filePath (eg. C:/logs/output.logger)
      */
     void setLogFile(File filePath){
-        log.setLogFile(filePath.toString())
-        log.log("Logging to ${filePath}")
+        logger.setLogFile(filePath.toString())
+        logger.log("Logging to ${filePath}")
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class ServiceManager{
      */
     List<Instance> listInstances(Service service)
     {
-        log.log("Listing instances of ${service.getName()}...")
+        logger.log("Listing instances of ${service.getName()}...")
         List<Instance> instances = new ArrayList<Instance>()
         String instancePrefix = LiberoHelper.extractFolderNameFromPackageFile(service._package)
 
@@ -83,7 +83,7 @@ abstract class ServiceManager{
                 try{
                     instance.setTimestamp(LiberoHelper.extractTimestamp(directory.getName()))
                 }catch(Exception e){
-                    log.log("Could not parse application timestamp. Cause: ${e}")
+                    logger.log("Could not parse application timestamp. Cause: ${e}")
                 }
                 instances.add(instance)
             }
@@ -99,7 +99,7 @@ abstract class ServiceManager{
      */
     void installServiceWithRollback(Service service)
     {
-        log.log("Installing service ${service.getName()} with rollback")
+        logger.log("Installing service ${service.getName()} with rollback")
         stop(service)
         uninstallOldInstances(service)
         installService(service)
@@ -120,7 +120,7 @@ abstract class ServiceManager{
     */
     void uninstallOldInstances(Service service, int oldnessThreshold = 0)
     {
-        log.log("Uninstalling old instances of ${service.getName()}...")
+        logger.log("Uninstalling old instances of ${service.getName()}...")
         listInstances(service).each {instance ->
             if(instance.getOldness() > oldnessThreshold)
                 new File(service.installDirectory,instance.getName()).deleteDir()

@@ -8,7 +8,7 @@ import com.exictos.devops.Application
  */
 class CmdRunner{
 
-    protected XHDLogger log = new Application().getLog()
+    protected XHDLogger logger = new Application().getLogger()
 
     /**
      * Runs a bash command and returns its exit code
@@ -28,7 +28,7 @@ class CmdRunner{
 
         String line
         while((line = reader.readLine()) != null){
-            log.log(line)
+            logger.log(line)
         }
 
         process.exitValue()

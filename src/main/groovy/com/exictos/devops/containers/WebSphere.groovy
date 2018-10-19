@@ -17,8 +17,8 @@ class WebSphere extends Container{
 
     WebSphere(String host, int port, String username, char[] password, String aWsadmin)
     {
-        wsadmin = new WSAdminWrapper(aWsadmin,host,port,username,password, log)
-        profile = new WebSphereProfile(wsadmin, log)
+        wsadmin = new WSAdminWrapper(aWsadmin,host,port,username,password, logger)
+        profile = new WebSphereProfile(wsadmin, logger)
         profile.host = host
         profile.port = port
         profile.username = username
@@ -54,15 +54,15 @@ class WebSphere extends Container{
     protected String installApp(File pathToPackage, String applicationName, String applicationVersion
                                 , Timestamp timestamp)
     {
-        log.log("Installing application ${applicationName} from package at ${pathToPackage}...")
+        logger.log("Installing application ${applicationName} from package at ${pathToPackage}...")
         try{
             String name = LiberoHelper.standardizeName(pathToPackage.getAbsolutePath(), applicationName, applicationVersion
                     , timestamp)
             wsadmin.installApplication(pathToPackage.getAbsolutePath(),name)
-            log.log("${applicationName} installed successfully as ${name}")
+            logger.log("${applicationName} installed successfully as ${name}")
             return name
         }catch(Exception e){
-            log.log "Could not install application ${applicationName} from package ${pathToPackage}. Cause: ${e.getMessage()}"
+            logger.log "Could not install application ${applicationName} from package ${pathToPackage}. Cause: ${e.getMessage()}"
             throw e
         }
     }
@@ -75,13 +75,13 @@ class WebSphere extends Container{
     @Override
     void startApp(String deploymentName)
     {
-        log.log("Starting application: ${deploymentName}...")
+        logger.log("Starting application: ${deploymentName}...")
         try{
             if(wsadmin.isAppReady(deploymentName))
                 wsadmin.startApplication(deploymentName)
-            log.log("Deployment ${deploymentName} started.")
+            logger.log("Deployment ${deploymentName} started.")
         }catch(Exception e){
-            log.log("Could not start application ${deploymentName}. Cause: ${e}")
+            logger.log("Could not start application ${deploymentName}. Cause: ${e}")
             throw e
         }
     }
@@ -95,12 +95,12 @@ class WebSphere extends Container{
     @Override
     void stopApp(String deploymentName)
     {
-        log.log("Stopping deployment ${deploymentName}...")
+        logger.log("Stopping deployment ${deploymentName}...")
         try{
             wsadmin.stopApplication(deploymentName)
-            log.log("Deployment ${deploymentName} stopped")
+            logger.log("Deployment ${deploymentName} stopped")
         }catch(Exception e){
-            log.log("Could not stop deployment: ${deploymentName}. Cause: ${e}")
+            logger.log("Could not stop deployment: ${deploymentName}. Cause: ${e}")
             throw e
         }
     }
@@ -113,12 +113,12 @@ class WebSphere extends Container{
     @Override
     void uninstallApp(String deploymentName)
     {
-        log.log("Uninstalling deployment ${deploymentName}...")
+        logger.log("Uninstalling deployment ${deploymentName}...")
         try{
             wsadmin.uninstallApp(deploymentName)
-            log.log("Deployment ${deploymentName} uninstalled.")
+            logger.log("Deployment ${deploymentName} uninstalled.")
         }catch(Exception e){
-            log.log "Could not uninstall ${deploymentName}. Cause: ${e}"
+            logger.log "Could not uninstall ${deploymentName}. Cause: ${e}"
             throw e
         }
     }

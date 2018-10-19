@@ -11,7 +11,7 @@ import com.exictos.devops.helpers.XHDLogger
  */
 abstract class Profile{
 
-    protected XHDLogger log = new Application().getLog()
+    protected XHDLogger logger = new Application().getLogger()
 
     String host = "127.0.0.1"
     int port

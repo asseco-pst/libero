@@ -17,7 +17,7 @@ class WebSphereProfile extends Profile{
     WebSphereProfile(WSAdminWrapper aWsadmin, XHDLogger log)
     {
         wsadmin = aWsadmin
-        this.log = log
+        this.logger = log
     }
 
     /**
@@ -27,7 +27,7 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<Instance> listAllInstances() {
-        log.log("Getting all deployments in profile...")
+        logger.log("Getting all deployments in profile...")
         List<Instance> instances = new ArrayList<Instance>()
 
         try{
@@ -38,13 +38,13 @@ class WebSphereProfile extends Profile{
                 try{
                     instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
                 }catch(Exception e){
-                    log.log("Could not parse application timestamp. Cause: ${e}")
+                    logger.log("Could not parse application timestamp. Cause: ${e}")
                 }
                 instance.setEnabled(wsadmin.isApplicationRunning(deployment))
                 instances.add(instance)
             }
         }catch(Exception e){
-            log.log("Could not get list of all deployments. Cause: ${e.getMessage()}")
+            logger.log("Could not get list of all deployments. Cause: ${e.getMessage()}")
             throw e
         }
 
@@ -59,7 +59,7 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<Instance> listInstances(String applicationName) {
-        log.log("Getting instances of ${applicationName}...")
+        logger.log("Getting instances of ${applicationName}...")
         List<Instance> instances = new ArrayList<Instance>()
         try{
             List<Instance> deployments = listAllInstances()
@@ -68,12 +68,12 @@ class WebSphereProfile extends Profile{
                     if(new LiberoHelper().extractName(instance.getName()) == applicationName)
                         instances.add(instance)
                 }catch(Exception e){
-                    log.log("Could not parse application name. Cause: ${e}")
+                    logger.log("Could not parse application name. Cause: ${e}")
                 }
             }
             instances = LiberoHelper.oldnessLevel(instances)
         }catch(Exception e){
-            log.log("Could not get list of instances of ${applicationName}. Cause: ${e}")
+            logger.log("Could not get list of instances of ${applicationName}. Cause: ${e}")
             throw e
         }
 
@@ -87,7 +87,7 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<String> listInstalledApplications() {
-        log.log("Getting all installed applications...")
+        logger.log("Getting all installed applications...")
         List<String> applications = new ArrayList<String>()
         try {
             List<Instance> deployments = listAllInstances()
@@ -97,11 +97,11 @@ class WebSphereProfile extends Profile{
                     if (!applications.contains(name) && name != null)
                         applications.add(name)
                 }catch(Exception e){
-                    log.log("Could not parse application name. Cause: ${e}")
+                    logger.log("Could not parse application name. Cause: ${e}")
                 }
             }
         }catch(Exception e){
-            log.log("Could not get list of installed applications. Cause: ${e.getMessage()}")
+            logger.log("Could not get list of installed applications. Cause: ${e.getMessage()}")
             throw e
         }
 
@@ -116,7 +116,7 @@ class WebSphereProfile extends Profile{
      */
     @Override
     String getApplicationContextRoot(String applicationName) {
-        log.log("Getting application context root...")
+        logger.log("Getting application context root...")
         try {
             Instance newestInstance = new Instance()
             listInstances(applicationName).each { instance ->
@@ -132,7 +132,7 @@ class WebSphereProfile extends Profile{
             contextRoot = contextRoot.replace("Context Root:  ", "")
             return contextRoot
         }catch(Exception e){
-            log.log("Could not get application ${applicationName} context root. Cause: ${e})")
+            logger.log("Could not get application ${applicationName} context root. Cause: ${e})")
             throw e
         }
     }

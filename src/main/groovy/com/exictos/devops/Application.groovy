@@ -4,6 +4,6 @@ import com.exictos.devops.helpers.XHDLogger
 
 class Application {
 
-    XHDLogger log = new XHDLogger()
+    XHDLogger logger = new XHDLogger()
 
 }

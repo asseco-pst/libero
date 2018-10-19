@@ -8,7 +8,7 @@ import org.apache.commons.cli.CommandLine
 
 class Main {
 
-    protected static XHDLogger log = new Application().getLog()
+    protected static XHDLogger logger = new Application().getLogger()
 
     static void main(String[] args){
 
@@ -17,12 +17,12 @@ class Main {
         try{
             cmd = CommandLineBuilder.commandLine(args)
         }catch(Exception e){
-            log.log("Error parsing command line.")
-            log.log("Cause: ${e}")
+            logger.log("Error parsing command line.")
+            logger.log("Cause: ${e}")
             throw e
         }
 
-        new Libero().run(cmd, log)
+        new Libero().run(cmd, logger)
 
     }
 
