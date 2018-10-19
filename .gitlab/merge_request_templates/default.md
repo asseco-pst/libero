@@ -7,9 +7,9 @@
 
 # Acceptance Criteria:
 
-    * [ ] Unit tests pass
-    * [ ] Project builds without errors (`gradlew build`)
-    * [ ] All new methods are documented with GroovyDoc
+* [ ] Unit tests pass
+* [ ] Project builds without errors (`gradlew build`)
+* [ ] All new methods are documented with GroovyDoc
 
 # What are the relevant issues?
 Closes #
