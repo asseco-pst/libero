@@ -144,7 +144,7 @@ class WSAdminWrapper{
         run("set deployments [\$AdminConfig getid /Deployment:${deploymentName}/];" +
                 "set deploymentObj1 [\$AdminConfig showAttribute \$deployments deployedObject];" +
                 "set targetMap1 [lindex [\$AdminConfig showAttribute \$deploymentObj1 targetMappings] 0];" +
-                "foreach tm \$targetMap1 {\$AdminConfig modify \$tm {{enable ${value}}}")
+                "foreach tm \$targetMap1 {\$AdminConfig modify \$tm {{enable ${value}}}}")
         saveConfig()
     }
 

@@ -59,6 +59,7 @@ class WebSphere extends Container{
             String name = LiberoHelper.standardizeName(pathToPackage.getAbsolutePath(), applicationName, applicationVersion
                     , timestamp)
             wsadmin.installApplication(pathToPackage.getAbsolutePath(),name)
+            wsadmin.disableAutoStart(name)
             logger.log("${applicationName} installed successfully as ${name}")
             return name
         }catch(Exception e){
@@ -119,6 +120,38 @@ class WebSphere extends Container{
             logger.log("Deployment ${deploymentName} uninstalled.")
         }catch(Exception e){
             logger.log "Could not uninstall ${deploymentName}. Cause: ${e}"
+            throw e
+        }
+    }
+
+    /**
+     * Disables application loading when WebSphere boots up
+     *
+     * @param deploymentName
+     */
+    @Override
+    protected void disableAutoStart(String deploymentName) {
+        logger.log("Disabling ${deploymentName} autostart")
+        try{
+            wsadmin.disableAutoStart(deploymentName)
+        }catch(Exception e){
+            logger.log("Could not disable autostart. Cause ${e}")
+            throw e
+        }
+    }
+
+    /**
+     * Enables application loading when WebSphere boots up
+     *
+     * @param deploymentName
+     */
+    @Override
+    protected void enableAutoStart(String deploymentName) {
+        logger.log("Enabling ${deploymentName} autostart")
+        try{
+            wsadmin.enableAutoStart(deploymentName)
+        }catch(Exception e){
+            logger.log("Could not enable autostart. Cause ${e}")
             throw e
         }
     }

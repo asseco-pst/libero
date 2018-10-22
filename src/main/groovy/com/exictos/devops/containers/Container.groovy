@@ -81,8 +81,12 @@ abstract class Container{
     void startMostRecentInstance(String applicationName){
         logger.log("Starting most recent instances of ${applicationName}...")
         profile.listInstances(applicationName).each {instance ->
-            if(instance.getOldness() == 0)
+            if(instance.getOldness() == 0) {
                 startApp(instance.getName())
+                enableAutoStart(instance.getName())
+            }
+            else
+                disableAutoStart(instance.getName())
         }
     }
 
@@ -127,8 +131,9 @@ abstract class Container{
         applications.each {app ->
             List<Instance> instances = profile.listInstances(app)
             instances.each {instance ->
-                if(instance.getOldness() > 0 && instance.isEnabled())
+                if(instance.getOldness() > 0 && instance.isEnabled()){
                     stopApp(instance.getName())
+                }
             }
         }
     }
@@ -189,5 +194,19 @@ abstract class Container{
         }
 
     }
+
+    /**
+     * Disables application loading when container boots up
+     *
+     * @param deploymentName
+     */
+    abstract protected void disableAutoStart(String deploymentName)
+
+    /**
+     * Enables application loading when container boots up
+     *
+     * @param deploymentName
+     */
+    abstract protected void enableAutoStart(String deploymentName)
 
 }
