@@ -3,6 +3,7 @@ package com.exictos.devops.profiles
 
 import com.exictos.devops.helpers.LiberoHelper
 import com.exictos.devops.helpers.WSAdminWrapper
+import com.exictos.devops.helpers.XHDLogger
 
 /**
  * This class represents a concrete WebSphere profile, and implements methods to get information about the profile
@@ -13,9 +14,10 @@ class WebSphereProfile extends Profile{
 
     WSAdminWrapper wsadmin
 
-    WebSphereProfile(WSAdminWrapper aWsadmin)
+    WebSphereProfile(WSAdminWrapper aWsadmin, XHDLogger log)
     {
         wsadmin = aWsadmin
+        this.logger = log
     }
 
     /**
@@ -25,7 +27,7 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<Instance> listAllInstances() {
-        log.info("Getting all deployments in profile...")
+        logger.log("Getting all deployments in profile...")
         List<Instance> instances = new ArrayList<Instance>()
 
         try{
@@ -33,12 +35,16 @@ class WebSphereProfile extends Profile{
             deployments.each {deployment ->
                 Instance instance = new Instance()
                 instance.setName(deployment)
-                instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
+                try{
+                    instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
+                }catch(Exception e){
+                    logger.log("Could not parse application timestamp. Cause: ${e}")
+                }
                 instance.setEnabled(wsadmin.isApplicationRunning(deployment))
                 instances.add(instance)
             }
         }catch(Exception e){
-            log.error("Could not get list of all deployments. Cause: ${e.getMessage()}")
+            logger.log("Could not get list of all deployments. Cause: ${e.getMessage()}")
             throw e
         }
 
@@ -53,18 +59,21 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<Instance> listInstances(String applicationName) {
-        log.info("Getting instances of ${applicationName}...")
+        logger.log("Getting instances of ${applicationName}...")
         List<Instance> instances = new ArrayList<Instance>()
         try{
             List<Instance> deployments = listAllInstances()
             deployments.each {instance ->
-                if(LiberoHelper.extractName(instance.getName()) == applicationName) {
-                    instances.add(instance)
+                try{
+                    if(new LiberoHelper().extractName(instance.getName()) == applicationName)
+                        instances.add(instance)
+                }catch(Exception e){
+                    logger.log("Could not parse application name. Cause: ${e}")
                 }
             }
             instances = LiberoHelper.oldnessLevel(instances)
         }catch(Exception e){
-            log.error("Could not get list of instances of ${applicationName}. Cause: ${e}")
+            logger.log("Could not get list of instances of ${applicationName}. Cause: ${e}")
             throw e
         }
 
@@ -78,18 +87,21 @@ class WebSphereProfile extends Profile{
      */
     @Override
     List<String> listInstalledApplications() {
-        log.info("Getting all installed applications...")
+        logger.log("Getting all installed applications...")
         List<String> applications = new ArrayList<String>()
         try {
             List<Instance> deployments = listAllInstances()
             deployments.each { deployment ->
-                String name = LiberoHelper.extractName(deployment.getName())
-                if (!applications.contains(name) && name != null) {
-                    applications.add(name)
+                try{
+                    String name = new LiberoHelper().extractName(deployment.getName())
+                    if (!applications.contains(name) && name != null)
+                        applications.add(name)
+                }catch(Exception e){
+                    logger.log("Could not parse application name. Cause: ${e}")
                 }
             }
         }catch(Exception e){
-            log.error("Could not get list of installed applications. Cause: ${e.getMessage()}")
+            logger.log("Could not get list of installed applications. Cause: ${e.getMessage()}")
             throw e
         }
 
@@ -104,7 +116,7 @@ class WebSphereProfile extends Profile{
      */
     @Override
     String getApplicationContextRoot(String applicationName) {
-        log.info("Getting application context root...")
+        logger.log("Getting application context root...")
         try {
             Instance newestInstance = new Instance()
             listInstances(applicationName).each { instance ->
@@ -120,7 +132,7 @@ class WebSphereProfile extends Profile{
             contextRoot = contextRoot.replace("Context Root:  ", "")
             return contextRoot
         }catch(Exception e){
-            log.error("Could not get application ${applicationName} context root. Cause: ${e})")
+            logger.log("Could not get application ${applicationName} context root. Cause: ${e})")
             throw e
         }
     }

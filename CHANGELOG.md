@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## :arrow_forward: v1.6.0 <sup>2018-10-22</sup>
+### Changed
+ - Logback for a custom logger to support thread safe logging (#16)
+ - Disabled NSSM logging (#16)
+
+### Added
+ - Unit tests to LiberoHelper class (#6)
+ - Enable/Disable application loading on WebSphere boot (#18) 
+
+### Fixed
+ - Bug when parsing deployed applications (#14)
+ - Oldness threshold when installing app with rollback (#17)
+ - Added double quotes to WildFly package argument
+
 ## :arrow_forward: v1.5.0 <sup>2018-09-20</sup>
 ### Added
  - Gradle plugin Launch4j to convert UberJar to EXE file
@@ -18,7 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## :arrow_forward: v1.4.0 <sup>2018-09-13</sup>
 ### Added
- - Command Line Interface functionality #11
+ - Command Line Interface functionality (#11)
  - Jenkinsfile with declarative pipeline to build and archive the generated jar
  - Snapshot or release validation when uploading to Maven repo.
  - Gradle Shadow plugin to build an uberJar.

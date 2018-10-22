@@ -1,3 +1,14 @@
+# Definition of Done
+
+In order to consider an issue as **Done** all the following should apply:
+
+* [ ] Any config/build changes should be documented
+* [ ] Code review passes
+* [ ] Acceptance criteria:
+    * unit tests passed
+    * project buids/deploys without errors
+    * new methods are documented
+
 # General practices
 
 1. Document **every** method in **every** class

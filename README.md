@@ -6,6 +6,7 @@ A container agnostic deployment management tool for application servers
 
  * [Containers Supported](#containers-supported)
  * [Getting Started](#getting-started)
+ * [Available Gradle tasks](#available-gradle-tasks)
  * [Usage](#usage)
     * [As a CLI](#as-a-cli-since-v140)
     * [As a Groovy lib](#as-a-groovy-lib)
@@ -27,13 +28,13 @@ Maven:
 <dependency>
     <groupId>com.exictos.devops</groupId>
     <artifactId>libero</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 
 Gradle:
 ```json
-compile group: 'com.exictos.devops', name: 'libero', version: '1.5.0'
+compile group: 'com.exictos.devops', name: 'libero', version: '1.6.0'
 ```
 
 ### Build from source
@@ -47,11 +48,25 @@ git clone git@gitlab.dcs.exictos.com:devops/libero.git
 gradlew build
 ```
 
+### Run unit tests
+```sh
+gradlew test
+```
+
+## Available Gradle Tasks
+
+This is a list of useful Gradle tasks:
+
+|Task|Description|
+|----|-----------|
+|`gradlew shadowJar`|Creates an UberJar of the project|
+|`gradlew upload`|Uploads the current version to a hosted Nexus|
+|`gradlew createExe`|Creates a `.exe` wrapper around the UberJar|
+|`gradlew groovydoc`|Generates the API documentation|
+
 ## Usage
 
-### As a CLI (since v1.5.0)
-
-**Note:** When using from CLI you can only deploy applications
+### As a CLI (since v1.4.0)
 
 ```console
 C:\> java -jar libero.jar -help
@@ -199,7 +214,7 @@ Check out the [wiki](https://gitlab.dcs.exictos.com/devops/libero/wikis/using-li
 
 1. Make sure the project ìnformation specified in ``build.gradle`` is correct
 ```properties
-project.version = "1.1.0"
+project.version = "1.6.0"
 project.name = "libero"
 project.group = "com.exictos.devops"
 ```

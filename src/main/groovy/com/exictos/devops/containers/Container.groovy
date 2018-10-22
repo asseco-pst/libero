@@ -1,7 +1,8 @@
 package com.exictos.devops.containers
 
-import ch.qos.logback.classic.Logger
-import com.exictos.devops.helpers.LiberoLogger
+
+import com.exictos.devops.Application
+import com.exictos.devops.helpers.XHDLogger
 import com.exictos.devops.profiles.Instance
 import com.exictos.devops.profiles.Profile
 
@@ -11,20 +12,19 @@ import java.sql.Timestamp
  * Container abstract class.
  * Should be extended by WildFly, WebSphere and other concrete containers.
  */
-abstract class Container {
+abstract class Container{
 
-    protected static final Logger log = LiberoLogger.getLogger()
-
+    protected XHDLogger logger = new Application().getLogger()
     Profile profile
 
     /**
-     * Sets the file path to log events
+     * Sets the file path to logger events
      *
-     * @param the full filePath (eg. C:/logs/output.log)
+     * @param the full filePath (eg. C:/logs/output.logger)
      */
-    static void setLogFile(File filePath){
-        LiberoLogger.setLogFile(filePath.toString())
-        log.debug("Logging to ${filePath}")
+    void setLogFile(File filePath){
+        logger.setLogFile(filePath.toString())
+        logger.log("Logging to ${filePath}")
     }
 
     /**
@@ -59,11 +59,11 @@ abstract class Container {
     String installAppWithRollBack(File pathToPackage, String applicationName, String applicationVersion = null
                                   , Timestamp timestamp = null)
     {
-        log.info("--------------------------------------------------------")
-        log.info("           INSTALL APPLICATION WITH ROLLBACK            ")
-        log.info("--------------------------------------------------------")
+        logger.log("--------------------------------------------------------")
+        logger.log("           INSTALL APPLICATION WITH ROLLBACK            ")
+        logger.log("--------------------------------------------------------")
         installApp(pathToPackage, applicationName, applicationVersion, timestamp)
-        uninstallAppOldInstances(applicationName)
+        uninstallAppOldInstances(applicationName, 1)
     }
 
     /**
@@ -79,10 +79,14 @@ abstract class Container {
      * @param applicationName
      */
     void startMostRecentInstance(String applicationName){
-        log.info("Starting most recent instances of ${applicationName}...")
+        logger.log("Starting most recent instances of ${applicationName}...")
         profile.listInstances(applicationName).each {instance ->
-            if(instance.getOldness() == 0)
+            if(instance.getOldness() == 0) {
                 startApp(instance.getName())
+                enableAutoStart(instance.getName())
+            }
+            else
+                disableAutoStart(instance.getName())
         }
     }
 
@@ -108,9 +112,9 @@ abstract class Container {
      */
     void startMostRecentApps()
     {
-        log.info("--------------------------------------------------------")
-        log.info("               STARTING MOST RECENT APPS                ")
-        log.info("--------------------------------------------------------")
+        logger.log("--------------------------------------------------------")
+        logger.log("               STARTING MOST RECENT APPS                ")
+        logger.log("--------------------------------------------------------")
         stopOldInstances()
         profile.listInstalledApplications().each {app ->
             startMostRecentInstance(app)
@@ -122,13 +126,14 @@ abstract class Container {
      *
      */
     void stopOldInstances(){
-        log.info("Stopping all old instances...")
+        logger.log("Stopping all old instances...")
         List<String> applications = profile.listInstalledApplications()
         applications.each {app ->
             List<Instance> instances = profile.listInstances(app)
             instances.each {instance ->
-                if(instance.getOldness() > 0 && instance.isEnabled())
+                if(instance.getOldness() > 0 && instance.isEnabled()){
                     stopApp(instance.getName())
+                }
             }
         }
     }
@@ -139,9 +144,9 @@ abstract class Container {
      */
     void stopAllApps()
     {
-        log.info("--------------------------------------------------------")
-        log.info("                     STOP ALL APPS                      ")
-        log.info("--------------------------------------------------------")
+        logger.log("--------------------------------------------------------")
+        logger.log("                     STOP ALL APPS                      ")
+        logger.log("--------------------------------------------------------")
         profile.listAllInstances().each {instance ->
             if(instance.isEnabled())
                 stopApp(instance.getName())
@@ -157,9 +162,9 @@ abstract class Container {
      */
     String uninstallAppOldInstances(String applicationName, int oldnessThreshold = 0)
     {
-        log.info("--------------------------------------------------------")
-        log.info("       UNINSTALL ${applicationName} OLD INSTANCES       ")
-        log.info("--------------------------------------------------------")
+        logger.log("--------------------------------------------------------")
+        logger.log("       UNINSTALL ${applicationName} OLD INSTANCES       ")
+        logger.log("--------------------------------------------------------")
 
         String newest = null
         profile.listInstances(applicationName).each {instance ->
@@ -178,9 +183,9 @@ abstract class Container {
      */
     void uninstallOldInstances()
     {
-        log.info("--------------------------------------------------------")
-        log.info("                UNINSTALL OLD INSTANCES                 ")
-        log.info("--------------------------------------------------------")
+        logger.log("--------------------------------------------------------")
+        logger.log("                UNINSTALL OLD INSTANCES                 ")
+        logger.log("--------------------------------------------------------")
 
         List<String> applications = profile.listInstalledApplications()
 
@@ -189,5 +194,19 @@ abstract class Container {
         }
 
     }
+
+    /**
+     * Disables application loading when container boots up
+     *
+     * @param deploymentName
+     */
+    abstract protected void disableAutoStart(String deploymentName)
+
+    /**
+     * Enables application loading when container boots up
+     *
+     * @param deploymentName
+     */
+    abstract protected void enableAutoStart(String deploymentName)
 
 }

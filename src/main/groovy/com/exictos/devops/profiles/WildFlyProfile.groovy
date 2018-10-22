@@ -1,6 +1,7 @@
 package com.exictos.devops.profiles
 
 import com.exictos.devops.helpers.LiberoHelper
+import com.exictos.devops.helpers.XHDLogger
 import org.jboss.as.cli.scriptsupport.CLI
 import org.jboss.dmr.ModelNode
 
@@ -15,8 +16,9 @@ class WildFlyProfile extends Profile{
 
     CLI cli
 
-    WildFlyProfile(CLI aCli){
+    WildFlyProfile(CLI aCli, XHDLogger log){
         cli = aCli
+        this.logger = log
     }
 
     /**
@@ -26,7 +28,7 @@ class WildFlyProfile extends Profile{
      */
     @Override
     List<Instance> listAllInstances(){
-        log.info("Getting all deployments in profile...")
+        logger.log("Getting all deployments in profile...")
         List<Instance> instances = new ArrayList<Instance>()
         def result  = cli.cmd("/deployment=*:read-resource()")
         def response = result.getResponse()
@@ -44,11 +46,16 @@ class WildFlyProfile extends Profile{
                 if(enabledTime.toString() != "undefined")
                     instance.setEnabledTime(new Timestamp(enabledTime.asLong()))
 
-                Timestamp timestamp = LiberoHelper.extractTimestamp(instance.getName())
-                instance.setTimestamp(timestamp)
+                try{
+                    Timestamp timestamp = LiberoHelper.extractTimestamp(instance.getName())
+                    instance.setTimestamp(timestamp)
+                }catch(Exception e){
+                    logger.log("Could not parse application timestamp. Cause: ${e}")
+                }
+
                 instances.add(instance)
             }catch(Exception e) {
-                log.error("Could not get list of all deployments. Cause: ${e.getMessage()}")
+                logger.log("Could not get list of all deployments. Cause: ${e.getMessage()}")
                 throw e
             }
         }
@@ -64,19 +71,23 @@ class WildFlyProfile extends Profile{
      */
     @Override
     List<Instance> listInstances(String applicationName){
-        log.info("Getting instances of ${applicationName}...")
+        logger.log("Getting instances of ${applicationName}...")
         List<Instance> instances = new ArrayList<Instance>()
         try {
             List<Instance> deployments = listAllInstances()
             deployments.each { instance ->
-                if (LiberoHelper.extractName(instance.getName()) == applicationName) {
-                    log.debug("\t${instance.getName()}")
-                    instances.add(instance)
+                try {
+                    if (new LiberoHelper().extractName(instance.getName()) == applicationName) {
+                        logger.log("\t${instance.getName()}")
+                        instances.add(instance)
+                    }
+                }catch(Exception e){
+                    logger.log("Could not parse application name. Cause: ${e}")
                 }
             }
             instances = LiberoHelper.oldnessLevel(instances)
         }catch(Exception e){
-            log.error("Could not get list of instances of ${applicationName}. Cause: ${e.getMessage()}")
+            logger.log("Could not get list of instances of ${applicationName}. Cause: ${e.getMessage()}")
             throw e
         }
 
@@ -90,19 +101,23 @@ class WildFlyProfile extends Profile{
      */
     @Override
     List<String> listInstalledApplications() {
-        log.info("Getting all installed applications...")
+        logger.log("Getting all installed applications...")
         List<String> applications = new ArrayList<String>()
         try {
             List<Instance> deployments = listAllInstances()
             deployments.each { deployment ->
-                String name = LiberoHelper.extractName(deployment.getName())
-                if (!applications.contains(name)) {
-                    log.debug("\t${name}")
-                    applications.add(name)
+                try {
+                    String name = new LiberoHelper().extractName(deployment.getName())
+                    if (!applications.contains(name)) {
+                        logger.log("\t${name}")
+                        applications.add(name)
+                    }
+                }catch(Exception e){
+                    logger.log("Could not parse application name. Cause: ${e}")
                 }
             }
         }catch(Exception e){
-            log.error("Could not get list of installed applications. Cause: ${e.getMessage()}")
+            logger.log("Could not get list of installed applications. Cause: ${e.getMessage()}")
             throw e
         }
 
@@ -119,21 +134,21 @@ class WildFlyProfile extends Profile{
     @Override
     String getApplicationContextRoot(String applicationName)
     {
-        log.info("Getting application context root...")
+        logger.log("Getting application context root...")
         try {
             Instance newestInstance = new Instance()
             listInstances(applicationName).each { instance ->
                 if (instance.getOldness() == 0)
                     newestInstance = instance
             }
-            log.debug("/deployment=${newestInstance.getName()}/subdeployment=*/subsystem=undertow:read-attribute(name=context-root)")
+            logger.log("/deployment=${newestInstance.getName()}/subdeployment=*/subsystem=undertow:read-attribute(name=context-root)")
             def result = cli.cmd("/deployment=${newestInstance.getName()}/subdeployment=*/subsystem=undertow:read-attribute(name=context-root)")
             def response = result.getResponse()
             ModelNode nodes = response.get("result").get(0)
 
             nodes.get("result").asString()
         }catch(Exception e){
-            log.error("Could not get application ${applicationName} context root. Cause: ${e})")
+            logger.log("Could not get application ${applicationName} context root. Cause: ${e})")
             throw e
         }
     }

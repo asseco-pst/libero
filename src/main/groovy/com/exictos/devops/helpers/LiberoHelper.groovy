@@ -1,6 +1,7 @@
 package com.exictos.devops.helpers
 
-import ch.qos.logback.classic.Logger
+
+import com.exictos.devops.Application
 import com.exictos.devops.profiles.Instance
 import org.apache.commons.lang3.SystemUtils
 
@@ -16,9 +17,9 @@ import java.util.regex.Pattern
  */
 class LiberoHelper {
 
-    protected static final Logger log = LiberoLogger.getLogger()
+    protected XHDLogger logger = new Application().getLogger()
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
+    static final String DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss"
     private static final String NAME_VALIDATOR_REGEX = "^([aA-zZ0-9\\-]+)((_v)(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3})?(___)"
     private static final String VERSION_VALIDATOR_REGEX = "^(?:[\\dx]{1,3}\\.){0,3}[\\dx]{1,3}\$"
 
@@ -55,7 +56,7 @@ class LiberoHelper {
      * @param standardizedName
      * @return The application name without the timestamp
      */
-    static String extractName(String standardizedName)
+    String extractName(String standardizedName)
     {
         if(!isValidDeploymentName(standardizedName))
             throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
@@ -66,23 +67,23 @@ class LiberoHelper {
                 name = name.substring(0, name.indexOf("_v"))
             return name
         }catch(Exception e){
-            log.error("Could not parse name ${standardizedName}. Cause: ${e}")
+            logger.log("Could not parse name ${standardizedName}. Cause: ${e}")
             throw e
         }
     }
 
-    static String extractVersion(String standardizedName)
+    String extractVersion(String standardizedName)
     {
         if(!isValidDeploymentName(standardizedName))
             throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
-        if(!standardizedName.contains("_v"))
+        if(!standardizedName.contains("___v"))
             throw new IllegalArgumentException("Application name provided ${standardizedName} does not contain a version number.")
 
         try{
-            String version = standardizedName.substring(standardizedName.indexOf("_v"), standardizedName.indexOf("___"))
+            String version = standardizedName.substring(standardizedName.indexOf("___v") + 4, standardizedName.lastIndexOf("___"))
             return version
         }catch(Exception e){
-            log.error("Could not parse name ${standardizedName}. Cause: ${e}")
+            logger.log("Could not parse name ${standardizedName}. Cause: ${e}")
             throw e
         }
     }
@@ -186,5 +187,20 @@ class LiberoHelper {
         Pattern pattern = Pattern.compile(NAME_VALIDATOR_REGEX, Pattern.CASE_INSENSITIVE)
         Matcher matcher = pattern.matcher(deploymentName)
         matcher.find()
+    }
+
+    static timestamp(boolean aTrimWhiteSpaces = false) {
+
+        SimpleDateFormat sdf
+
+        if(aTrimWhiteSpaces)
+            sdf = new SimpleDateFormat("YYYY-MM-dd_HH-mm-ss")
+        else
+            sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.Ms")
+
+        Date now = new Date()
+
+        return sdf.format(now)
+
     }
 }
