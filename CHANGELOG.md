@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
  - Unit tests to LiberoHelper class (#6)
+ - Enable/Disable application loading on WebSphere boot (#18) 
 
 ### Fixed
  - Bug when parsing deployed applications (#14)
