@@ -135,6 +135,12 @@ class WildFly extends Container{
         }
     }
 
+    @Override
+    protected void disableAutoStart(String deploymentName) {}
+
+    @Override
+    protected void enableAutoStart(String deploymentName) {}
+
     /**
      *  Takes a snapshot of the current server configurations to be restored in case of failure.
      *
