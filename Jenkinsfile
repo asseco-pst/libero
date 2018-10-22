@@ -7,5 +7,11 @@ pipeline {
 				archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
 			}
 		}
+		stage('Deploy') {
+		    steps{
+		        bat 'gradlew createExe'
+		        archiveArtifacts artifacts: '**/build/launch4j/libero.exe', fingerprint:true
+		    }
+		}
 	}
 }
