@@ -118,6 +118,37 @@ class WSAdminWrapper{
     }
 
     /**
+     *  Enables an application loading in all deployed targets
+     * @param deploymentName
+     */
+    void enableAutoStart(String deploymentName){
+        setApplicationLoading(true, deploymentName)
+    }
+
+    /**
+     *  Disables an application loading in all deployed targets
+     *
+     * @param deploymentName
+     */
+    void disableAutoStart(String deploymentName){
+        setApplicationLoading(false, deploymentName)
+    }
+
+    /**
+     * Enables/Disables an application loading in deployed targets
+     *
+     * @param value true to enable and false to disable
+     * @param deploymentName The application deployment name
+     */
+    private void setApplicationLoading(boolean value, String deploymentName){
+        run("set deployments [\$AdminConfig getid /Deployment:${deploymentName}/];" +
+                "set deploymentObj1 [\$AdminConfig showAttribute \$deployments deployedObject];" +
+                "set targetMap1 [lindex [\$AdminConfig showAttribute \$deploymentObj1 targetMappings] 0];" +
+                "foreach tm \$targetMap1 {\$AdminConfig modify \$tm {{enable ${value}}}")
+        saveConfig()
+    }
+
+    /**
      * Saves WAS configuration after a management operation is performed.
      */
     void saveConfig()
