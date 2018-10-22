@@ -232,6 +232,6 @@ nexusPassword=<ldap_password>
 gradlew upload
 ```
 
-## Continous Integration
+## Continuous Integration
 
 There is a pipeline set up, in [Jenkins](http://jenkins.dcs.exictos.com), to read and execute the ``Jenkinsfile`` from this repository.
