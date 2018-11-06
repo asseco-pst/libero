@@ -80,14 +80,18 @@ abstract class Container{
      */
     void startMostRecentInstance(String applicationName){
         logger.log("Starting most recent instances of ${applicationName}...")
+        Instance mostRecent = null
         profile.listInstances(applicationName).each {instance ->
             if(instance.getOldness() == 0) {
-                startApp(instance.getName())
-                enableAutoStart(instance.getName())
+                mostRecent = instance
             }
-            else
+            else{
                 disableAutoStart(instance.getName())
+                stopApp(instance.getName())
+            }
         }
+        startApp(mostRecent.getName())
+        enableAutoStart(mostRecent.getName())
     }
 
     /**

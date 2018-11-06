@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+ - Make sure all instances of an application are stopped before starting another one
+
 ## :arrow_forward: v1.6.1 <sup>2018-11-06</sup>
 ### Fixed
  - Bug when uninstalling old instances

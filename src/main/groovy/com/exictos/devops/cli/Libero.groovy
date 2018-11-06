@@ -153,9 +153,9 @@ class Libero {
         }
 
         if(install){
-            String deployment = container.installAppWithRollBack(new File(appLocation), appName, appVersion)
+            container.installAppWithRollBack(new File(appLocation), appName, appVersion)
             if(start)
-                container.startApp(deployment)
+                container.startMostRecentInstance(appName)
         }
 
         if(startMostRecentApps)
