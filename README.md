@@ -12,6 +12,7 @@ A container agnostic deployment management tool for application servers
     * [As a Groovy lib](#as-a-groovy-lib)
     * [In Jenkins](#in-jenkins)
  * [Uploading artifact to Nexus](#uploading-artifact-to-nexus)
+ * [Continuous Integration](#continuous-integration)
  
 
 ## Containers Supported
@@ -230,3 +231,7 @@ nexusPassword=<ldap_password>
 ```sh
 gradlew upload
 ```
+
+## Continuous Integration
+
+There is a pipeline set up, in [Jenkins](http://jenkins.dcs.exictos.com), to read and execute the ``Jenkinsfile`` from this repository.

@@ -15,7 +15,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'edu.sc.seis.launch4j'
 
 group 'com.exictos.devops'
-version '1.6.1'
+version '1.6.2'
 
 repositories {
     maven{
@@ -76,4 +76,5 @@ launch4j {
     mainClassName = 'com.exictos.devops.Main'
     headerType = "console"
     jar = "${rootDir}/build/libs/${project.tasks.shadowJar.archiveName}"
+    outputDir = "launch4j/libero-${project.version}"
 }
