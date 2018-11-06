@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## :arrow_forward: v1.6.1 <sup>2018-11-06</sup>
+### Fixed
+ - Bug when uninstalling old instances
+
 ## :arrow_forward: v1.6.0 <sup>2018-10-22</sup>
 ### Changed
  - Logback for a custom logger to support thread safe logging (#16)

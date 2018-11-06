@@ -168,12 +168,11 @@ abstract class Container{
 
         String newest = null
         profile.listInstances(applicationName).each {instance ->
+            if(instance.getOldness() == 0)
+                newest = instance.getName()
             if(instance.getOldness() > oldnessThreshold)
                 uninstallApp(instance.getName())
-            else
-                newest = instance.getName()
         }
-
         return newest
     }
 
