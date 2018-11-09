@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+ - Stopping applications will not rethrow exceptions
+
 ## :arrow_forward: v1.6.2 <sup>2018-11-06</sup>
 ### Fixed
  - Make sure all instances of an application are stopped before starting another one
