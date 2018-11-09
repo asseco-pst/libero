@@ -102,7 +102,6 @@ class WebSphere extends Container{
             logger.log("Deployment ${deploymentName} stopped")
         }catch(Exception e){
             logger.log("Could not stop deployment: ${deploymentName}. Cause: ${e}")
-            throw e
         }
     }
 
