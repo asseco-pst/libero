@@ -77,4 +77,5 @@ launch4j {
     headerType = "console"
     jar = "${rootDir}/build/libs/${project.tasks.shadowJar.archiveName}"
     outputDir = "launch4j/libero-${project.version}"
+    icon = "${projectDir}/src/main/resources/libero.ico"
 }
