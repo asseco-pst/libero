@@ -80,7 +80,7 @@ abstract class Container{
      */
     void startMostRecentInstance(String applicationName){
         logger.log("Starting most recent instances of ${applicationName}...")
-        Instance mostRecent = null
+        Instance mostRecent = new Instance()
         profile.listInstances(applicationName).each {instance ->
             if(instance.getOldness() == 0) {
                 mostRecent = instance
