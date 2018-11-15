@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Fixed
- - Bug when parsing application names with underscores '_'
+ - Bug when parsing application names with underscores (eg. eBankaPlus_v2)
 
 ## :arrow_forward: v1.6.3 <sup>2018-11-09</sup>
 ### Changed
