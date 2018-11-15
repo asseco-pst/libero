@@ -62,10 +62,7 @@ class LiberoHelper {
             throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
 
         try{
-            String name = standardizedName.split("___").first()
-            if(name.contains("_v"))
-                name = name.substring(0, name.indexOf("_v"))
-            return name
+            return standardizedName.split("___").first()
         }catch(Exception e){
             logger.log("Could not parse name ${standardizedName}. Cause: ${e}")
             throw e
