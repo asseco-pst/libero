@@ -106,6 +106,13 @@
       "argName":""
     },
     {
+      "option":"installOnly",
+      "desc":"Installs an application",
+      "hasArg":false,
+      "required":false,
+      "argName":""
+    },
+    {
       "option":"start",
       "desc":"Start application after installing",
       "hasArg":false,

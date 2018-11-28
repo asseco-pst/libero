@@ -33,6 +33,7 @@ class Libero {
     private String installDir
 
     private boolean install
+    private boolean installOnly
     private boolean start
     private boolean startMostRecentApps
     private boolean stopAllApps
@@ -91,6 +92,7 @@ class Libero {
         appVersion = cmd.getOptionValue("appVersion")
 
         install = cmd.hasOption("install")
+        installOnly = cmd.hasOption("installOnly")
         start = cmd.hasOption("start")
         startMostRecentApps = cmd.hasOption("startMostRecentApps")
         stopAllApps = cmd.hasOption("stopAllApps")
@@ -148,9 +150,12 @@ class Libero {
 
         container.connect()
 
-        if(!(install || startMostRecentApps || stopAllApps || uninstallOldInstances || uninstallAppOldInstances)){
+        if(!(install || installOnly || startMostRecentApps || stopAllApps || uninstallOldInstances || uninstallAppOldInstances)){
             log.log("Warning: No actions were selected to perform.")
         }
+
+        if(installOnly)
+            container.installApp(new File(appLocation), appName, appVersion)
 
         if(install){
             container.installAppWithRollBack(new File(appLocation), appName, appVersion)
