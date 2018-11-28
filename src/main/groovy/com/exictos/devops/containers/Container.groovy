@@ -46,7 +46,7 @@ abstract class Container{
      * @param applicationName
      * @return the deployment name in the standard form
      */
-    abstract protected String installApp(File pathToPackage, String applicationName,String applicationVersion = null, Timestamp timestamp = null)
+    abstract String installApp(File pathToPackage, String applicationName,String applicationVersion = null, Timestamp timestamp = null)
 
     /**
      *  Installs application with the package provided at pathToPackage and with the name applicationName standardized.
@@ -76,6 +76,8 @@ abstract class Container{
 
     /**
      *  Starts the most recent instance of an application
+     *  Attention: You need to call profile.updateInstances() to update instances before calling this method, otherwise
+     *  you could get unexpected results
      *
      * @param applicationName
      */
@@ -119,6 +121,7 @@ abstract class Container{
         logger.log("--------------------------------------------------------")
         logger.log("               STARTING MOST RECENT APPS                ")
         logger.log("--------------------------------------------------------")
+        profile.updateInstances()
         stopOldInstances()
         profile.listInstalledApplications().each {app ->
             startMostRecentInstance(app)
@@ -127,7 +130,8 @@ abstract class Container{
 
     /**
      *  Stops all old instances of all applications installed in the profile
-     *
+     *  Attention: You need to call profile.updateInstances() to update instances before calling this method, otherwise
+     *  you could get unexpected results
      */
     void stopOldInstances(){
         logger.log("Stopping all old instances...")
@@ -152,7 +156,8 @@ abstract class Container{
         logger.log("--------------------------------------------------------")
         logger.log("                     STOP ALL APPS                      ")
         logger.log("--------------------------------------------------------")
-        profile.listAllInstances().each {instance ->
+        profile.updateInstances()
+        profile.instances.each {instance ->
             if(instance.isEnabled())
                 stopApp(instance.getName())
         }
@@ -160,6 +165,8 @@ abstract class Container{
 
     /**
      * Uninstalls all old instances of applicationName with an oldness level above oldnessThreshold
+     *  Attention: You need to call profile.updateInstances() to update instances before calling this method, otherwise
+     *  you could get unexpected results
      *
      * @param applicationName
      * @param oldnessThreshold
@@ -183,7 +190,8 @@ abstract class Container{
 
     /**
      * Uninstalls all old instances of all installed applications
-     *
+     *  Attention: You need to call profile.updateInstances() to update instances before calling this method, otherwise
+     *  you could get unexpected results
      */
     void uninstallOldInstances()
     {

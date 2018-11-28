@@ -18,13 +18,14 @@ abstract class Profile{
     String username
     char[] password
     boolean connected = false
+    List<Instance> instances
 
     /**
      * Gets all instances of applications installed in this profile
      *
      * @return list of instances installed
      */
-    abstract List<Instance> listAllInstances()
+    protected abstract List<Instance> listAllInstances()
 
     /**
      * Lists all instances of applicationName installed in this profile
@@ -49,4 +50,11 @@ abstract class Profile{
      */
     abstract String getApplicationContextRoot(String applicationName)
 
+    /**
+     *  Updates all instances installed in the profile
+     *
+     */
+    void updateInstances(){
+        instances = listAllInstances()
+    }
 }

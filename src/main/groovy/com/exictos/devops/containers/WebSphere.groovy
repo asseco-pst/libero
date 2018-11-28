@@ -51,7 +51,7 @@ class WebSphere extends Container{
      * @return
      */
     @Override
-    protected String installApp(File pathToPackage, String applicationName, String applicationVersion
+    String installApp(File pathToPackage, String applicationName, String applicationVersion
                                 , Timestamp timestamp)
     {
         logger.log("Installing application ${applicationName} from package at ${pathToPackage}...")
@@ -77,7 +77,7 @@ class WebSphere extends Container{
     {
         logger.log("Starting application: ${deploymentName}...")
         try{
-            if(wsadmin.isAppReady(deploymentName))
+            if(wsadmin.isAppReady(deploymentName) && !wsadmin.isApplicationRunning(deploymentName))
                 wsadmin.startApplication(deploymentName)
             wsadmin.enableAutoStart(deploymentName)
             logger.log("Deployment ${deploymentName} started.")

@@ -69,7 +69,7 @@ class LiberoHelper {
         }
     }
 
-    String extractVersion(String standardizedName)
+    static String extractVersion(String standardizedName)
     {
         if(!isValidDeploymentName(standardizedName))
             throw new IllegalArgumentException("Application name provided ${standardizedName} is not valid. Missing the date separator '___'")
@@ -80,7 +80,6 @@ class LiberoHelper {
             String version = standardizedName.substring(standardizedName.indexOf("___v") + 4, standardizedName.lastIndexOf("___"))
             return version
         }catch(Exception e){
-            logger.log("Could not parse name ${standardizedName}. Cause: ${e}")
             throw e
         }
     }

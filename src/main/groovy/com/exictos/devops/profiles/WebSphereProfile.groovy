@@ -18,6 +18,7 @@ class WebSphereProfile extends Profile{
     {
         wsadmin = aWsadmin
         this.logger = log
+        instances = listAllInstances()
     }
 
     /**
@@ -26,9 +27,10 @@ class WebSphereProfile extends Profile{
      * @return List of instances
      */
     @Override
-    List<Instance> listAllInstances() {
+    protected List<Instance> listAllInstances() {
         logger.log("Getting all deployments in profile...")
-        List<Instance> instances = new ArrayList<Instance>()
+
+        List<Instance> allInstances = new ArrayList<Instance>()
 
         try{
             List<String> deployments = wsadmin.list()
@@ -37,18 +39,19 @@ class WebSphereProfile extends Profile{
                 instance.setName(deployment)
                 try{
                     instance.setTimestamp(LiberoHelper.extractTimestamp(deployment))
+                    instance.setVersion(LiberoHelper.extractVersion(deployment))
                 }catch(Exception e){
-                    logger.log("Could not parse application timestamp. Cause: ${e}")
+                    logger.log("Could not parse application name. Cause: ${e}")
                 }
                 instance.setEnabled(wsadmin.isApplicationRunning(deployment))
-                instances.add(instance)
+                allInstances.add(instance)
             }
         }catch(Exception e){
             logger.log("Could not get list of all deployments. Cause: ${e.getMessage()}")
             throw e
         }
 
-        return instances
+        return allInstances
     }
 
     /**
@@ -60,24 +63,23 @@ class WebSphereProfile extends Profile{
     @Override
     List<Instance> listInstances(String applicationName) {
         logger.log("Getting instances of ${applicationName}...")
-        List<Instance> instances = new ArrayList<Instance>()
+        List<Instance> instancesOfApplication = new ArrayList<Instance>()
         try{
-            List<Instance> deployments = listAllInstances()
-            deployments.each {instance ->
+            instances.each {instance ->
                 try{
                     if(new LiberoHelper().extractName(instance.getName()) == applicationName)
-                        instances.add(instance)
+                        instancesOfApplication.add(instance)
                 }catch(Exception e){
                     logger.log("Could not parse application name. Cause: ${e}")
                 }
             }
-            instances = LiberoHelper.oldnessLevel(instances)
+            instancesOfApplication = LiberoHelper.oldnessLevel(instancesOfApplication)
         }catch(Exception e){
             logger.log("Could not get list of instances of ${applicationName}. Cause: ${e}")
             throw e
         }
 
-        return instances
+        return instancesOfApplication
     }
 
     /**
@@ -90,10 +92,9 @@ class WebSphereProfile extends Profile{
         logger.log("Getting all installed applications...")
         List<String> applications = new ArrayList<String>()
         try {
-            List<Instance> deployments = listAllInstances()
-            deployments.each { deployment ->
+            instances.each { instance ->
                 try{
-                    String name = new LiberoHelper().extractName(deployment.getName())
+                    String name = new LiberoHelper().extractName(instance.getName())
                     if (!applications.contains(name) && name != null)
                         applications.add(name)
                 }catch(Exception e){
