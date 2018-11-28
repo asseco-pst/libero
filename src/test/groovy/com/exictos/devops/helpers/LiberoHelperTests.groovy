@@ -43,7 +43,7 @@ class LiberoHelperTests extends GroovyTestCase {
     @Test
     void testExtractVersion(){
 
-        String actual = new LiberoHelper().extractVersion(standardizedName)
+        String actual = LiberoHelper.extractVersion(standardizedName)
         assertEquals("Could not extract version successfully", version, actual)
 
     }

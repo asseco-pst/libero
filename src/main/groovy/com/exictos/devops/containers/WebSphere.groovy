@@ -77,7 +77,7 @@ class WebSphere extends Container{
     {
         logger.log("Starting application: ${deploymentName}...")
         try{
-            if(wsadmin.isAppReady(deploymentName))
+            if(wsadmin.isAppReady(deploymentName) && !wsadmin.isApplicationRunning(deploymentName))
                 wsadmin.startApplication(deploymentName)
             wsadmin.enableAutoStart(deploymentName)
             logger.log("Deployment ${deploymentName} started.")
