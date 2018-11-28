@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
  - Icon to launch4j executable
+ - Install only option to command line
 
 ## :arrow_forward: v1.6.4 <sup>2018-11-15</sup>
 ### Fixed
