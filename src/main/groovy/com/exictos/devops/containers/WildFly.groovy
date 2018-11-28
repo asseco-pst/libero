@@ -61,7 +61,7 @@ class WildFly extends Container{
      * @return
      */
     @Override
-    protected String installApp(File aPathToPackage, String aApplicationName, String aApplicationVersion = null
+    String installApp(File aPathToPackage, String aApplicationName, String aApplicationVersion = null
                                  , Timestamp aTimestamp = null)
     {
         logger.log("Installing application ${aApplicationName} from package at ${aPathToPackage}...")

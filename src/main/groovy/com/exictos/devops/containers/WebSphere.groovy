@@ -51,7 +51,7 @@ class WebSphere extends Container{
      * @return
      */
     @Override
-    protected String installApp(File pathToPackage, String applicationName, String applicationVersion
+    String installApp(File pathToPackage, String applicationName, String applicationVersion
                                 , Timestamp timestamp)
     {
         logger.log("Installing application ${applicationName} from package at ${pathToPackage}...")

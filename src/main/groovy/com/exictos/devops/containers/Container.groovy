@@ -46,7 +46,7 @@ abstract class Container{
      * @param applicationName
      * @return the deployment name in the standard form
      */
-    abstract protected String installApp(File pathToPackage, String applicationName,String applicationVersion = null, Timestamp timestamp = null)
+    abstract String installApp(File pathToPackage, String applicationName,String applicationVersion = null, Timestamp timestamp = null)
 
     /**
      *  Installs application with the package provided at pathToPackage and with the name applicationName standardized.
