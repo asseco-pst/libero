@@ -59,7 +59,6 @@ class WebSphere extends Container{
             String name = LiberoHelper.standardizeName(pathToPackage.getAbsolutePath(), applicationName, applicationVersion
                     , timestamp)
             wsadmin.installApplication(pathToPackage.getAbsolutePath(),name)
-            wsadmin.disableAutoStart(name)
             logger.log("${applicationName} installed successfully as ${name}")
             return name
         }catch(Exception e){
@@ -80,6 +79,7 @@ class WebSphere extends Container{
         try{
             if(wsadmin.isAppReady(deploymentName))
                 wsadmin.startApplication(deploymentName)
+            wsadmin.enableAutoStart(deploymentName)
             logger.log("Deployment ${deploymentName} started.")
         }catch(Exception e){
             logger.log("Could not start application ${deploymentName}. Cause: ${e}")

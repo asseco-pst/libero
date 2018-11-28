@@ -62,7 +62,8 @@ abstract class Container{
         logger.log("--------------------------------------------------------")
         logger.log("           INSTALL APPLICATION WITH ROLLBACK            ")
         logger.log("--------------------------------------------------------")
-        installApp(pathToPackage, applicationName, applicationVersion, timestamp)
+        String newest = installApp(pathToPackage, applicationName, applicationVersion, timestamp)
+        disableAutoStart(newest)
         uninstallAppOldInstances(applicationName, 1)
     }
 
@@ -91,7 +92,6 @@ abstract class Container{
             }
         }
         startApp(mostRecent.getName())
-        enableAutoStart(mostRecent.getName())
     }
 
     /**
@@ -136,6 +136,7 @@ abstract class Container{
             List<Instance> instances = profile.listInstances(app)
             instances.each {instance ->
                 if(instance.getOldness() > 0 && instance.isEnabled()){
+                    disableAutoStart(instance.getName())
                     stopApp(instance.getName())
                 }
             }

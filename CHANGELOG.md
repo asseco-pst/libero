@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
+## :arrow_forward: v1.7.0 <sup>2018-11-28</sup>
+### Added
+ - Icon to launch4j executable
+ - Install only option to command line
+
 ## :arrow_forward: v1.6.4 <sup>2018-11-15</sup>
 ### Fixed
  - Bug when parsing application names with underscores (eg. eBankaPlus_v2)
