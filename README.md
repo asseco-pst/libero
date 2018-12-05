@@ -29,13 +29,13 @@ Maven:
 <dependency>
     <groupId>com.exictos.devops</groupId>
     <artifactId>libero</artifactId>
-    <version>1.6.0</version>
+    <version>1.7.0</version>
 </dependency>
 ```
 
 Gradle:
 ```json
-compile group: 'com.exictos.devops', name: 'libero', version: '1.6.0'
+compile group: 'com.exictos.devops', name: 'libero', version: '1.7.0'
 ```
 
 ### Build from source
@@ -110,7 +110,7 @@ service
 Please report issues at https://gitlab.dcs.exictos.com/devops/libero
 
 
-C:\> java -jar libero.jar -container wildfly -host ***REMOVED*** -port 9997 -username admin -password ***REMOVED*** -appName BackOfficeWS -appLocation C:/BackOfficeWSEAR.ear -appVersion 1.2.3
+C:\> java -jar libero.jar -container wildfly -host 10.92.200.70 -port 9997 -username admin -password 123456 -appName BackOfficeWS -appLocation C:/BackOfficeWSEAR.ear -appVersion 1.2.3
 
 ```
 
@@ -119,7 +119,7 @@ C:\> java -jar libero.jar -container wildfly -host ***REMOVED*** -port 9997 -use
 #### Installing an application in a WildFly profile
 
 ```groovy
-Container wildfly = new WildFly("***REMOVED***", 49990, ***REMOVED***, ***REMOVED***.toCharArray())
+Container wildfly = new WildFly("10.92.200.70", 49990, "admin", "123456".toCharArray())
 
 wildfly.connect()
 wildfly.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
@@ -128,7 +128,7 @@ wildfly.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
 #### Installing an application in a WAS profile
 
 ```groovy
-Container was = new WebSphere("***REMOVED***", 8881, ***REMOVED***, ***REMOVED***.toCharArray(), "C:/IBM/WebSphere/AppServer/bin/wsadmin.bat")
+Container was = new WebSphere("10.92.200.70", 8881, "admin", "admin".toCharArray(), "C:/IBM/WebSphere/AppServer/bin/wsadmin.bat")
 
 was.installAppWithRollBack("C:/packages/irc/IRC_WS_BBEAR.ear","IRC_WS_BB")
 ```
